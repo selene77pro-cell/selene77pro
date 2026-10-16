@@ -45,3 +45,8 @@ test('one player can start and late joins get catch-up funds',()=>{
  const g=createGame();addPlayer(g,'a','가');assert.equal(command(g,'a',{type:'start'}).ok,true);
  assert.equal(g.phase,'prep');g.wave=25;addPlayer(g,'b','나');assert.ok(g.players.b.money>650);
 });
+test('structured facility identifiers cannot throw or spend money',()=>{
+ const g=setup();for(const facility of [{toString:null,valueOf:null},{toString:17},null,[],42,true]){
+  let result;assert.doesNotThrow(()=>{result=command(g,'a',{type:'build',facility,x:100,y:100});});assert.equal(result.ok,false);
+ }assert.equal(g.players.a.money,650);
+});

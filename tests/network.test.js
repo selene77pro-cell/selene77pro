@@ -9,6 +9,7 @@ test('real clients play solo, share state, reject foreign upgrade and reconnect'
  const server=createServer({port:0,host:'127.0.0.1'});await server.listen();t.after(()=>server.close());
  const url=`ws://127.0.0.1:${server.address().port}`,a=await client(url);a.send({type:'join',nickname:'하나'});
  const joined=await a.wait(m=>m.type==='joined');assert.ok(joined.token);
+ a.send({type:'action',action:{type:'build',facility:{toString:null,valueOf:null},x:100,y:100}});await a.wait(m=>m.type==='error');
  a.send({type:'action',action:{type:'build',facility:'gun',x:100,y:100}});a.send({type:'action',action:{type:'start'}});
  const first=await a.wait(m=>m.type==='state'&&m.state.phase==='prep'&&m.state.facilities.length===1);assert.equal(first.state.players[0].money,550);
  const b=await client(url);b.send({type:'join',roomId:joined.roomId,nickname:'둘'});await b.wait(m=>m.type==='joined');

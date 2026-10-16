@@ -22,4 +22,4 @@ export const CATALOG=Object.freeze({
 export const LEVELS=['기본형','강화형','정예형','최종형'];
 export function upgradeCost(f){return Math.floor(CATALOG[f.type].cost*(.8+f.level*.65));}
 export function statsFor(f){const c=CATALOG[f.type],s=f.level-1;return {...c,damage:Math.round(c.damage*(1+s*.8)),hp:Math.round((c.hp||0)*(1+s*.85)),range:c.range*(1+s*.08),interval:c.interval/(1+s*.14),income:Math.round((c.income||0)*(1+s*.8)),heal:(c.heal||0)*(1+s*.6),buff:c.buff?c.buff+s*.1:0};}
-export const unlocked=(completedWave,type)=>Object.hasOwn(CATALOG,type)&&CATALOG[type].unlockWave<=completedWave;
+export const unlocked=(completedWave,type)=>typeof type==='string'&&Object.hasOwn(CATALOG,type)&&CATALOG[type].unlockWave<=completedWave;

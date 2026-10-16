@@ -1,6 +1,6 @@
 # Zombie Defense Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** 1인 및 최대 4인이 함께 즐기는 좀비 디펜스 웹게임을 구현한다.
 
@@ -34,10 +34,10 @@
 
 **Interfaces:** `CATALOG` is keyed by facility ID; entries contain name, kind, unlockWave, cost, color and combat stats. `MAPS` contains five named maps with paths and blocked cells. `createGame()` returns mutable room simulation state. `addPlayer(game, id, name)` registers a player. `command(game, playerId, action)` returns `{ok, error?}`; action types are build, upgrade, sell and start.
 
-- [ ] Write failing node:test cases: 18 catalog entries; 5 maps; build debits exact catalog cost; overlapping/path placement fails without spending; locked facility fails; levels stop at 4; only owner may upgrade/sell; sequential duplicate actions cannot overspend; unknown and nonfinite coordinates fail.
-- [ ] Run `node --test tests/game.test.js` and confirm failures for missing implementation.
-- [ ] Implement data, deterministic command validation, per-player balances, spending ledger, facility cap 100 and 4-stage statistics. Initial balance 650; sale returns 75% of actual investment. Configure `npm test` and `npm start`.
-- [ ] Run the tests to completion; commit the data and rules.
+- [x] Write failing node:test cases: 18 catalog entries; 5 maps; build debits exact catalog cost; overlapping/path placement fails without spending; locked facility fails; levels stop at 4; only owner may upgrade/sell; sequential duplicate actions cannot overspend; unknown and nonfinite coordinates fail.
+- [x] Run `node --test tests/game.test.js` and confirm failures for missing implementation.
+- [x] Implement data, deterministic command validation, per-player balances, spending ledger, facility cap 100 and 4-stage statistics. Initial balance 650; sale returns 75% of actual investment. Configure `npm test` and `npm start`.
+- [x] Run the tests to completion; commit the data and rules.
 
 ## Task 2: 전투와 무한 진행
 
@@ -45,10 +45,10 @@
 
 **Interfaces:** `tick(game, dt)` advances simulation with seconds capped at 0.1 per tick. `snapshot(game)` returns serializable authoritative state with players, facilities, soldiers, enemies, effects, wave, mapIndex, phase, baseHp and timers. `statsFor(facility)` derives upgraded stats from catalog and level.
 
-- [ ] Write failing cases for damage/kill contribution rewards, escaped enemies reducing shared health, zero health ending game, banks paying only owner once per completed wave, automatic capped soldiers, support effects not stacking, unlock after milestone completion, boss every tenth wave, transition preserving global wave/unlocks and refunding exact investment only once.
-- [ ] Run `node --test tests/combat.test.js` and verify intended failures.
-- [ ] Implement fixed-step movement along paths, gun/splash/slow/burn/chain attacks, soldier approach/combat, healing and buffs. Bosses differ by region through armor, speed, regeneration or summons. Complete waves only after every spawn and enemy is resolved. Give preparation time before each wave and map transition. Scale only newly spawned enemies using active player count; retain bounded soldier/effect counts.
-- [ ] Run `npm test`; commit verified simulation.
+- [x] Write failing cases for damage/kill contribution rewards, escaped enemies reducing shared health, zero health ending game, banks paying only owner once per completed wave, automatic capped soldiers, support effects not stacking, unlock after milestone completion, boss every tenth wave, transition preserving global wave/unlocks and refunding exact investment only once.
+- [x] Run `node --test tests/combat.test.js` and verify intended failures.
+- [x] Implement fixed-step movement along paths, gun/splash/slow/burn/chain attacks, soldier approach/combat, healing and buffs. Bosses differ by region through armor, speed, regeneration or summons. Complete waves only after every spawn and enemy is resolved. Give preparation time before each wave and map transition. Scale only newly spawned enemies using active player count; retain bounded soldier/effect counts.
+- [x] Run `npm test`; commit verified simulation.
 
 ## Task 3: WebSocket 서버와 방
 
@@ -56,10 +56,10 @@
 
 **Interfaces:** `createServer({port, host})` returns `{listen, close, address}` for ephemeral-port tests. Client messages: join `{roomId?, nickname, token?}`, action `{action}`. Server messages: joined `{roomId, playerId, token}`, state `{state}`, error `{message}`. Room IDs and reconnect tokens use crypto randomness.
 
-- [ ] Write failing integration tests using real ws clients: solo room/start; second client joins and sees matching state; reconnect restores player/balance; four seats and rejection of fifth; 120-second slot expiry using injected room clock; invalid token cannot steal identity; malformed/oversized messages handled; opponent upgrade rejected.
-- [ ] Run `node --test tests/network.test.js` and confirm missing-server failures.
-- [ ] Implement static serving restricted to public/shared files, health endpoint, host/port environment overrides, 20 Hz simulation and 10 Hz broadcasts, 4 KiB message limit, action rate limits, empty-room cleanup and shutdown. Bind to `0.0.0.0`; default port 3000. Tokens are sent only to their owner, never in shared snapshots or URLs.
-- [ ] Run `npm test`; commit server and integration tests.
+- [x] Write failing integration tests using real ws clients: solo room/start; second client joins and sees matching state; reconnect restores player/balance; four seats and rejection of fifth; 120-second slot expiry using injected room clock; invalid token cannot steal identity; malformed/oversized messages handled; opponent upgrade rejected.
+- [x] Run `node --test tests/network.test.js` and confirm missing-server failures.
+- [x] Implement static serving restricted to public/shared files, health endpoint, host/port environment overrides, 20 Hz simulation and 10 Hz broadcasts, 4 KiB message limit, action rate limits, empty-room cleanup and shutdown. Bind to `0.0.0.0`; default port 3000. Tokens are sent only to their owner, never in shared snapshots or URLs.
+- [x] Run `npm test`; commit server and integration tests.
 
 ## Task 4: 플레이 가능한 화면
 
@@ -67,19 +67,19 @@
 
 **Interfaces:** `render(ctx, state, previousState, interpolation, ui)` draws logical 1200×720 battlefield. `bindUI({send, onSelection, onEffects})` wires panels. `app.js` owns WebSocket, per-room session token storage, snapshot interpolation, pointer-to-world conversion and selected facility.
 
-- [ ] Write browser checks for nickname entry, solo start, correct 찌 display, building/upgrade selection, disabled locked towers, copied URL preserving room, damage/health indicators, disconnected state, and viewport-scaled pointer placement. Assert the app has no uncaught browser errors.
-- [ ] Run browser suite against server and confirm failures before UI implementation.
-- [ ] Implement dark military lobby and HUD, touch-friendly build carousel with all 18 facilities and unlock labels, stats/upgrade/sell panel, responsive Canvas, map-specific terrain, facility silhouettes by type and level, moving soldiers, zombies and bosses. Render healthbars, capped damage numbers, flash/projectile/explosion/fire/lightning effects and effects intensity selector. Provide restart after defeat; copying/sharing uses same-origin room link and does not promise a public local address.
-- [ ] Run browser checks including a mobile landscape viewport and inspect screenshot. Run `npm test`; commit UI.
+- [x] Write browser checks for nickname entry, solo start, correct 찌 display, building/upgrade selection, disabled locked towers, copied URL preserving room, damage/health indicators, disconnected state, and viewport-scaled pointer placement. Assert the app has no uncaught browser errors.
+- [x] Run browser suite against server and confirm failures before UI implementation.
+- [x] Implement dark military lobby and HUD, touch-friendly build carousel with all 18 facilities and unlock labels, stats/upgrade/sell panel, responsive Canvas, map-specific terrain, facility silhouettes by type and level, moving soldiers, zombies and bosses. Render healthbars, capped damage numbers, flash/projectile/explosion/fire/lightning effects and effects intensity selector. Provide restart after defeat; copying/sharing uses same-origin room link and does not promise a public local address.
+- [x] Run browser checks including a mobile landscape viewport and inspect screenshot. Run `npm test`; commit UI.
 
 ## Task 5: 完成検証と実行手順
 
 **Files:** `README.md`, optional `Dockerfile` and `.dockerignore` for reproducible single-process hosting.
 
-- [ ] Document `npm ci`, `npm start`, `npm test`, browser checks, HOST/PORT, controls, full catalog unlock schedule, resource limits and reconnect behavior. Explain HTTPS/WSS reverse proxy support and in-memory room loss on server restart.
-- [ ] Run fresh `npm ci`, all unit/integration tests and browser checks. Verify `/health`, static assets and an actual solo game, plus two-client shared action flow. Separate passed tests from unrun public deployment checks.
-- [ ] Save necessary cloud install/start instructions using environment configuration tools; startup instructions use existing checkout and include health verification. Do not claim draft persistence unless tool confirms it.
-- [ ] Review final diff and git status, resolve regressions, commit final documentation, and report run instructions and remaining public-hosting step.
+- [x] Document `npm ci`, `npm start`, `npm test`, browser checks, HOST/PORT, controls, full catalog unlock schedule, resource limits and reconnect behavior. Explain HTTPS/WSS reverse proxy support and in-memory room loss on server restart.
+- [x] Run fresh `npm ci`, all unit/integration tests and browser checks. Verify `/health`, static assets and an actual solo game, plus two-client shared action flow. Separate passed tests from unrun public deployment checks.
+- [x] Save necessary cloud install/start instructions using environment configuration tools; startup instructions use existing checkout and include health verification. Do not claim draft persistence unless tool confirms it.
+- [x] Review final diff and git status, resolve regressions, commit final documentation, and report run instructions and remaining public-hosting step.
 
 ## Execution method
 
