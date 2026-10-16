@@ -1,12 +1,12 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {CATALOG, statsFor, upgradeCost} from '../shared/catalog.js';
+import {CATALOG, BASE_FACILITIES, statsFor, upgradeCost} from '../shared/catalog.js';
 import {MAPS, canBuild} from '../shared/maps.js';
 import {createGame, addPlayer, command} from '../server/game.js';
 
 function setup(){const g=createGame();addPlayer(g,'a','가');addPlayer(g,'b','나');return g;}
 test('catalog has eighteen facilities, five maps, four upgrade stages',()=>{
- assert.equal(Object.keys(CATALOG).length,18);assert.equal(MAPS.length,5);
+ assert.equal(BASE_FACILITIES.length,18);assert.equal(MAPS.length,5);
  assert.ok(statsFor({type:'gun',level:4}).damage>statsFor({type:'gun',level:1}).damage);
 });
 test('build charges catalog cost, rejects overlap and path without spending',()=>{
