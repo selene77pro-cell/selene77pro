@@ -64,3 +64,21 @@ test('delayed build acknowledgement preserves the next facility selection',async
  await page.locator('[data-facility="barracks"]').click();await expect.poll(()=>held.length).toBeGreaterThan(0);release();
  await expect(page.locator('#money')).toContainText('550');await expect(page.locator('[data-facility="barracks"]')).toHaveClass(/selected/);
 });
+test('four browsers enter by nickname and code and share construction',async({browser})=>{
+ const contexts=await Promise.all(Array.from({length:5},()=>browser.newContext({viewport:{width:1280,height:800}})));
+ try{
+  const pages=await Promise.all(contexts.map(c=>c.newPage()));await enter(pages[0]);
+  const code=await pages[0].locator('#room-code-display').textContent();expect(code.trim()).toMatch(/^\d{6}$/);
+  for(let i=1;i<4;i++){const p=pages[i];await p.goto('/');await p.getByLabel('닉네임',{exact:true}).fill(`친구${i}`);await p.getByLabel('친구 방 코드').fill(code.trim());await p.getByRole('button',{name:'작전 시작',exact:true}).click();await expect(p.locator('#game')).toBeVisible();}
+  for(const p of pages.slice(0,4))await expect(p.locator('#members')).toContainText('4 / 4');
+  const host=pages[0];await host.locator('[data-facility="gun"]').click();const b=await host.locator('canvas').boundingBox();await host.locator('canvas').click({position:{x:b.width*100/1200,y:b.height*100/720}});
+  for(const p of pages.slice(0,4))await expect(p.locator('#facility-count')).toContainText('1 / 100');
+  await host.locator('#start-wave').click();for(const p of pages.slice(0,4))await expect(p.locator('#phase')).toContainText('준비');
+  const fifth=pages[4];await fifth.goto('/');await fifth.getByLabel('닉네임',{exact:true}).fill('다섯째');await fifth.getByLabel('친구 방 코드').fill(code.trim());await fifth.getByRole('button',{name:'작전 시작',exact:true}).click();await expect(fifth.locator('#join-error')).toContainText('4명');
+  await host.screenshot({path:'test-results/four-player-room.png'});
+ }finally{await Promise.all(contexts.map(c=>c.close()));}
+});
+test('returning player uses a room code to restore the original seat',async({context,page})=>{
+ await enter(page);const code=(await page.locator('#room-code-display').textContent()).trim();await page.locator('[data-facility="bank"]').click();const b=await page.locator('canvas').boundingBox();await page.locator('canvas').click({position:{x:b.width*100/1200,y:b.height*100/720}});await expect(page.locator('#money')).toContainText('430');await page.close();
+ const back=await context.newPage();await back.goto('/');await back.getByLabel('닉네임',{exact:true}).fill('돌아온 친구');await back.getByLabel('친구 방 코드').fill(code);await back.getByRole('button',{name:'작전 시작',exact:true}).click();await expect(back.locator('#game')).toBeVisible();await expect(back.locator('#money')).toContainText('430');await expect(back.locator('#members')).toContainText('1 / 4');
+});

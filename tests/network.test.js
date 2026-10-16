@@ -35,3 +35,16 @@ test('HTTP static boundaries and malformed / oversized socket messages',async t=
  const a=await client(`ws://127.0.0.1:${port}`);a.ws.send('{');await a.wait(m=>m.type==='error');a.send({type:'join',nickname:'정상'});await a.wait(m=>m.type==='joined');
  const closed=new Promise(r=>a.ws.once('close',r));a.ws.send('x'.repeat(5000));await closed;
 });
+test('six-digit code joins four real clients and shares one battlefield',async t=>{
+ const s=createServer({port:0,host:'127.0.0.1'});await s.listen();t.after(()=>s.close());const url=`ws://127.0.0.1:${s.address().port}`,clients=[];
+ const host=await client(url);clients.push(host);host.send({type:'join',nickname:'방장'});const joined=await host.wait(m=>m.type==='joined');assert.match(joined.roomCode,/^\d{6}$/);
+ for(let i=1;i<4;i++){const c=await client(url);clients.push(c);c.send({type:'join',nickname:`친구${i}`,roomId:joined.roomCode});const j=await c.wait(m=>m.type==='joined');assert.equal(j.roomId,joined.roomId);assert.equal(j.roomCode,joined.roomCode);}
+ host.send({type:'action',action:{type:'build',facility:'barracks',x:100,y:200}});host.send({type:'action',action:{type:'start'}});
+ for(const c of clients){const m=await c.wait(m=>m.type==='state'&&m.state.players.length===4&&m.state.facilities.length===1&&m.state.phase==='prep');assert.equal(m.state.facilities[0].owner,joined.playerId);assert.equal(m.state.players.find(p=>p.id===joined.playerId).money,470);}
+ const fifth=await client(url);fifth.send({type:'join',nickname:'다섯째',roomId:joined.roomCode});const error=await fifth.wait(m=>m.type==='error');assert.match(error.message,/4명/);fifth.ws.close();for(const c of clients)c.ws.close();
+});
+test('unknown codes do not create a different room and generated codes are unique',()=>{
+ const rm=new RoomManager();assert.equal(rm.join({nickname:'가',roomId:'123456'}).ok,false);assert.equal(rm.rooms.size,0);
+ const codes=new Set();for(let i=0;i<50;i++){const a=rm.join({nickname:'가'});assert.match(a.room.code,/^\d{6}$/);codes.add(a.room.code);}assert.equal(codes.size,50);
+ const first=[...rm.rooms.values()][0];assert.equal(rm.join({nickname:'나',roomId:` ${first.code} `}).room.id,first.id);
+});

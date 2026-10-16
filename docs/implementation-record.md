@@ -21,3 +21,10 @@ Final: fixed structured facility crash — structured facility identifiers RED�
 Final: fixed device reconnect — close/reopen browser test RED→GREEN, browser suite 7/7.
 Final: fixed delayed placement selection — delayed-ack regression RED→GREEN, browser suite 7/7. Supplementary live-combat test also passed.
 Final verification: npm ci successful; npm test 17/17; npm run test:browser 7/7; GET /health {ok:true}; git diff --check clean. Latest server is running from npm start. install_script/start_skill draft saved; publication and public game deployment not performed. Work remains on local work branch; no remote main commit exists.
+
+## 별명과 방 코드로 1~4인 입장
+
+- 방마다 중복되지 않는 6자리 숫자 코드를 생성한다. 빈 코드로 방을 만들고 친구 코드를 입력해 입장한다. 기존 URL 초대와 재접속은 유지한다.
+- 없는 코드는 새 방으로 바꾸지 않고 오류를 표시한다. 코드로 복귀하는 같은 브라우저는 저장된 자격으로 기존 찌와 자리를 복원한다.
+- 검증: 서버/게임 테스트 19개 통과. 기존 브라우저 8개 전체 통과 후 코드 재입장 검사를 추가 검증했다. 네 독립 브라우저에서 공동 건설 및 시작을 확인하고 다섯 번째 입장을 차단했다.
+- 현재 도구 목록에 ChatGPT Sites 생성·게시 기능이 없어 Sites 등록 및 그 플랫폼에서의 서버 실행은 수행하지 못했다. 공개 URL이나 Sites 플레이 준비 완료를 주장하지 않는다.

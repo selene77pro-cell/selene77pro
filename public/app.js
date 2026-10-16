@@ -15,7 +15,7 @@ function connect(info){
  socket.onopen=()=>socket.send(JSON.stringify({type:'join',nickname:info.nickname,roomId:info.roomId||undefined,token:info.token||undefined}));
  socket.onmessage=event=>{let m;try{m=JSON.parse(event.data);}catch{return;}
   if(m.type==='joined'){
-   ui.playerId=m.playerId;session={...info,roomId:m.roomId,token:m.token};localStorage.setItem(`outpost:${m.roomId}`,JSON.stringify(session));localStorage.setItem('outpost-name',info.nickname);
+   ui.playerId=m.playerId;session={...info,roomId:m.roomId,token:m.token,roomCode:m.roomCode};if(m.roomCode)localStorage.setItem(`outpost-code:${m.roomCode}`,m.roomId);$('room-code-display').textContent=m.roomCode||'1인';localStorage.setItem(`outpost:${m.roomId}`,JSON.stringify(session));localStorage.setItem('outpost-name',info.nickname);
    const url=new URL(location.href);url.searchParams.set('room',m.roomId);history.replaceState(null,'',url);$('lobby').hidden=true;$('game').hidden=false;document.body.classList.add('in-game');retries=0;setConnection(true);resize();
   }else if(m.type==='state'){
    previous=state;state=m.state;received=performance.now();
@@ -35,7 +35,7 @@ function connect(info){
 }
 $('nickname').value=localStorage.getItem('outpost-name')||'';
 if(roomId)$('join-note').textContent='초대받은 방입니다. 닉네임을 입력하면 함께 합류합니다.';
-$('join-form').onsubmit=e=>{e.preventDefault();const nickname=$('nickname').value.trim();if(!nickname)return;socket?.close();connect({nickname,roomId:new URL(location.href).searchParams.get('room')||undefined});};
+$('join-form').onsubmit=e=>{e.preventDefault();const nickname=$('nickname').value.trim();if(!nickname)return;const target=$('room-code').value.trim()||new URL(location.href).searchParams.get('room')||undefined;const canonical=target?(localStorage.getItem(`outpost-code:${target}`)||target):null;const saved=canonical?readSession(canonical):null;if(socket){socket.onclose=null;socket.onmessage=null;socket.close();}connect({nickname,roomId:saved?.roomId||target,token:saved?.token||undefined});};
 bindUI({send,onSelection:selection=>{ui.selectionVersion++;ui.selectedType=selection.type;ui.selectedId=null;updateUI(state,ui);},onEffects:value=>{ui.effects=value;localStorage.setItem('outpost-effects',value);},onFilter:value=>{ui.filter=value;if(state)updateUI(state,ui);}});
 $('effects').value=String(ui.effects);
 function resize(){const box=$('battlefield').getBoundingClientRect(),scale=Math.min(box.width/1200,box.height/720);const w=1200*scale*zoom,h=720*scale*zoom;pan.x=Math.max(-Math.max(0,(w-box.width)/2),Math.min(Math.max(0,(w-box.width)/2),pan.x));pan.y=Math.max(-Math.max(0,(h-box.height)/2),Math.min(Math.max(0,(h-box.height)/2),pan.y));canvas.style.width=`${w}px`;canvas.style.height=`${h}px`;canvas.style.flexShrink='0';canvas.style.transform=`translate(${pan.x}px,${pan.y}px)`;}
@@ -52,6 +52,7 @@ $('zoom-in').onclick=()=>{zoom=Math.min(3,zoom+.5);resize();};
 $('zoom-out').onclick=()=>{zoom=Math.max(1,zoom-.5);resize();};
 $('zoom-reset').onclick=()=>{zoom=1;pan={x:0,y:0};resize();};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){ui.selectionVersion++;ui.selectedType=null;ui.selectedId=null;if(state)updateUI(state,ui);}});
-$('share').onclick=async()=>{const url=location.href;try{if(navigator.share&&!navigator.webdriver){await navigator.share({title:'LAST OUTPOST · 좀비 협동 디펜스',text:'같이 방어선을 지켜줘! 최대 4인 협동',url});toast('방 링크를 공유했습니다.');}else if(navigator.clipboard){await navigator.clipboard.writeText(url);toast('방 링크를 복사했습니다. 카톡에 붙여넣으세요.');}else{toast(`방 링크: ${url}`);}}catch(e){if(e.name!=='AbortError')toast(`주소창의 방 링크를 복사해 주세요: ${url}`);}};
+$('room-copy').onclick=async()=>{const code=$('room-code-display').textContent;try{await navigator.clipboard.writeText(code);toast(`방 코드 ${code}를 복사했습니다.`);}catch{toast(`친구에게 방 코드 ${code}를 알려주세요.`);}};
+$('share').onclick=async()=>{const url=location.href;try{if(navigator.share&&!navigator.webdriver){await navigator.share({title:'LAST OUTPOST · 좀비 협동 디펜스',text:`같이 방어선을 지켜줘! 최대 4인 협동 · 방 코드 ${session?.roomCode||''}`,url});toast('방 링크를 공유했습니다.');}else if(navigator.clipboard){await navigator.clipboard.writeText(`LAST OUTPOST · 방 코드 ${session?.roomCode||''}\n${url}`);toast('방 링크를 복사했습니다. 카톡에 붙여넣으세요.');}else{toast(`방 링크: ${url}`);}}catch(e){if(e.name!=='AbortError')toast(`주소창의 방 링크를 복사해 주세요: ${url}`);}};
 function frame(now){if(state)render(ctx,state,previous,Math.min(1,(now-received)/100),ui);requestAnimationFrame(frame);}requestAnimationFrame(frame);
 if(roomId){const saved=readSession(roomId);if(saved?.token)connect(saved);}

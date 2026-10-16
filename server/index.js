@@ -30,7 +30,7 @@ export function createServer({port=Number(process.env.PORT)||3000,host=process.e
   ws.on('message',raw=>{if(Date.now()-windowStart>1000){windowStart=Date.now();messages=0;}if(++messages>25){ws.close(1008,'Too many requests');return;}
    let m;try{m=JSON.parse(raw);}catch{send(ws,{type:'error',message:'요청 형식이 잘못되었습니다.'});return;}
    if(!m||typeof m!=='object'){send(ws,{type:'error',message:'잘못된 요청입니다.'});return;}
-   if(m.type==='join'&&!joined){const result=rooms.join(m);if(!result.ok){send(ws,{type:'error',message:result.error});return;}joined=result;ws.roomId=result.room.id;clearTimeout(joinDeadline);send(ws,{type:'joined',roomId:result.room.id,playerId:result.playerId,token:result.token});send(ws,{type:'state',state:snapshot(result.room.game)});}
+   if(m.type==='join'&&!joined){const result=rooms.join(m);if(!result.ok){send(ws,{type:'error',message:result.error});return;}joined=result;ws.roomId=result.room.id;clearTimeout(joinDeadline);send(ws,{type:'joined',roomId:result.room.id,roomCode:result.room.code,playerId:result.playerId,token:result.token});send(ws,{type:'state',state:snapshot(result.room.game)});}
    else if(m.type==='action'&&joined){const result=command(joined.room.game,joined.playerId,m.action);if(!result.ok)send(ws,{type:'error',message:result.error});}
    else send(ws,{type:'error',message:'먼저 방에 입장해 주세요.'});
   });
