@@ -1,5 +1,6 @@
 import {CATALOG,statsFor} from '../shared/catalog.js';
 import {pathPoint,nearestPath} from '../shared/maps.js';
+import {tickWeapons} from './player-weapons.js';
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 export {spawnEnemy,damageEnemy} from './enemies.js';
 import {spawnEnemy,damageEnemy,flushChildren} from './enemies.js';
@@ -46,11 +47,11 @@ function enemies(g,dt){
  g.enemies=g.enemies.filter(e=>e.hp>0);flushChildren(g);g.soldiers=g.soldiers.filter(s=>s.hp>0);
 }
 export function tick(g,dt){
- dt=Math.min(.1,Math.max(0,dt));if(!Number.isFinite(dt))return;g.time+=dt;g.effects=g.effects.filter(e=>g.time-e.born<1.3);
+ dt=Math.min(.1,Math.max(0,dt));if(!Number.isFinite(dt))return;g.time+=dt;g.nukeCooldown=Math.max(0,g.nukeCooldown-dt);g.effects=g.effects.filter(e=>g.time-e.born<1.3);
  if(g.phase==='lobby'||['over','victory'].includes(g.phase))return;
  if(g.phase==='prep'){g.timer=Math.max(0,g.timer-dt);if(g.timer>0)return;g.wave++;effect(g,{kind:'waveStart',value:g.wave});g.phase='wave';g.pending=Math.min(160,Math.round((8+(g.wave%50)*2+Math.max(0,Object.values(g.players).filter(p=>p.connected).length-1)*3)*DIFFICULTIES[g.difficulty].count));g.spawnTimer=0;if(g.wave%10===0)spawnEnemy(g,true);return;}
  g.spawnTimer-=dt;if(g.pending>0&&g.spawnTimer<=0&&g.enemies.length<200){spawnEnemy(g);g.pending--;g.spawnTimer=Math.max(.18,.9-g.wave*.008);}
- facilities(g,dt);soldiers(g,dt);enemies(g,dt);
+ facilities(g,dt);tickWeapons(g,dt);soldiers(g,dt);enemies(g,dt);
  if(g.baseHp<=0){finishRun(g,'defeat');return;}
  if(g.pending===0&&g.enemies.length===0&&g.pendingChildren.length===0)finishWave(g);
 }
