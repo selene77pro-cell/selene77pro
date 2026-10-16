@@ -5,13 +5,8 @@ export {spawnEnemy,damageEnemy} from './enemies.js';
 import {spawnEnemy,damageEnemy,flushChildren} from './enemies.js';
 import {effect} from './effects.js';
 import {DIFFICULTIES} from '../shared/progression.js';
-export function finishWave(g){
- if(g.phase!=='wave'||g.completedWave>=g.wave)return;
- g.completedWave=g.wave;for(const p of Object.values(g.players))p.money+=55+g.wave*5;
- for(const f of g.facilities)if(CATALOG[f.type].kind==='bank'&&g.players[f.owner])g.players[f.owner].money+=statsFor(f).income;
- g.phase='prep';g.timer=12;g.soldiers=[];
- if(g.wave%10===0){for(const f of g.facilities)if(g.players[f.owner])g.players[f.owner].money+=f.invested;g.facilities=[];g.mapIndex=(g.mapIndex+1)%5;g.timer=30;effect(g,{kind:'notice',text:'지역 이동 · 건설·강화비 전액 환급'});}
-}
+export {finishWave} from './progression.js';
+import {finishWave,finishRun} from './progression.js';
 function shoot(g,source,s,target,multiplier=1){
  const critical=(s.crit||0)>0&&Math.random()<s.crit,amount=s.damage*multiplier*(critical?2:1);
  source.angle=Math.atan2(target.y-source.y,target.x-source.x);
@@ -53,10 +48,10 @@ function enemies(g,dt){
 export function tick(g,dt){
  dt=Math.min(.1,Math.max(0,dt));if(!Number.isFinite(dt))return;g.time+=dt;g.effects=g.effects.filter(e=>g.time-e.born<1.3);
  if(g.phase==='lobby'||['over','victory'].includes(g.phase))return;
- if(g.phase==='prep'){g.timer=Math.max(0,g.timer-dt);if(g.timer>0)return;g.wave++;g.phase='wave';g.pending=Math.min(160,Math.round((8+(g.wave%50)*2+Math.max(0,Object.values(g.players).filter(p=>p.connected).length-1)*3)*DIFFICULTIES[g.difficulty].count));g.spawnTimer=0;if(g.wave%10===0)spawnEnemy(g,true);return;}
+ if(g.phase==='prep'){g.timer=Math.max(0,g.timer-dt);if(g.timer>0)return;g.wave++;effect(g,{kind:'waveStart',value:g.wave});g.phase='wave';g.pending=Math.min(160,Math.round((8+(g.wave%50)*2+Math.max(0,Object.values(g.players).filter(p=>p.connected).length-1)*3)*DIFFICULTIES[g.difficulty].count));g.spawnTimer=0;if(g.wave%10===0)spawnEnemy(g,true);return;}
  g.spawnTimer-=dt;if(g.pending>0&&g.spawnTimer<=0&&g.enemies.length<200){spawnEnemy(g);g.pending--;g.spawnTimer=Math.max(.18,.9-g.wave*.008);}
  facilities(g,dt);soldiers(g,dt);enemies(g,dt);
- if(g.baseHp<=0){g.phase='over';return;}
+ if(g.baseHp<=0){finishRun(g,'defeat');return;}
  if(g.pending===0&&g.enemies.length===0&&g.pendingChildren.length===0)finishWave(g);
 }
 
