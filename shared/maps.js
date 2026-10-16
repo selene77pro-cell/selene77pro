@@ -1,0 +1,12 @@
+export const WIDTH=1200,HEIGHT=720;
+export const MAPS=[
+ {name:'폐허 도시',subtitle:'THE FALLEN CITY',color:'#19282b',accent:'#b89c70',path:[[0,310],[260,310],[260,510],[600,510],[600,220],[920,220],[920,400],[1200,400]],blocked:[[480,100,150,80],[760,590,160,70]]},
+ {name:'폐쇄 공장',subtitle:'IRONWORKS',color:'#2a2425',accent:'#d19463',path:[[0,190],[360,190],[360,530],[780,530],[780,270],[1200,270]],blocked:[[70,500,140,110],[870,90,170,70]]},
+ {name:'군사기지',subtitle:'SECTOR 03',color:'#242d25',accent:'#a5b87b',path:[[0,370],[200,370],[200,170],[570,170],[570,540],[990,540],[990,350],[1200,350]],blocked:[[720,100,150,100],[340,590,160,70]]},
+ {name:'검역 항만',subtitle:'DEADWATER DOCKS',color:'#192b34',accent:'#82a8b7',path:[[0,540],[300,540],[300,230],[720,230],[720,470],[1000,470],[1000,160],[1200,160]],blocked:[[60,90,140,130],[820,590,210,70]]},
+ {name:'오염 연구소',subtitle:'GROUND ZERO',color:'#272438',accent:'#b6a0d3',path:[[0,250],[250,250],[250,500],[520,500],[520,170],[850,170],[850,480],[1200,480]],blocked:[[60,570,100,70],[1000,70,130,140]]},
+];
+export function segmentDistance(x,y,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(x-a[0]-t*dx,y-a[1]-t*dy);}
+export function canBuild(mapIndex,x,y){if(!Number.isFinite(x)||!Number.isFinite(y)||x<35||y<35||x>WIDTH-35||y>HEIGHT-35)return false;const m=MAPS[mapIndex%MAPS.length];if(m.path.slice(1).some((b,i)=>segmentDistance(x,y,m.path[i],b)<48))return false;return !m.blocked.some(([bx,by,w,h])=>x>bx-24&&x<bx+w+24&&y>by-24&&y<by+h+24);}
+export function pathPoint(mapIndex,distance){const path=MAPS[mapIndex%5].path;for(let i=1;i<path.length;i++){const a=path[i-1],b=path[i],len=Math.hypot(b[0]-a[0],b[1]-a[1]);if(distance<=len)return {x:a[0]+(b[0]-a[0])*distance/len,y:a[1]+(b[1]-a[1])*distance/len,angle:Math.atan2(b[1]-a[1],b[0]-a[0]),end:false};distance-=len;}const p=path.at(-1);return {x:p[0],y:p[1],angle:0,end:true};}
+export function nearestPath(mapIndex,x,y){let best={distance:Infinity,progress:0},progress=0;const path=MAPS[mapIndex%5].path;for(let i=1;i<path.length;i++){const a=path[i-1],b=path[i],dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy),t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(len*len))),distance=Math.hypot(x-a[0]-t*dx,y-a[1]-t*dy);if(distance<best.distance)best={distance,progress:progress+t*len};progress+=len;}return best.progress;}

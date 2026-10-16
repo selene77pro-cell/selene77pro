@@ -1,0 +1,1 @@
+{"name":"last-outpost","version":"1.0.0","private":true,"type":"module","scripts":{"start":"node server/index.js","test":"node --test --test-isolation=none tests/*.test.js","test:browser":"playwright test"},"engines":{"node":">=24"}}
