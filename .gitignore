@@ -6,3 +6,4 @@ playwright-report/
 .env
 dist/
 data/
+solo-test-results/

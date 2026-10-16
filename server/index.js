@@ -32,11 +32,12 @@ export function createServer({dataDirectory=null,profileStore,roomManager,port=N
   ws.on('message',raw=>{if(Date.now()-windowStart>1000){windowStart=Date.now();messages=0;}if(++messages>25){ws.close(1008,'Too many requests');return;}
    let m;try{m=JSON.parse(raw);}catch{send(ws,{type:'error',message:'요청 형식이 잘못되었습니다.'});return;}
    if(!m||typeof m!=='object'){send(ws,{type:'error',message:'잘못된 요청입니다.'});return;}
-   if(m.type==='hello'&&!joined){try{auth=profiles.open(m.profileToken);ws.profileId=auth.profile.id;send(ws,{type:'profile',...auth});}catch(e){send(ws,{type:'error',scope:'profile',message:e.message});}return;}
+   if(m.type==='hello'&&!joined){try{auth=profiles.open(auth?.token||m.profileToken);ws.profileId=auth.profile.id;send(ws,{type:'profile',...auth});}catch(e){send(ws,{type:'error',scope:'profile',message:e.message});}return;}
+   if(m.type==='leave'&&joined){rooms.leave(joined.room.id,joined.playerId);joined=null;ws.roomId=null;send(ws,{type:'left'});send(ws,{type:'profile',profile:profiles.open(auth.token).profile});return;}
    if(['purchase','equip'].includes(m.type)){
     if(!auth){send(ws,{type:'error',message:'프로필 연결을 먼저 확인해 주세요.'});return;}
     if(m.type==='equip'&&[...rooms.rooms.values()].some(r=>!r.game.outcome&&Object.values(r.game.players).some(p=>p.profileId===auth.profile.id))){send(ws,{type:'error',message:'장착 변경은 전투 종료 후 다음 게임에 적용할 수 있습니다.'});return;}
-    const result=m.type==='purchase'?profiles.purchase(auth.token,m.tower):profiles.equip(auth.token,m.ids);if(result.ok){auth.profile=result.profile;send(ws,{type:'profile',profile:result.profile});}else send(ws,{type:'error',message:result.error});return;
+    const result=m.type==='purchase'?profiles.purchase(auth.token,m.tower):profiles.equip(auth.token,m.ids);if(result.ok){auth.profile=result.profile;for(const peer of wss.clients)if(peer.profileId===auth.profile.id)send(peer,{type:'profile',profile:result.profile});}else send(ws,{type:'error',message:result.error});return;
    }
    if(m.type==='join'&&!joined){
     try{if(!auth){const old=[...rooms.rooms.values()].find(r=>(r.id===m.roomId||r.code===m.roomId)&&r.sessions.has(m.token));const oldToken=old?.sessions.get(m.token)?.profileToken;auth=profiles.open(oldToken);ws.profileId=auth.profile.id;send(ws,{type:'profile',...auth});}else auth=profiles.open(auth.token);}catch(e){send(ws,{type:'error',scope:'profile',message:e.message});return;}

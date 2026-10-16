@@ -5,7 +5,7 @@ export function spawnEnemy(g,boss=false,overrides={}){
  const count=Math.max(1,Object.values(g.players).filter(p=>p.connected).length),d=DIFFICULTIES[g.difficulty||0];
  const available=['walker','runner',...(g.mapIndex>=1?['giant']:[]),...(g.mapIndex>=2?['armored']:[]),...(g.mapIndex>=3?['splitter']:[]),...(g.mapIndex>=4?['regen']:[])];
  const variant=overrides.variant||(boss?'boss':available[g.nextId%available.length]),v=ENEMY_TYPES[variant]||ENEMY_TYPES.walker;
- const scale=(1+(g.wave%50)*.18)*(1+(count-1)*.4)*d.hp,maxHp=overrides.maxHp||Math.round(38*scale*(boss?18:v.hp));
+ const scale=(1+(Math.max(0,g.wave-1)%50+1)*.18)*(1+(count-1)*.4)*d.hp,maxHp=overrides.maxHp||Math.round(38*scale*(boss?18:v.hp));
  const progress=overrides.progress||0,element=overrides.element??((g.difficulty||0)>0&&!boss?['fire','ice','electric',null][g.nextId%4]:null);
  const e={id:String(g.nextId++),...pathPoint(g.mapIndex,progress),progress,hp:maxHp,maxHp,speed:boss?25:42*v.speed,size:boss?2.2:v.size,boss,variant,element,ability:boss?abilities[g.mapIndex]:null,damage:(boss?20:variant==='giant'?3:1)*d.attack,reward:boss?200+g.wave*5:12+Math.floor(g.wave/3),attackCooldown:0,skillCooldown:7,contributions:{},slowUntil:0,burnUntil:0,...overrides};
  g.enemies.push(e);return e;

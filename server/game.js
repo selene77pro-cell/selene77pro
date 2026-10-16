@@ -1,8 +1,9 @@
+import {randomId} from '../shared/ids.js';
 import {CATALOG,BASE_FACILITIES,statsFor,upgradeCost,unlocked} from '../shared/catalog.js';
 import {weaponCommand} from './player-weapons.js';
 import {effect} from './effects.js';
 import {canBuild} from '../shared/maps.js';
-export function createGame(){return {runId:crypto.randomUUID(),difficulty:0,mapsCleared:0,speed:1,hostId:null,pendingChildren:[],rewardEvents:[],nukeCooldown:0,outcome:null,players:{},facilities:[],soldiers:[],enemies:[],effects:[],wave:0,completedWave:0,mapIndex:0,phase:'lobby',baseHp:100,timer:0,nextId:1,time:0,kills:0,pending:0,spawnTimer:0,bossSpawned:false};}
+export function createGame(){return {runId:randomId(),difficulty:0,mapsCleared:0,speed:1,hostId:null,pendingChildren:[],rewardEvents:[],nukeCooldown:0,outcome:null,players:{},facilities:[],soldiers:[],enemies:[],effects:[],wave:0,completedWave:0,mapIndex:0,phase:'lobby',baseHp:100,timer:0,nextId:1,time:0,kills:0,pending:0,spawnTimer:0,bossSpawned:false};}
 export function addPlayer(g,id,name,profile){if(Object.keys(g.players).length>=4)return false;g.players[id]={id,name,money:650+Math.max(g.completedWave,g.wave-1)*35,connected:true,kills:0,profileId:profile?.id||id,loadout:[...(profile?.equipped||BASE_FACILITIES)],weapons:[],weapon:null,firing:false,weaponCooldown:0};if(!g.hostId)g.hostId=id;return g.players[id];}
 const fail=error=>({ok:false,error});
 export function command(g,id,a){
