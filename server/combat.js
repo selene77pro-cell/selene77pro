@@ -1,5 +1,5 @@
 import {CATALOG,statsFor} from '../shared/catalog.js';
-import {pathPoint,nearestPath,nearestRoad} from '../shared/maps.js';
+import {pathPoint,nearestPath} from '../shared/maps.js';
 import {tickWeapons} from './player-weapons.js';
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 export {spawnEnemy,damageEnemy} from './enemies.js';
@@ -11,8 +11,9 @@ import {finishWave,finishRun} from './progression.js';
 function shoot(g,source,s,target,multiplier=1){
  const critical=(s.crit||0)>0&&Math.random()<s.crit,amount=s.damage*multiplier*(1+((g.players[source.owner]?.level||1)-1)*.04)*(critical?2:1);
  source.angle=Math.atan2(target.y-source.y,target.x-source.x);
- effect(g,{kind:s.burn?'flame':s.chain?'chain':s.splash?'blast':s.slow?'ice':s.pierce?'rail':'shot',x:source.x,y:source.y,tx:target.x,ty:target.y,color:s.color});
+ effect(g,{kind:s.burn?'flame':s.chain?'chain':s.splash?'blast':s.slow?'ice':s.pierce?'rail':'shot',x:source.x,y:source.y,tx:s.linePierce?source.x+Math.cos(source.angle)*s.range:target.x,ty:s.linePierce?source.y+Math.sin(source.angle)*s.range:target.y,color:s.color});
  let targets=[target];if(s.splash)targets=g.enemies.filter(e=>e.hp>0&&distance(e,target)<s.splash);
+ if(s.linePierce){const dx=Math.cos(source.angle),dy=Math.sin(source.angle);targets=g.enemies.filter(e=>{const x=e.x-source.x,y=e.y-source.y,t=x*dx+y*dy;return e.hp>0&&t>=0&&t<=s.range&&Math.abs(x*dy-y*dx)<=24;});}
  if(s.chain)targets=[target,...g.enemies.filter(e=>e!==target&&e.hp>0&&distance(e,target)<150).slice(0,s.chain-1)];
  for(const e of targets){if(s.chain&&e!==target)effect(g,{kind:'chain',x:target.x,y:target.y,tx:e.x,ty:e.y,color:s.color});damageEnemy(g,e,amount,source.owner,{critical,pierce:s.pierce,element:s.burn?'fire':s.chain?'electric':undefined});if(s.slow){e.slowUntil=g.time+1.5;e.slowFactor=e.element==='ice'?1-(1-s.slow)/2:s.slow;}if(s.burn){e.burnUntil=g.time+2;e.burn=s.burn*source.level;e.burnOwner=source.owner;}}
 }
@@ -23,7 +24,7 @@ function facilities(g,dt){
   if(f.cooldown>0)continue;
   if(s.kind==='spawn'){
    if(g.soldiers.filter(v=>v.facility===f.id).length>=4)continue;
-   const road=nearestRoad(g.mapIndex,f.x,f.y),base=pathPoint(g.mapIndex,1e9,road.route),start=nearestPath(g.mapIndex,base.x,base.y,road.route);g.soldiers.push({route:road.route,onRoad:true,id:String(g.nextId++),facility:f.id,owner:f.owner,type:f.type,level:f.level,x:base.x,y:base.y,progress:start,hp:s.hp,maxHp:s.hp,damage:s.damage,range:s.range,interval:.85,cooldown:0,angle:0});f.cooldown=s.interval;effect(g,{kind:'spawn',x:base.x,y:base.y,color:s.color});
+   const road={route:(g.nextTroopRoute||0)%2};g.nextTroopRoute=(g.nextTroopRoute||0)+1;const base=pathPoint(g.mapIndex,1e9,road.route),start=nearestPath(g.mapIndex,base.x,base.y,road.route);g.soldiers.push({route:road.route,onRoad:true,id:String(g.nextId++),facility:f.id,owner:f.owner,type:f.type,level:f.level,x:base.x,y:base.y,progress:start,hp:s.hp,maxHp:s.hp,damage:s.damage,range:s.range,interval:.85,cooldown:0,angle:0});f.cooldown=s.interval;effect(g,{kind:'spawn',x:base.x,y:base.y,color:s.color});
   }else if(s.kind==='attack'){
    const target=g.enemies.filter(e=>e.hp>0&&distance(f,e)<s.range).sort((a,b)=>b.progress-a.progress)[0];if(!target)continue;
    const buff=Math.max(1,...supports.filter(v=>CATALOG[v.type].buff&&distance(v,f)<statsFor(v).range).map(v=>statsFor(v).buff));shoot(g,f,s,target,buff);f.cooldown=s.interval;

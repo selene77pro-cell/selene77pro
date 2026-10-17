@@ -6,9 +6,11 @@ export function spawnEnemy(g,boss=false,overrides={}){
  const available=['walker','runner',...(g.mapIndex>=1?['giant']:[]),...(g.mapIndex>=2?['armored']:[]),...(g.mapIndex>=3?['splitter']:[]),...(g.mapIndex>=4?['regen']:[])];
  const variant=overrides.variant||(boss?'boss':available[g.nextId%available.length]),v=ENEMY_TYPES[variant]||ENEMY_TYPES.walker;
  const scale=(1+g.wave*.22)*Math.pow(1.045,g.wave)*(1+(count-1)*.4)*d.hp,maxHp=overrides.maxHp||Math.round(38*scale*(boss?18:v.hp));
+ const bossWave=g.wave>0&&g.wave%10===0;
  const route=overrides.route??(boss?0:g.nextId%(g.wave<4?2:3)),medium=overrides.medium||(boss?'ground':g.wave>=4&&route===2?'sea':g.wave>=3&&g.nextId%5===0?'air':'ground');
  const progress=overrides.progress||0,element=overrides.element??(g.wave>=10&&!boss?['fire','ice','electric',null][g.nextId%4]:null);
  const e={id:String(g.nextId++),...pathPoint(g.mapIndex,progress,route,medium),route,medium,level:Math.max(1,g.wave),ranged:!boss&&g.wave>=3&&g.nextId%7===0,progress,hp:maxHp,maxHp,speed:boss?25:42*v.speed,size:boss?2.2:v.size,boss,variant,element,ability:boss?({10:'돌진',20:'증원',30:'오염'}[g.wave]||'돌진'):null,damage:(boss?20:variant==='giant'?3:1)*d.attack,reward:boss?200+g.wave*5:12+Math.floor(g.wave/3),attackCooldown:0,skillCooldown:7,contributions:{},slowUntil:0,burnUntil:0,...overrides};
+ if(bossWave){e.route=boss?0:(g.nextId-1)%2;e.medium='ground';Object.assign(e,pathPoint(g.mapIndex,e.progress,e.route));}
  g.enemies.push(e);return e;
 }
 function pay(g,e,owner){const entries=Object.entries(e.contributions),sum=entries.reduce((a,[,v])=>a+v,0),budget=Math.max(0,Math.floor(e.reward));if(sum>0){const shares=entries.map(([id,v])=>({id,n:Math.floor(budget*v/sum),remainder:budget*v/sum%1})).sort((a,b)=>b.remainder-a.remainder);let left=budget-shares.reduce((s,v)=>s+v.n,0);for(const s of shares){if(left>0){s.n++;left--;}if(g.players[s.id])g.players[s.id].money+=s.n;}}if(g.players[owner])g.players[owner].kills++;}
