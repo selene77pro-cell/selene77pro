@@ -23,6 +23,7 @@ export const CATALOG=Object.freeze({
  mech:entry('워메크 기지','spawn',0,1600,'#8ee4d1',{damage:220,hp:1200,interval:12,range:190,splash:65,unit:'워메크'}),
  tank:entry('전차 기지','spawn',40,1100,'#b5c883',{damage:110,hp:550,interval:13,range:160,splash:60,unit:'전차'}),
 });
+for(const c of Object.values(CATALOG))c.unlockWave=Math.min(25,c.unlockWave);
 export const BASE_FACILITIES=Object.keys(CATALOG).filter(id=>!['shield','gravity','orbital','mech'].includes(id));
 export const LEVELS=['기본형','강화형','정예형','최종형'];
 export function upgradeCost(f){return Math.floor(CATALOG[f.type].cost*(.8+f.level*.65));}

@@ -49,6 +49,7 @@ function connect(info=null){
 $('nickname').value=storage.getItem('outpost-name')||'';
 if(roomId)$('join-note').textContent='초대받은 방입니다. 참가하려면 작전 시작, 새 게임은 혼자 새 방 시작을 누르세요.';
 $('join-form').onsubmit=e=>{e.preventDefault();const nickname=$('nickname').value.trim();if(!nickname)return;void enableAudio();const target=$('room-code').value.trim()||new URL(location.href).searchParams.get('room')||undefined,canonical=target?(storage.getItem(`outpost-code:${target}`)||target):null,saved=canonical?readSession(canonical):null;connect({nickname,roomId:saved?.roomId||target,token:saved?.token||undefined});};
+$('weapon-upgrade').onclick=()=>send({type:'upgradeWeapon'});
 $('new-solo').onclick=()=>{const nickname=$('nickname').value.trim();if(!nickname){$('join-error').textContent='닉네임을 먼저 입력해 주세요.';$('nickname').focus();return;}void enableAudio();const url=new URL(location.href);url.searchParams.delete('room');history.replaceState(null,'',url);$('room-code').value='';connect({nickname,autoStart:true});};
 $('reset-profile').onclick=()=>{storage.removeItem('outpost-profile-token');connect();};
 $('return-lobby').onclick=()=>{raw({type:'leave'});showLobby();};

@@ -22,4 +22,5 @@ html=html.replace('<link rel="stylesheet" href="/styles.css">',`<style>${css}</s
  .replace('방어 시스템 온라인','1인 오프라인 체험판');
 await mkdir(resolve(root,'dist'),{recursive:true});
 await writeFile(resolve(root,'dist/last-outpost-solo.html'),html);
+await writeFile(resolve(root,'play-solo.html'),html);
 console.log('Built dist/last-outpost-solo.html (self-contained offline solo game)');

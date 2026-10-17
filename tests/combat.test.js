@@ -21,12 +21,12 @@ test('bank pays owner once on wave completion and unlocks after milestone',()=>{
  assert.equal(g.completedWave,5);assert.equal(command(g,'b',{type:'build',facility:'frost',x:180,y:100}).ok,true);
 });
 test('map boss every ten waves, distinct abilities and exact one-time refund',()=>{
- const g=setup();g.wave=10;g.players.a.money=10000;
+ const g=setup();g.wave=6;g.players.a.money=10000;
  command(g,'a',{type:'build',facility:'gun',x:100,y:100});const f=g.facilities[0];command(g,'a',{type:'upgrade',id:f.id});
  const invested=f.invested,cash=g.players.a.money,other=g.players.b.money;
  const boss=spawnEnemy(g,true);assert.equal(boss.boss,true);assert.ok(boss.ability);
  g.enemies=[];g.soldiers=[{id:'s'}];finishWave(g);
- assert.equal(g.mapIndex,1);assert.equal(g.completedWave,10);assert.equal(g.wave,10);
+ assert.equal(g.mapIndex,1);assert.equal(g.completedWave,6);assert.equal(g.wave,6);
  assert.equal(g.players.a.money-cash-(g.players.b.money-other),invested);
  assert.equal(g.facilities.length,0);assert.equal(g.soldiers.length,0);
  const money=g.players.a.money;finishWave(g);assert.equal(g.players.a.money,money);

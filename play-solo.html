@@ -1,0 +1,1840 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111715"><meta name="description" content="최대 4인 협동 좀비 디펜스. 시설을 건설하고 끝없이 몰려오는 감염자를 막아라."><title>LAST OUTPOST · 최후의 방어선</title><style>
+:root{color-scheme:dark;--bg:#101512;--panel:#171d19;--line:#30382e;--muted:#8d998a;--text:#e8eadf;--orange:#eaba78;--green:#a5bf8e}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,'Noto Sans KR',sans-serif;font-size:14px}button,input,select{font:inherit}button,a,input,select{-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button{cursor:pointer}a{color:inherit;text-decoration:none}button{border:1px solid var(--line);color:var(--text);background:#222a22;border-radius:5px;padding:10px 14px;transition:background .15s,border-color .15s}button:hover{background:#303b2e;border-color:#65735d}button:disabled{cursor:not-allowed;opacity:.43}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--orange);outline-offset:3px}[hidden]{display:none!important}.primary{background:var(--orange);border:1px solid var(--orange);color:#1c2119;font-weight:800;display:inline-flex;align-items:center;justify-content:space-between;gap:24px;padding:14px 20px;border-radius:4px}.primary:hover{background:#ffd19b;border-color:#ffd19b}.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:2px;font-size:17px;white-space:nowrap}.brand small{display:block;font:9px/1.8 monospace;letter-spacing:2px;color:var(--muted)}.brand-icon{font:bold 30px/1 monospace;letter-spacing:-8px;width:39px;height:40px;display:flex;align-items:center;color:var(--orange);border:1px solid #7b6b4b;padding:3px}.brand-icon span{font-size:22px;align-self:flex-start}.eyebrow{color:var(--muted);font:10px/1.5 monospace;letter-spacing:2px}.online{display:inline-flex;align-items:center;gap:8px;font-size:11px;color:#b7c6ae}.online i,.art-label i,.field-label i{width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;box-shadow:0 0 9px #a5bf8e50}.muted{color:var(--muted);font-size:11px}.tiny{font-size:10px;color:var(--muted);line-height:1.6}.lobby{min-height:100svh;max-width:1600px;margin:auto;padding:0 5%;display:flex;flex-direction:column;background:radial-gradient(ellipse at 75% 50%,#26352865,transparent 55%)}.lobby-nav{height:104px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.lobby-content{display:grid;grid-template-columns:1fr 1fr;align-items:center;flex:1;gap:40px;padding:50px 0}.hero-copy{max-width:580px}.hero-copy>.eyebrow{color:var(--orange);display:flex;gap:50px}.hero-copy h1{font-size:clamp(38px,4.7vw,76px);line-height:1.18;letter-spacing:-3px;margin:24px 0;font-weight:900}.hero-copy h1 em{font-style:normal;color:var(--orange)}.hero-copy>p{color:#a6b09f;line-height:1.9;font-size:15px}.hero-tags{display:flex;gap:8px;margin:28px 0 36px}.hero-tags span{padding:8px 10px;border:1px solid var(--line);font-size:11px;color:#b8c5ae;border-radius:3px}form label{display:block;font-size:12px;margin-bottom:10px}.join-row{display:flex;gap:10px}input{min-width:0;flex:1;border:1px solid #49523f;border-radius:4px;background:#1b221c;color:var(--text);padding:15px}#join-error{color:#f4a194;font-size:12px}.hero-art{position:relative;border:1px solid #3b4838;background:#15201975;aspect-ratio:1.05;max-height:580px;overflow:hidden;clip-path:polygon(0 0,94% 0,100% 6%,100% 100%,6% 100%,0 94%)}.art-grid{position:absolute;inset:0;background-image:linear-gradient(#52634518 1px,transparent 1px),linear-gradient(90deg,#52634518 1px,transparent 1px);background-size:28px 28px}.hero-art svg{position:relative;width:100%;height:100%}.art-coordinates{position:absolute;right:25px;top:25px;color:#819079;font:10px/1.5 monospace}.art-label{position:absolute;bottom:0;padding:18px 25px;background:#0d1511bb;width:100%;font:9px monospace;color:#adbc9e;letter-spacing:1px;display:flex;gap:9px}.art-label span{margin-left:auto;letter-spacing:0}.lobby-footer{display:flex;justify-content:space-between;padding:25px 0;border-top:1px solid var(--line);color:#839079;font:10px monospace;letter-spacing:1px}.game-header{height:78px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--line);background:#141a16}.operation{display:flex;gap:16px;align-items:center;border-left:1px solid var(--line);padding-left:30px}.operation strong{font-size:15px}.header-actions{display:flex;gap:20px;align-items:center}.outline{background:transparent;border-color:#786b50;color:var(--orange)}.exit{font-size:11px;color:var(--muted)}#game{height:100svh;display:flex;flex-direction:column}.game-layout{display:flex;flex:1;min-height:0;padding:20px 24px;gap:20px}.battle-column{display:flex;flex-direction:column;flex:1;min-width:0;min-height:0}.battle-hud{display:flex;align-items:center;justify-content:space-between;height:69px;flex-shrink:0;border:1px solid var(--line);border-bottom:0;padding:10px 20px;background:var(--panel)}.wave-stat{display:flex;align-items:center;gap:12px}.wave-stat strong{font:32px monospace}.tag{border:1px solid #596248;background:#293322;padding:4px 8px;border-radius:3px;font-size:11px;color:#bdcfa7}.base-stat{width:28%;min-width:110px}.base-stat>span{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:7px}.base-stat b{color:var(--green)}.meter{height:5px;background:#30392d;overflow:hidden}.meter i{display:block;height:100%;background:var(--green);width:100%;transition:width .2s}.money-stat{text-align:right}.money-stat strong{display:block;color:var(--orange);font:24px monospace}.battlefield{position:relative;flex:1;min-height:0;background:#19231e;border:1px solid #444c3d;overflow:hidden;display:flex;align-items:center;justify-content:center}canvas{display:block;width:100%;height:100%;object-fit:contain;touch-action:none;cursor:crosshair}.field-label{position:absolute;top:14px;left:16px;font:9px monospace;letter-spacing:2px;color:#b2c5a6;pointer-events:none;display:flex;gap:8px;align-items:center}.field-label span{color:#8b9c84;padding-left:9px;border-left:1px solid #728069}.field-bottom{position:absolute;bottom:0;left:0;right:0;padding:8px 14px;background:#101a14b8;display:flex;justify-content:space-between;gap:8px;color:#a5b29a;font-size:10px;pointer-events:none}.wave-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#111b15ed;border:1px solid #667255;padding:24px 36px;text-align:center;min-width:270px;box-shadow:0 20px 60px #0008;border-radius:6px}.wave-banner strong{display:block;font-size:27px;margin:9px}.wave-banner p{font-size:11px;color:var(--muted)}.wave-banner .primary{margin-top:8px}.wave-banner.prep{top:25px;transform:translateX(-50%);padding:8px 18px;min-width:210px;pointer-events:none}.wave-banner.prep .eyebrow,.wave-banner.prep p{display:none}.wave-banner.prep strong{font-size:14px;margin:0}#boss-bar{position:absolute;top:45px;left:20%;right:20%;background:#151b18df;border:1px solid #854b42;padding:10px 14px;pointer-events:none}#boss-bar>div:first-child{display:flex;justify-content:space-between;font-size:11px;margin-bottom:7px}#boss-name{color:#f4aa8f}#boss-health{color:#cfb5a8;font:10px monospace}.boss-meter i{background:#d58167}.game-over{position:absolute;inset:0;background:#101613ef;display:flex;flex-direction:column;align-items:center;justify-content:center}.game-over h2{font-size:36px;color:#ecb38f}.game-over p{margin-bottom:28px;color:var(--muted)}.arsenal{margin-top:16px;flex-shrink:0}.arsenal-heading{display:flex;align-items:center;gap:18px;margin-bottom:10px}.arsenal-heading>strong{font-size:12px}.arsenal-heading>strong span{font:9px monospace;color:var(--muted);margin-left:8px;letter-spacing:1px}.arsenal-heading>.muted{margin-left:auto}.filters{display:flex;gap:4px}.filters button{border:0;padding:5px 9px;background:transparent;color:var(--muted);font-size:10px}.filters .active{background:#303829;color:#dfc08f}.build-list{display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:#5c654d transparent;padding-bottom:8px}.build-card{flex:0 0 112px;position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:10px 12px;height:109px;background:var(--panel);border:1px solid var(--line);border-radius:5px}.build-card.selected{background:#2b3022;border-color:var(--orange)}.build-card .facility-icon{height:30px;width:100%;text-align:left}.facility-icon svg{height:30px;width:40px}.build-card strong{font-size:11px;white-space:nowrap}.build-card .price{font:11px monospace;color:var(--orange)}.build-card .unlock{position:absolute;top:8px;right:7px;font:8px monospace;color:#adba9c}.sidebar{width:250px;display:flex;flex-direction:column;gap:16px;flex-shrink:0}.team-section,.detail,.intel{border:1px solid var(--line);background:var(--panel);border-radius:4px;padding:17px}.section-heading{display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:14px}.section-heading>span:last-child{color:var(--muted);font:10px monospace}.player{display:flex;align-items:center;gap:10px;margin:12px 0;font-size:11px}.player .avatar{border:1px solid #55614d;color:#b4c6a4;background:#273222;width:28px;height:28px;display:grid;place-items:center;font:11px monospace}.player .player-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.player small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.player.offline{opacity:.45}.player .you{font:8px monospace;color:var(--orange)}.detail{flex:1;min-height:180px;overflow-y:auto}.empty-detail{display:flex;flex-direction:column;justify-content:center;height:100%;align-items:center;text-align:center}.empty-detail>span{font-size:38px;color:#7a896d}.empty-detail h3{font-size:12px}.empty-detail p{font-size:10px;color:var(--muted);line-height:1.9}.detail h3{font-size:16px;margin:8px 0}.detail .desc{font-size:11px;color:#9ca992;line-height:1.7}.detail .detail-icon{height:50px}.detail-icon svg{width:60px;height:45px}.detail .level{color:var(--orange);font:10px monospace;letter-spacing:1px}.detail .stat-row{display:flex;justify-content:space-between;font-size:11px;padding:8px 0;border-bottom:1px solid #2b3428}.stat-row span{color:var(--muted)}.detail .primary{width:100%;padding:12px;margin-top:14px;font-size:11px;gap:5px}.sell{display:block;background:none;border:0;color:var(--muted);font-size:10px;width:100%;margin-top:4px}.intel p{font-size:11px;color:var(--muted);line-height:1.8}.intel label{display:flex;align-items:center;justify-content:space-between;font-size:10px;padding-top:9px;border-top:1px solid var(--line)}select{background:#232d21;color:#b6c5aa;border:1px solid var(--line);padding:5px;font-size:10px;border-radius:3px}#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:13px 22px;z-index:20;background:#293723;border:1px solid #7e9067;box-shadow:0 8px 30px #0007;color:#e6eddb;max-width:90vw;font-size:12px;border-radius:4px}#rotate{position:fixed;inset:0;z-index:30;background:#111a14f8;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:25px;text-align:center}#rotate p{font-size:12px;color:var(--muted)}
+@media(min-width:1600px){.game-layout{max-width:1900px;width:100%;margin:auto}.sidebar{width:280px}}
+@media(max-width:1100px){.operation .eyebrow{display:none}.sidebar{width:210px}.game-layout{padding:12px;gap:12px}.game-header{padding:0 16px;height:64px}.header-actions{gap:10px}.team-section,.detail,.intel{padding:12px}.intel .tiny{display:none}.build-card{flex-basis:102px}.hero-copy>p{font-size:13px}.hero-tags{gap:5px}.hero-tags span{font-size:9px}.join-row .primary{padding:12px}.lobby{padding:0 4%}}
+@media(max-height:600px) and (orientation:landscape){body{font-size:12px}.game-header{height:44px;padding:0 10px;flex-shrink:0}.brand{font-size:12px;gap:8px}.brand small{font-size:7px;letter-spacing:1px}.brand-icon{width:29px;height:29px;font-size:23px}.brand-icon span{font-size:17px}.operation{padding-left:15px}.operation strong{font-size:11px}.header-actions .online{font-size:9px}.header-actions button{font-size:10px;padding:6px 8px}.exit{font-size:9px}.game-layout{padding:6px;gap:7px}.sidebar{width:185px;gap:6px}.team-section{padding:8px}.section-heading{font-size:10px;margin-bottom:5px}.player{margin:4px 0;gap:7px;font-size:10px}.player .avatar{width:19px;height:19px;font-size:9px}.player small{display:none}.intel{padding:8px}.intel p,.intel .section-heading{display:none}.intel label{border:0;padding:0}.battle-hud{height:43px;padding:5px 10px}.wave-stat{gap:7px}.wave-stat strong{font-size:23px}.eyebrow{font-size:8px;letter-spacing:1px}.money-stat strong{font-size:18px}.base-stat>span{font-size:8px;margin-bottom:4px}.tag{font-size:9px;padding:3px 5px}.arsenal{margin-top:6px}.arsenal-heading{gap:8px;margin-bottom:4px}.arsenal-heading>strong{font-size:10px}.arsenal-heading>strong span,.arsenal-heading>.muted{display:none}.filters button{padding:3px 6px;font-size:9px}.build-list{gap:5px;padding-bottom:4px}.build-card{flex-basis:85px;height:77px;padding:6px 7px;gap:2px}.build-card .facility-icon{height:23px}.facility-icon svg{height:22px;width:31px}.build-card strong{font-size:10px}.build-card .price{font-size:10px}.build-card .unlock{font-size:7px;top:5px;right:5px}.detail{padding:9px;min-height:70px}.detail .detail-icon,.empty-detail>span{display:none}.detail h3{font-size:12px;margin:4px 0}.detail .level{font-size:8px}.detail .desc{font-size:9px;margin:5px 0}.detail .stat-row{font-size:9px;padding:4px 0}.detail .primary{padding:8px;font-size:10px;margin-top:7px}.sell{font-size:9px;padding:5px}.empty-detail h3{font-size:10px}.empty-detail p{font-size:9px}.wave-banner{padding:12px 20px;min-width:220px}.wave-banner strong{font-size:18px;margin:5px}.wave-banner .primary{padding:8px 14px;font-size:11px;margin:0}.wave-banner p{font-size:9px;margin:5px 0 9px}.wave-banner.prep{top:8px;padding:5px 10px;min-width:170px}.wave-banner.prep strong{font-size:11px}.field-label{top:7px;left:8px;font-size:7px}.field-bottom{padding:4px 7px;font-size:8px}#boss-bar{top:25px;padding:5px 8px}#boss-bar>div:first-child{font-size:9px;margin-bottom:4px}.lobby-nav{height:60px}.lobby-content{padding:22px 0;gap:20px}.hero-copy h1{font-size:34px;margin:12px 0;letter-spacing:-1px}.hero-copy>p{font-size:11px;margin:8px 0}.hero-tags{margin:12px 0}.hero-tags span{font-size:8px;padding:5px}.hero-art{max-height:290px}.lobby-footer{padding:12px 0;font-size:8px}form label{font-size:10px;margin-bottom:6px}input{padding:10px;font-size:12px}.join-row .primary{font-size:11px}.hero-copy .muted{font-size:9px}.lobby-content{grid-template-columns:1.1fr 1fr}.art-label{padding:12px;font-size:7px}.art-label span{display:none}}
+@media(orientation:portrait) and (max-width:700px){body.in-game #rotate{display:flex!important}.lobby-content{grid-template-columns:1fr;padding:35px 0}.hero-art{display:none}.lobby-nav{height:75px}.lobby-nav>.online{font-size:9px}.hero-copy h1{font-size:48px}.lobby-footer{flex-wrap:wrap;gap:12px;font-size:8px}.hero-tags{margin:24px 0}.hero-copy>.eyebrow{font-size:9px}}
+
+.map-controls{position:absolute;right:10px;top:10px;display:flex;gap:4px;z-index:2}.map-controls button{width:32px;height:32px;padding:0;font:20px monospace;background:#19251ee8;border-color:#617052;color:#c4d3b2}@media(max-height:600px){.map-controls{right:6px;top:6px}.map-controls button{width:28px;height:28px;font-size:17px}}
+
+.join-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:end}.join-row .join-field{margin:0;min-width:0;font-size:11px}.join-field input{display:block;width:100%;margin-top:9px}.room-code-button{display:flex;align-items:center;gap:8px;background:#1b251b}.room-code-button>span{font-size:9px;color:var(--muted)}.room-code-button strong{font:15px monospace;letter-spacing:2px;color:var(--orange)}@media(max-height:600px){.join-field input{margin-top:5px}.join-row .join-field{font-size:9px}.room-code-button strong{font-size:11px;letter-spacing:1px}.room-code-button>span{font-size:8px}.header-actions{gap:6px}}@media(max-width:600px) and (orientation:portrait){.join-row{grid-template-columns:1fr 1fr}.join-row .primary{grid-column:1 / -1;justify-content:center}.join-row .join-field{font-size:11px}}
+
+/* Progression controls */
+.lobby-progression{display:flex;align-items:center;gap:15px;margin-bottom:20px}.lobby-progression strong,#profile-wallet,#pp-money{color:#a8d8d1}.lobby-progression button{font-size:11px}.solo-start{width:100%;margin-top:10px;color:var(--orange);background:#252e20;border-color:#7d8057}.difficulty-stat{text-align:center;font-size:11px}.difficulty-stat>strong{display:block;color:#d7c193}.difficulty-stat>span{display:block;color:var(--muted);font-size:9px;margin:4px 0}.speed-controls{display:flex;gap:3px}.speed-controls button{font:10px monospace;padding:3px 7px}.speed-controls button[aria-pressed="true"]{border-color:var(--orange);color:var(--orange)}.money-stat small{font:10px monospace}.sidebar{overflow-y:auto;scrollbar-width:thin}.sidebar>section{flex-shrink:0}.sidebar .detail{flex:0 0 auto;min-height:175px;max-height:300px}.weapons{border:1px solid #60583e;background:#20271d;border-radius:4px;padding:14px}.weapons select{width:100%;font-size:11px;padding:8px}.weapons>button{width:100%;font-size:11px;margin-top:6px;padding:8px}#fire-toggle{color:var(--orange);border-color:#857047}#fire-toggle.firing{background:#8b5632;color:#ffe9c6}#nuke{color:#f3a08c;border-color:#775046}#nuke-confirm{background:#6f3c30}dialog{width:min(850px,94vw);max-height:88svh;border:1px solid #6b7758;background:#172019;color:var(--text);border-radius:8px;padding:24px}dialog::backdrop{background:#050d0bc9}.dialog-header{display:flex;align-items:center;justify-content:space-between;gap:20px}.dialog-header h2{font-size:19px;margin:0}.dialog-header button{font-size:23px;padding:2px 12px}#profile-message{font-size:11px;color:var(--muted);line-height:1.7}#inventory-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;overflow:auto;max-height:60svh}.inventory-card{border:1px solid #48503b;background:#20291f;padding:15px;border-radius:4px}.inventory-card.owned{border-color:#627451}.inventory-card h3{font-size:13px}.inventory-card p{font-size:10px;color:var(--muted);line-height:1.7}.inventory-card button{font-size:11px;width:100%}.audio-settings{border-top:1px solid var(--line);padding-top:8px;margin-top:8px}.audio-settings>button{font-size:9px;padding:5px 8px}.audio-settings input{width:100px;padding:0;margin:0;accent-color:var(--orange)}.wave-notice{position:absolute;top:50px;left:50%;transform:translateX(-50%);background:#243522dd;border:1px solid #7c9760;color:#d7eac0;padding:8px 16px;pointer-events:none;font-size:12px}.compact{font-size:10px;padding:7px 9px}#reward-result{color:#b8ddd0;margin:0 0 20px}.battle-hud .base-stat{width:24%}
+@media(max-height:600px) and (orientation:landscape){.lobby-progression{margin-bottom:9px;font-size:11px}.lobby-progression button{padding:5px;font-size:9px}.solo-start{font-size:10px;padding:7px;margin-top:6px}.difficulty-stat>span{display:none}.difficulty-stat{font-size:9px}.difficulty-stat>strong{font-size:9px}.speed-controls button{font-size:8px;padding:2px 5px}.money-stat small{font-size:8px}.weapons{padding:9px}.weapons select{font-size:9px;padding:5px}.weapons>button{font-size:9px;padding:6px;margin-top:4px}.weapons .tiny{display:none}.sidebar .detail{min-height:120px}.audio-settings input{width:80px}.audio-settings label{margin-top:6px}.header-actions .online{display:none}.wave-notice{top:32px;padding:4px 8px;font-size:9px}.dialog-header h2{font-size:14px}dialog{padding:14px}.inventory-card{padding:9px}.inventory-card h3{font-size:11px}}
+@media(max-width:600px){#inventory-list{grid-template-columns:repeat(2,minmax(0,1fr))}.dialog-header{gap:8px}.dialog-header h2{font-size:14px}}
+
+/* Daylight ruined city: high contrast controls on pale stone and sand. */
+:root{color-scheme:light;--bg:#edf0e8;--panel:#fcfcf4;--line:#bcc7b7;--muted:#52614f;--text:#24372d;--orange:#875117;--green:#39724c}
+button,input,select{background:#f7f8ee;color:var(--text)}button:hover{background:#e2ead8}.primary{background:#eab76a;color:#293322}.game-header{background:#f6f7ed}.battlefield{background:#dfe8df}.wave-banner{background:#f7faedee;box-shadow:0 12px 36px #33442e33}.field-label,.field-label span{color:#314b3a}.field-bottom{background:#f5f7e6e8;color:#334b35}.tag,.filters .active,.build-card.selected,.player .avatar{background:#e0ead4;color:#365438}.hero-copy>p,.hero-tags span,.detail .desc,.online{color:#52634f}.hero-art{background:#dce5d7}.art-label{background:#f1f4e8dd;color:#3b533b}.game-over{background:#f3f5e9f5}.game-over h2{color:#815025}#boss-bar{background:#fff2e4ed}#boss-name{color:#8d3427}#boss-health{color:#6f4c3a}.weapons,.audio-settings,.profile-card{background:var(--panel)}dialog{background:#fafbf1;color:#263a2b}.weapon-upgrade{font-size:11px}.meter{background:#ccd5c7}
+
+.inventory-card,.inventory-card.owned{background:#f1f5e9;border-color:#aebfa3}.solo-start{background:#e5eed9}.lobby-progression strong,#profile-wallet,#pp-money,#reward-result{color:#2d705c}#nuke{color:#a44130}#nuke-confirm{background:#e9b8a7;color:#57251e}.weapons select{background:#f8faef}.wave-notice{background:#eef5dfef;color:#3d5b2a}.weapons .section-heading span{color:#52614f}
+</style></head>
+<body>
+ <section id="lobby" class="lobby">
+  <header class="lobby-nav"><a class="brand" href="?"><span class="brand-icon">L<span>O</span></span><span>LAST OUTPOST<small>COOPERATIVE SURVIVAL DEFENSE</small></span></a><span class="online"><i></i> 1인 오프라인 체험판</span></header>
+  <div class="lobby-content"><div class="hero-copy"><div class="eyebrow">OPERATION: LAST LIGHT <span>01 / 30</span></div><h1>폐허 위로 뜬 햇빛.<br>마지막 <em>방어선.</em></h1><p>다운로드해서 바로 플레이하는 1인 체험판.<br>기지를 세우고 몰려오는 감염자를 막아라.</p><div class="hero-tags"><span>1인 플레이</span><span>30스테이지 성장</span><span>오프라인 체험</span></div><div class="lobby-progression"><strong id="lobby-wallet">0 뿌</strong><button id="open-shop" type="button">상점 · 인벤토리 ↗</button></div><form id="join-form"><div class="join-row"><label class="join-field" for="nickname">닉네임<input id="nickname" name="nickname" maxlength="16" placeholder="당신의 호출명" required autocomplete="nickname"></label><label class="join-field" for="room-code">친구 방 코드<input id="room-code" disabled name="room-code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="6자리 · 없으면 새 방" autocomplete="off"></label><button class="primary" type="submit" id="join-button" aria-label="작전 시작">작전 시작 <span>↗</span></button></div><button id="new-solo" type="button" class="solo-start">혼자 새 방 시작</button><p id="join-note" class="muted">서버·설치 없이 실행됩니다. 창을 닫으면 진행은 초기화됩니다.</p><p id="join-error" role="alert"></p><button id="reset-profile" type="button" hidden>새 프로필로 연결</button></form></div>
+  <div class="hero-art" aria-hidden="true"><div class="art-grid"></div><div class="art-coordinates">37° 33′ 58″ N<br>126° 58′ 41″ E</div><svg viewBox="0 0 600 560"><defs><pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#718477" stroke-width="1"/></pattern></defs><g fill="#25312b" stroke="#556354"><path d="M55 80h130v100H55zM360 40h140v140H360zM55 400h110v100H55zM340 350h200v140H340z"/><path fill="url(#hatch)" d="M80 100h80v55H80zM380 65h90v90h-90zM360 375h150v90H360z"/></g><path d="M0 280H230V235H310V285H450V240H600" fill="none" stroke="#101613" stroke-width="70"/><path d="M0 280H230V235H310V285H450V240H600" fill="none" stroke="#819174" stroke-width="1" stroke-dasharray="6 8"/><g fill="none" stroke="#e9a661"><circle cx="300" cy="280" r="185" opacity=".14"/><circle cx="300" cy="280" r="135" opacity=".25"/><circle cx="300" cy="280" r="85" opacity=".4"/></g><g fill="#dba366"><circle cx="200" cy="350" r="13"/><path d="m200 350 30-45" stroke="#dba366" stroke-width="10"/><circle cx="380" cy="200" r="13"/><path d="m380 200-30 42" stroke="#dba366" stroke-width="10"/></g><g fill="#a4b68f"><circle cx="90" cy="280" r="5"/><circle cx="115" cy="290" r="4"/><circle cx="143" cy="275" r="5"/><circle cx="168" cy="287" r="4"/></g><g stroke="#a5b397" fill="#29372d"><path d="m500 250 18-20 18 20-18 20z"/></g><text x="35" y="35" fill="#748473" font-size="11" font-family="monospace">SECTOR 01 / QUARANTINE ZONE</text><text x="380" y="530" fill="#cfa46e" font-size="11" font-family="monospace">THREAT LEVEL: CRITICAL</text></svg><div class="art-label"><i></i> LIVE TACTICAL FEED <span>폐허 도시 / SECTOR 01</span></div></div></div>
+  <footer class="lobby-footer"><span>BUILD. DEFEND. SURVIVE.</span><span>22종 시설 · 5개 지역 · 하나의 방어선</span><span>지휘권은 당신에게.</span></footer>
+ </section>
+ <section id="game" hidden>
+  <header class="game-header"><a class="brand" href="?"><span class="brand-icon">L<span>O</span></span><span>LAST OUTPOST<small>최후의 방어선</small></span></a><div class="operation"><span class="eyebrow">현재 작전 지역</span><strong id="map-name">폐허 도시</strong></div><div class="header-actions"><button id="open-shop-game" class="compact">상점</button><span id="connection" class="online"><i></i> 연결됨</span><button id="room-copy" disabled class="room-code-button" aria-label="방 코드 복사"><span>방 코드</span> <strong id="room-code-display">------</strong></button><button id="share" class="outline" disabled>1인 체험판</button><a href="?" class="exit" aria-label="방 나가기">나가기 ↗</a></div></header>
+  <div class="game-layout"><main class="battle-column"><div class="battle-hud"><div class="wave-stat"><span class="eyebrow">STAGE</span><strong id="wave">00</strong><span id="phase" class="tag">대기</span></div><div class="base-stat"><span>기지 내구도 <b id="base-number">100%</b></span><div class="meter"><i id="base-fill"></i></div></div><div class="difficulty-stat"><strong id="difficulty">보통</strong><span id="region-progress">지역 1 / 5</span><div class="speed-controls"><button data-speed="1" aria-pressed="true">1×</button><button data-speed="2" aria-pressed="false">2×</button><button data-speed="3" aria-pressed="false">3×</button></div></div><div class="money-stat"><span class="eyebrow">보유 자금</span><strong id="money">650 찌</strong><small id="pp-money">0 뿌</small></div></div>
+  <div class="battlefield" id="battlefield"><canvas id="battle" width="1200" height="720" aria-label="좀비 방어 전장"></canvas><div class="field-label"><i></i> LIVE <span id="sector-label">SECTOR 01</span></div><div id="boss-bar" hidden><div><strong id="boss-name">지역 보스</strong><span id="boss-health"></span></div><div class="meter boss-meter"><i id="boss-fill"></i></div></div><div id="wave-notice" class="wave-notice" hidden></div><div id="wave-banner" class="wave-banner"><span class="eyebrow">방어선을 구축하세요</span><strong id="banner-title">작전 준비</strong><p id="banner-text">시설을 선택하고 전장에 배치하세요.</p><button id="start-wave" class="primary">방어 시작 →</button></div><div id="game-over" class="game-over" hidden><span class="eyebrow">SIGNAL LOST</span><h2 id="outcome-title">방어선 붕괴</h2><p id="final-score"></p><p id="reward-result"></p><button id="return-lobby" class="primary">상점 · 다음 작전 ↗</button></div><div class="map-controls"><button id="zoom-in" aria-label="전장 확대" title="전장 확대">+</button><button id="zoom-out" aria-label="전장 축소" title="전장 축소">−</button><button id="zoom-reset" aria-label="전장 전체 보기" title="전장 전체 보기">⌖</button></div><div class="field-bottom"><span>◈ <span id="placement-hint">시설 선택 → 빈 공간에 배치</span></span><span id="facility-count">0 / 100 시설</span></div></div>
+  <div class="arsenal"><div class="arsenal-heading"><strong>시설 건설 <span>ARSENAL</span></strong><div class="filters" id="filters"><button data-filter="all" class="active">전체</button><button data-filter="attack">포탑</button><button data-filter="spawn">병력</button><button data-filter="economy">지원·경제</button></div><span class="muted">좌우로 넘겨보기 →</span></div><div id="build-list" class="build-list"></div></div></main>
+  <aside class="sidebar"><section class="weapons"><div class="section-heading">개인 무기 <span>찌로 구매</span></div><select id="weapon-choice" aria-label="무기 선택"><option value="pistol">기본 총 · 1000찌</option><option value="shotgun">산탄총 · 2500찌</option><option value="railgun">레일 라이플 · 7000찌</option><option value="plasma">플라스마 캐논 · 15000찌</option></select><button id="weapon-buy" data-buy-weapon="pistol">구매 · 1000찌</button><button id="weapon-upgrade">무기 강화</button><span id="player-level" class="tiny">생존자 Lv.1</span><button id="fire-toggle">발사 시작</button><button id="nuke">핵폭탄 · 5000찌</button><button id="nuke-confirm" hidden>핵폭탄 사용 확정</button><p class="tiny">전장을 클릭하면 +1찌 · 총은 1초 간격<br>핵폭탄은 보스에게 피해를 주지 않습니다.</p></section><section class="team-section"><div class="section-heading"><span>작전 분대</span><span id="members">1 / 4</span></div><div id="players"></div></section><section id="detail" class="detail"><div class="empty-detail"><span>⌖</span><h3>방어선을 설계하세요</h3><p>아래에서 시설을 선택해 배치하거나<br>건설한 시설을 눌러 강화하세요.</p></div></section><section class="intel"><div class="section-heading">작전 정보 <span>INTEL</span></div><p id="intel-text">10·20·30스테이지 보스 출현.<br>6스테이지마다 지역 이동·건설비 환급.</p><label for="effects">전투 효과<select id="effects"><option value="1">전체</option><option value="0.4">간소화</option><option value="0">끄기</option></select></label><div class="audio-settings"><button id="sound-enable">소리 켜기</button><button id="mute-sound" aria-pressed="false">음소거</button><label>음악<input type="range" id="music-volume" min="0" max="100" value="25"></label><label>효과음<input type="range" id="sfx-volume" min="0" max="100" value="50"></label></div><p class="tiny">은행 수익은 웨이브 완료 시 지급됩니다.</p></section></aside></div>
+ </section><dialog id="profile-dialog"><div class="dialog-header"><h2>보급 상점 · 인벤토리</h2><strong id="profile-wallet">0 뿌</strong><button id="close-shop" aria-label="상점 닫기">×</button></div><p id="profile-message"></p><div id="inventory-list"></div></dialog><div id="toast" role="status" hidden></div><div id="rotate" hidden><strong>휴대폰을 가로로 돌려주세요 ↻</strong><p>넓은 전장에서 방어선을 지휘하세요.</p></div><script>(() => {
+  // shared/ids.js
+  function randomId() {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  // shared/catalog.js
+  var entry = (name, kind, unlockWave, cost, color, extra = {}) => ({ name, kind, unlockWave, cost, color, damage: 12, range: 170, interval: 0.65, ...extra });
+  var CATALOG = Object.freeze({
+    gun: entry("\uAE30\uAD00\uCD1D", "attack", 0, 100, "#e7bd78", { damage: 13, interval: 0.5 }),
+    barracks: entry("\uBCF4\uBCD1 \uB9C9\uC0AC", "spawn", 0, 180, "#8fbd91", { damage: 9, hp: 65, interval: 7, range: 28, melee: true, unit: "\uBCF4\uBCD1" }),
+    bank: entry("\uC740\uD589", "bank", 0, 220, "#f2cb69", { income: 65, damage: 0, range: 0 }),
+    shotgun: entry("\uC0B0\uD0C4 \uD3EC\uD0D1", "attack", 5, 210, "#e6a87b", { damage: 38, range: 115, interval: 1.2, splash: 45 }),
+    frost: entry("\uB0C9\uAC01\uD0D1", "attack", 5, 240, "#85d6ef", { damage: 8, slow: 0.48, interval: 0.8 }),
+    sniper: entry("\uC800\uACA9\uD0D1", "attack", 10, 310, "#b8c5dd", { damage: 95, range: 340, interval: 2.1, crit: 0.25 }),
+    assault: entry("\uB3CC\uACA9\uBCD1 \uAE30\uC9C0", "spawn", 10, 320, "#82c8ae", { damage: 18, hp: 110, interval: 7, range: 28, melee: true, unit: "\uB3CC\uACA9\uBCD1" }),
+    mortar: entry("\uBC15\uACA9\uD3EC", "attack", 15, 400, "#e9ab78", { damage: 65, range: 250, interval: 2.3, splash: 85 }),
+    supply: entry("\uBCF4\uAE09\uC18C", "support", 15, 330, "#c6bd86", { range: 160, buff: 1.25, damage: 0 }),
+    flame: entry("\uD654\uC5FC\uD0D1", "attack", 20, 440, "#ff8b61", { damage: 15, range: 135, interval: 0.45, splash: 45, burn: 7 }),
+    heavy: entry("\uC911\uD654\uAE30 \uAE30\uC9C0", "spawn", 20, 500, "#aaaf8e", { damage: 38, hp: 200, interval: 9, range: 140, unit: "\uC911\uD654\uAE30\uBCD1" }),
+    tesla: entry("\uC804\uAE30\uD0D1", "attack", 25, 560, "#b59cff", { damage: 45, range: 180, interval: 1.1, chain: 4 }),
+    medic: entry("\uC758\uBB34\uC18C", "support", 25, 400, "#7ee3bf", { range: 185, heal: 14, damage: 0 }),
+    missile: entry("\uBBF8\uC0AC\uC77C\uD0D1", "attack", 30, 660, "#f8bd8b", { damage: 125, range: 270, interval: 2.5, splash: 95 }),
+    drone: entry("\uB4DC\uB860 \uAE30\uC9C0", "spawn", 30, 680, "#8bd5d6", { damage: 36, hp: 130, interval: 6, range: 170, unit: "\uB4DC\uB860" }),
+    rail: entry("\uB808\uC77C\uAC74", "attack", 35, 850, "#83e5ef", { damage: 240, range: 350, interval: 2.8, pierce: true }),
+    plasma: entry("\uD50C\uB77C\uC2A4\uB9C8\uD0D1", "attack", 35, 820, "#e2a2ee", { damage: 70, range: 210, interval: 0.9, splash: 65 }),
+    shield: entry("\uBC29\uD328\uBCD1 \uAE30\uC9C0", "spawn", 0, 300, "#b9d59c", { damage: 18, hp: 400, interval: 8, range: 32, melee: true, unit: "\uBC29\uD328\uBCD1" }),
+    gravity: entry("\uC911\uB825\uD0D1", "attack", 0, 600, "#c8a4ee", { damage: 45, range: 200, interval: 0.6, splash: 80, slow: 0.35 }),
+    orbital: entry("\uADA4\uB3C4\uD3EC", "attack", 0, 1e3, "#f8ce87", { damage: 650, range: 480, interval: 4, splash: 140, pierce: true }),
+    mech: entry("\uC6CC\uBA54\uD06C \uAE30\uC9C0", "spawn", 0, 1600, "#8ee4d1", { damage: 220, hp: 1200, interval: 12, range: 190, splash: 65, unit: "\uC6CC\uBA54\uD06C" }),
+    tank: entry("\uC804\uCC28 \uAE30\uC9C0", "spawn", 40, 1100, "#b5c883", { damage: 110, hp: 550, interval: 13, range: 160, splash: 60, unit: "\uC804\uCC28" })
+  });
+  for (const c of Object.values(CATALOG)) c.unlockWave = Math.min(25, c.unlockWave);
+  var BASE_FACILITIES = Object.keys(CATALOG).filter((id) => !["shield", "gravity", "orbital", "mech"].includes(id));
+  var LEVELS = ["\uAE30\uBCF8\uD615", "\uAC15\uD654\uD615", "\uC815\uC608\uD615", "\uCD5C\uC885\uD615"];
+  function upgradeCost(f) {
+    return Math.floor(CATALOG[f.type].cost * (0.8 + f.level * 0.65));
+  }
+  function statsFor(f) {
+    const c = CATALOG[f.type], s = f.level - 1;
+    return { ...c, damage: Math.round(c.damage * (1 + s * 0.8)), hp: Math.round((c.hp || 0) * (1 + s * 0.85)), range: c.range * (1 + s * 0.08), interval: c.interval / (1 + s * 0.14), income: Math.round((c.income || 0) * (1 + s * 0.8)), heal: (c.heal || 0) * (1 + s * 0.6), buff: c.buff ? c.buff + s * 0.1 : 0 };
+  }
+  var unlocked = (completedWave, type) => typeof type === "string" && Object.hasOwn(CATALOG, type) && CATALOG[type].unlockWave <= completedWave;
+
+  // shared/weapons.js
+  var WEAPONS = {
+    pistol: { name: "\uAE30\uBCF8 \uCD1D", price: 1e3, damage: 80, interval: 1, color: "#eaba78" },
+    shotgun: { name: "\uC0B0\uD0C4\uCD1D", price: 2500, damage: 30, interval: 1, targets: 5, color: "#f6aa7e" },
+    railgun: { name: "\uB808\uC77C \uB77C\uC774\uD50C", price: 7e3, damage: 450, interval: 1, pierce: true, color: "#84e2ec" },
+    plasma: { name: "\uD50C\uB77C\uC2A4\uB9C8 \uCE90\uB17C", price: 15e3, damage: 250, interval: 1, splash: 100, color: "#d9a3ff" },
+    nuke: { name: "\uD575\uD3ED\uD0C4", price: 5e3, cooldown: 30, color: "#f6dca1" }
+  };
+
+  // shared/progression.js
+  var DIFFICULTIES = [
+    { name: "\uBCF4\uD1B5", hp: 1, attack: 1, count: 1, clearReward: 200 },
+    { name: "\uC5B4\uB824\uC6C0", hp: 2, attack: 1.5, count: 1.15, clearReward: 400 },
+    { name: "\uC9C0\uC625", hp: 4, attack: 2, count: 1.3, clearReward: 800 },
+    { name: "\uBD88\uAC00\uB2A5", hp: 8, attack: 3, count: 1.5, clearReward: 1600 }
+  ];
+  var BONUS_TOWERS = { shield: { unlockTier: 0, ppCost: 200 }, gravity: { unlockTier: 1, ppCost: 400 }, orbital: { unlockTier: 3, ppCost: 800 }, mech: { unlockTier: 3, ppCost: 1600 } };
+  var STARTERS = ["gun", "barracks", "bank"];
+  var safeKey = (object, key) => typeof key === "string" && Object.hasOwn(object, key);
+
+  // shared/maps.js
+  var WIDTH = 1200;
+  var HEIGHT = 720;
+  var MAPS = [
+    { name: "\uD3D0\uD5C8 \uB3C4\uC2DC", subtitle: "THE FALLEN CITY", color: "#19282b", accent: "#b89c70", path: [[0, 310], [260, 310], [260, 510], [600, 510], [600, 220], [920, 220], [920, 400], [1200, 400]], blocked: [[480, 100, 150, 80], [760, 590, 160, 70]] },
+    { name: "\uD3D0\uC1C4 \uACF5\uC7A5", subtitle: "IRONWORKS", color: "#2a2425", accent: "#d19463", path: [[0, 190], [360, 190], [360, 530], [780, 530], [780, 270], [1200, 270]], blocked: [[70, 500, 140, 110], [870, 90, 170, 70]] },
+    { name: "\uAD70\uC0AC\uAE30\uC9C0", subtitle: "SECTOR 03", color: "#242d25", accent: "#a5b87b", path: [[0, 370], [200, 370], [200, 170], [570, 170], [570, 540], [990, 540], [990, 350], [1200, 350]], blocked: [[720, 100, 150, 100], [340, 590, 160, 70]] },
+    { name: "\uAC80\uC5ED \uD56D\uB9CC", subtitle: "DEADWATER DOCKS", color: "#192b34", accent: "#82a8b7", path: [[0, 540], [300, 540], [300, 230], [720, 230], [720, 470], [1e3, 470], [1e3, 160], [1200, 160]], blocked: [[60, 90, 140, 130], [820, 590, 210, 70]] },
+    { name: "\uC624\uC5FC \uC5F0\uAD6C\uC18C", subtitle: "GROUND ZERO", color: "#272438", accent: "#b6a0d3", path: [[0, 250], [250, 250], [250, 500], [520, 500], [520, 170], [850, 170], [850, 480], [1200, 480]], blocked: [[60, 570, 100, 70], [1e3, 70, 130, 140]] }
+  ];
+  var districtNames = ["\uD3D0\uD5C8 \uB3C4\uC2EC", "\uBB34\uB108\uC9C4 \uC0C1\uAC00", "\uBD95\uAD34\uB41C \uC8FC\uAC70\uC9C0", "\uD3D0\uD5C8 \uD56D\uAD6C", "\uB3C4\uC2DC \uCD5C\uD6C4 \uBC29\uC5B4\uC120"];
+  MAPS.forEach((m, i) => {
+    m.name = districtNames[i];
+    m.color = ["#e4e5da", "#e9dfcc", "#dce5da", "#d9e8e8", "#e7e0d7"][i];
+    m.accent = "#536f61";
+    const end = m.path.at(-1);
+    m.routes = [m.path, [[0, 20], [1080, 20], [1080, end[1]], end], [[0, 650], [1040, 650], [1040, end[1]], end]];
+    m.airPath = [[0, 40], [600, 120], end];
+  });
+  function routePath(mapIndex, route = 0, medium = "ground") {
+    const m = MAPS[mapIndex % MAPS.length];
+    return medium === "air" ? m.airPath : m.routes[route % m.routes.length];
+  }
+  function segmentDistance(x, y, a, b) {
+    const dx = b[0] - a[0], dy = b[1] - a[1], t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / (dx * dx + dy * dy)));
+    return Math.hypot(x - a[0] - t * dx, y - a[1] - t * dy);
+  }
+  function canBuild(mapIndex, x, y) {
+    if (!Number.isFinite(x) || !Number.isFinite(y) || x < 35 || y < 35 || x > WIDTH - 35 || y > HEIGHT - 35) return false;
+    const m = MAPS[mapIndex % MAPS.length];
+    if (m.routes.some((path) => path.slice(1).some((b, i) => segmentDistance(x, y, path[i], b) < 48))) return false;
+    return !m.blocked.some(([bx, by, w, h]) => x > bx - 24 && x < bx + w + 24 && y > by - 24 && y < by + h + 24);
+  }
+  function pathPoint(mapIndex, distance2, route = 0, medium = "ground") {
+    const path = routePath(mapIndex, route, medium);
+    for (let i = 1; i < path.length; i++) {
+      const a = path[i - 1], b = path[i], len = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      if (distance2 <= len) return { x: a[0] + (b[0] - a[0]) * distance2 / len, y: a[1] + (b[1] - a[1]) * distance2 / len, angle: Math.atan2(b[1] - a[1], b[0] - a[0]), end: false };
+      distance2 -= len;
+    }
+    const p = path.at(-1);
+    return { x: p[0], y: p[1], angle: 0, end: true };
+  }
+  function nearestPath(mapIndex, x, y, route = 0) {
+    let best = { distance: Infinity, progress: 0 }, progress = 0;
+    const path = routePath(mapIndex, route);
+    for (let i = 1; i < path.length; i++) {
+      const a = path[i - 1], b = path[i], dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy), t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / (len * len))), distance2 = Math.hypot(x - a[0] - t * dx, y - a[1] - t * dy);
+      if (distance2 < best.distance) best = { distance: distance2, progress: progress + t * len };
+      progress += len;
+    }
+    return best.progress;
+  }
+  function nearestRoad(mapIndex, x, y) {
+    return [0, 1].map((route) => {
+      const progress = nearestPath(mapIndex, x, y, route), p = pathPoint(mapIndex, progress, route);
+      return { route, progress, distance: Math.hypot(x - p.x, y - p.y) };
+    }).sort((a, b) => a.distance - b.distance)[0];
+  }
+
+  // shared/enemies.js
+  var ENEMY_TYPES = {
+    walker: { name: "\uC77C\uBC18", size: 1, hp: 1, speed: 1 },
+    runner: { name: "\uC9C8\uC8FC", size: 0.65, hp: 0.65, speed: 1.7 },
+    giant: { name: "\uAC70\uB300", size: 1.8, hp: 4, speed: 0.6 },
+    armored: { name: "\uC7A5\uAC11", size: 1.15, hp: 2, speed: 0.8, armor: 0.65 },
+    regen: { name: "\uC7AC\uC0DD", size: 1.1, hp: 1.8, speed: 1, regen: 0.01 },
+    splitter: { name: "\uBD84\uC5F4", size: 1.2, hp: 1.6, speed: 0.9, children: 3 },
+    child: { name: "\uBD84\uC5F4\uCCB4", size: 0.55, hp: 1, speed: 1.3 }
+  };
+  var ELEMENTS = { fire: { name: "\uD654\uC5FC", icon: "\u708E", color: "#ffad75" }, ice: { name: "\uB0C9\uAE30", icon: "\u6C37", color: "#8bd9ed" }, electric: { name: "\uC804\uAE30", icon: "\u96F7", color: "#c4acff" } };
+
+  // server/effects.js
+  function effect(g, e) {
+    g.effects.push({ id: String(g.nextId++), born: g.time, ...e });
+    if (g.effects.length > 180) g.effects.splice(0, g.effects.length - 180);
+  }
+
+  // server/enemies.js
+  function spawnEnemy(g, boss = false, overrides = {}) {
+    if (g.enemies.filter((e2) => e2.hp > 0).length >= 200) return null;
+    const count = Math.max(1, Object.values(g.players).filter((p) => p.connected).length), d = { hp: 1, attack: 1 + g.wave * 0.06 };
+    const available = ["walker", "runner", ...g.mapIndex >= 1 ? ["giant"] : [], ...g.mapIndex >= 2 ? ["armored"] : [], ...g.mapIndex >= 3 ? ["splitter"] : [], ...g.mapIndex >= 4 ? ["regen"] : []];
+    const variant = overrides.variant || (boss ? "boss" : available[g.nextId % available.length]), v = ENEMY_TYPES[variant] || ENEMY_TYPES.walker;
+    const scale = (1 + g.wave * 0.22) * Math.pow(1.045, g.wave) * (1 + (count - 1) * 0.4) * d.hp, maxHp = overrides.maxHp || Math.round(38 * scale * (boss ? 18 : v.hp));
+    const route = overrides.route ?? (boss ? 0 : g.nextId % (g.wave < 4 ? 2 : 3)), medium = overrides.medium || (boss ? "ground" : g.wave >= 4 && route === 2 ? "sea" : g.wave >= 3 && g.nextId % 5 === 0 ? "air" : "ground");
+    const progress = overrides.progress || 0, element = overrides.element ?? (g.wave >= 10 && !boss ? ["fire", "ice", "electric", null][g.nextId % 4] : null);
+    const e = { id: String(g.nextId++), ...pathPoint(g.mapIndex, progress, route, medium), route, medium, level: Math.max(1, g.wave), ranged: !boss && g.wave >= 3 && g.nextId % 7 === 0, progress, hp: maxHp, maxHp, speed: boss ? 25 : 42 * v.speed, size: boss ? 2.2 : v.size, boss, variant, element, ability: boss ? { 10: "\uB3CC\uC9C4", 20: "\uC99D\uC6D0", 30: "\uC624\uC5FC" }[g.wave] || "\uB3CC\uC9C4" : null, damage: (boss ? 20 : variant === "giant" ? 3 : 1) * d.attack, reward: boss ? 200 + g.wave * 5 : 12 + Math.floor(g.wave / 3), attackCooldown: 0, skillCooldown: 7, contributions: {}, slowUntil: 0, burnUntil: 0, ...overrides };
+    g.enemies.push(e);
+    return e;
+  }
+  function pay(g, e, owner) {
+    const entries = Object.entries(e.contributions), sum = entries.reduce((a, [, v]) => a + v, 0), budget = Math.max(0, Math.floor(e.reward));
+    if (sum > 0) {
+      const shares = entries.map(([id, v]) => ({ id, n: Math.floor(budget * v / sum), remainder: budget * v / sum % 1 })).sort((a, b) => b.remainder - a.remainder);
+      let left = budget - shares.reduce((s, v) => s + v.n, 0);
+      for (const s of shares) {
+        if (left > 0) {
+          s.n++;
+          left--;
+        }
+        if (g.players[s.id]) g.players[s.id].money += s.n;
+      }
+    }
+    if (g.players[owner]) g.players[owner].kills++;
+  }
+  function damageEnemy(g, e, amount, owner, options = {}, legacyPierce = false) {
+    if (!e || e.hp <= 0 || !Number.isFinite(amount) || amount <= 0) return;
+    if (typeof options === "boolean") options = { critical: options, pierce: legacyPierce };
+    const armor = (e.variant === "armored" || e.ability === "\uC7A5\uAC11") && !options.pierce ? 0.65 : 1;
+    const resistance = e.element === options.element && ["fire", "electric"].includes(e.element) ? 0.5 : 1;
+    const actual = Math.min(e.hp, amount * armor * resistance);
+    e.hp = Math.max(0, e.hp - actual);
+    if (owner) e.contributions[owner] = (e.contributions[owner] || 0) + actual;
+    effect(g, { kind: "damage", x: e.x, y: e.y, value: Math.round(actual), critical: options.critical });
+    if (e.hp === 0) {
+      g.kills++;
+      if (e.variant === "splitter" && !options.suppressSplit) {
+        const reward = Math.floor(e.reward), base = Math.floor(reward / 3);
+        for (let i = 0; i < 3; i++) g.pendingChildren.push({ variant: "child", route: e.route, medium: e.medium, progress: e.progress, maxHp: Math.max(1, Math.round(e.maxHp * 0.25)), speed: 42 * 1.3, size: 0.55, reward: base + (i < reward % 3 ? 1 : 0), element: e.element });
+      } else pay(g, e, owner);
+      effect(g, { kind: "death", x: e.x, y: e.y, color: e.boss ? "#e6aa68" : "#a9c98b" });
+    }
+  }
+  function flushChildren(g) {
+    while (g.pendingChildren.length && g.enemies.filter((e) => e.hp > 0).length < 200) spawnEnemy(g, false, g.pendingChildren.shift());
+  }
+
+  // server/player-weapons.js
+  var fail = (error) => ({ ok: false, error });
+  function weaponCommand(g, id, a) {
+    const p = g.players[id];
+    if (a.type === "gather") {
+      p.money++;
+      effect(g, { kind: "gather", owner: id, value: 1 });
+      return { ok: true };
+    }
+    if (a.type === "buyWeapon") {
+      if (!safeKey(WEAPONS, a.weapon) || a.weapon === "nuke") return fail("\uAD6C\uB9E4\uD560 \uC218 \uC5C6\uB294 \uCD1D\uC785\uB2C8\uB2E4.");
+      if (p.weapons.includes(a.weapon)) return { ok: true };
+      const w = WEAPONS[a.weapon];
+      if (p.money < w.price) return fail("\uCC0C\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.");
+      p.money -= w.price;
+      p.weapons.push(a.weapon);
+      p.weaponLevels[a.weapon] = 1;
+      p.weapon = a.weapon;
+      p.firing = false;
+      effect(g, { kind: "purchase", owner: id });
+      return { ok: true };
+    }
+    if (a.type === "upgradeWeapon") {
+      if (!p.weapon) return fail("\uCD1D\uC744 \uBA3C\uC800 \uAD6C\uB9E4\uD558\uC138\uC694.");
+      const level = p.weaponLevels[p.weapon] || 1;
+      if (level >= 10) return fail("\uCD5C\uC885 \uAC15\uD654\uC785\uB2C8\uB2E4.");
+      const cost = Math.round(WEAPONS[p.weapon].price * 0.5 * level);
+      if (p.money < cost) return fail("\uCC0C\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.");
+      p.money -= cost;
+      p.weaponLevels[p.weapon] = level + 1;
+      effect(g, { kind: "upgrade", owner: id });
+      return { ok: true };
+    }
+    if (a.type === "selectWeapon") {
+      if (!p.weapons.includes(a.weapon)) return fail("\uC18C\uC720\uD55C \uBB34\uAE30\uB9CC \uC120\uD0DD\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.");
+      p.weapon = a.weapon;
+      return { ok: true };
+    }
+    if (a.type === "toggleFire") {
+      if (!p.weapon) return fail("\uCD1D\uC744 \uBA3C\uC800 \uAD6C\uB9E4\uD558\uC138\uC694.");
+      p.firing = !p.firing;
+      return { ok: true };
+    }
+    if (a.type === "nuke") return detonate(g, id);
+    return null;
+  }
+  function detonate(g, id) {
+    const p = g.players[id], targets = g.enemies.filter((e) => e.hp > 0 && !e.boss);
+    if (g.nukeCooldown > 0) return fail("\uD575\uD3ED\uD0C4 \uC7AC\uC0AC\uC6A9 \uB300\uAE30 \uC911\uC785\uB2C8\uB2E4.");
+    if (!targets.length && !g.pendingChildren.length) return fail("\uBCF4\uC2A4 \uC678\uC5D0 \uC81C\uAC70\uD560 \uC880\uBE44\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.");
+    if (p.money < WEAPONS.nuke.price) return fail("\uCC0C\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.");
+    p.money -= WEAPONS.nuke.price;
+    g.nukeCooldown = 30;
+    for (const e of targets) damageEnemy(g, e, e.hp, id, { pierce: true, suppressSplit: true });
+    for (const child of g.pendingChildren.splice(0)) {
+      const hp = child.maxHp;
+      damageEnemy(g, { ...child, ...pathPoint(g.mapIndex, child.progress, child.route, child.medium), id: String(g.nextId++), hp, maxHp: hp, contributions: {} }, hp, id, { pierce: true, suppressSplit: true });
+    }
+    effect(g, { kind: "nuke", owner: id });
+    return { ok: true };
+  }
+  function tickWeapons(g, dt) {
+    if (g.phase !== "wave") return;
+    const base = MAPS[g.mapIndex].path.at(-1);
+    for (const p of Object.values(g.players)) {
+      p.weaponCooldown = Math.max(0, p.weaponCooldown - dt);
+      if (!p.firing || !p.weapon || p.weaponCooldown > 1e-8) continue;
+      const w = WEAPONS[p.weapon], enemies2 = g.enemies.filter((e) => e.hp > 0).sort((a, b) => b.progress - a.progress), target = enemies2[0];
+      if (!target) continue;
+      let targets = w.targets ? enemies2.slice(0, w.targets) : w.splash ? enemies2.filter((e) => Math.hypot(e.x - target.x, e.y - target.y) < w.splash) : [target];
+      for (const e of targets) damageEnemy(g, e, w.damage * (1 + ((p.weaponLevels[p.weapon] || 1) - 1) * 0.35) * (1 + ((p.level || 1) - 1) * 0.04), p.id, { pierce: w.pierce });
+      effect(g, { kind: w.splash ? "blast" : w.pierce ? "rail" : "playerShot", owner: p.id, x: base[0] - 18, y: base[1], tx: target.x, ty: target.y, color: w.color });
+      p.weaponCooldown = w.interval;
+    }
+  }
+
+  // server/game.js
+  function createGame() {
+    return { runId: randomId(), difficulty: 0, mapsCleared: 0, speed: 1, hostId: null, pendingChildren: [], rewardEvents: [], nukeCooldown: 0, outcome: null, players: {}, facilities: [], soldiers: [], enemies: [], effects: [], wave: 0, completedWave: 0, mapIndex: 0, phase: "lobby", baseHp: 100, timer: 0, nextId: 1, time: 0, kills: 0, pending: 0, spawnTimer: 0, bossSpawned: false };
+  }
+  function addPlayer(g, id, name, profile2) {
+    if (Object.keys(g.players).length >= 4) return false;
+    g.players[id] = { id, name, money: 650 + Math.max(g.completedWave, g.wave - 1) * 35, connected: true, kills: 0, profileId: profile2?.id || id, loadout: [...profile2?.equipped || BASE_FACILITIES], level: Math.min(30, g.completedWave + 1), weaponLevels: {}, weapons: [], weapon: null, firing: false, weaponCooldown: 0 };
+    if (!g.hostId) g.hostId = id;
+    return g.players[id];
+  }
+  var fail2 = (error) => ({ ok: false, error });
+  function command(g, id, a) {
+    const p = g.players[id];
+    if (!p || !a || typeof a !== "object") return fail2("\uC798\uBABB\uB41C \uC694\uCCAD\uC785\uB2C8\uB2E4.");
+    if (a.type === "start") {
+      if (g.phase !== "lobby") return fail2("\uC774\uBBF8 \uC9C4\uD589 \uC911\uC785\uB2C8\uB2E4.");
+      g.phase = "prep";
+      g.timer = 15;
+      return { ok: true };
+    }
+    if (["over", "victory"].includes(g.phase)) return fail2("\uAC8C\uC784\uC774 \uC885\uB8CC\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
+    const weapon = weaponCommand(g, id, a);
+    if (weapon) return weapon;
+    if (a.type === "speed") {
+      if (id !== g.hostId || ![1, 2, 3].includes(a.value)) return fail2("\uBC29\uC7A5\uB9CC 1~3\uBC30\uC18D\uC744 \uC120\uD0DD\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.");
+      g.speed = a.value;
+      return { ok: true };
+    }
+    if (a.type === "build") {
+      if (!unlocked(g.completedWave, a.facility) || !p.loadout.includes(a.facility)) return fail2("\uC544\uC9C1 \uD574\uAE08\uB418\uC9C0 \uC54A\uC740 \uC2DC\uC124\uC785\uB2C8\uB2E4.");
+      if (!canBuild(g.mapIndex, a.x, a.y) || g.facilities.some((f2) => Math.hypot(f2.x - a.x, f2.y - a.y) < 48)) return fail2("\uC774\uACF3\uC5D0\uB294 \uAC74\uC124\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
+      if (g.facilities.length >= 100) return fail2("\uC2DC\uC124\uC740 \uCD5C\uB300 100\uAC1C\uC785\uB2C8\uB2E4.");
+      const c = CATALOG[a.facility];
+      if (p.money < c.cost) return fail2("\uCC0C\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.");
+      p.money -= c.cost;
+      g.facilities.push({ id: String(g.nextId++), owner: id, type: a.facility, x: a.x, y: a.y, level: 1, invested: c.cost, cooldown: 0, angle: 0, hp: 300, maxHp: 300 });
+      effect(g, { kind: "build", owner: id, x: a.x, y: a.y });
+      return { ok: true };
+    }
+    const f = g.facilities.find((f2) => f2.id === a.id);
+    if (!f || f.owner !== id) return fail2("\uC790\uC2E0\uC758 \uC2DC\uC124\uC744 \uC120\uD0DD\uD574 \uC8FC\uC138\uC694.");
+    if (a.type === "upgrade") {
+      if (f.level >= 4) return fail2("\uCD5C\uC885 \uB2E8\uACC4\uC785\uB2C8\uB2E4.");
+      const cost = upgradeCost(f);
+      if (p.money < cost) return fail2("\uCC0C\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.");
+      p.money -= cost;
+      f.invested += cost;
+      f.level++;
+      f.maxHp = 300 * f.level;
+      f.hp = f.maxHp;
+      effect(g, { kind: "upgrade", owner: id, x: f.x, y: f.y });
+      return { ok: true };
+    }
+    if (a.type === "sell") {
+      p.money += Math.floor(f.invested * 0.75);
+      g.facilities = g.facilities.filter((v) => v !== f);
+      g.soldiers = g.soldiers.filter((s) => s.facility !== f.id);
+      return { ok: true };
+    }
+    return fail2("\uC54C \uC218 \uC5C6\uB294 \uBA85\uB839\uC785\uB2C8\uB2E4.");
+  }
+  function snapshot(g) {
+    return { players: Object.values(g.players).map((p) => ({ ...p })), facilities: g.facilities.map((f) => ({ ...f, stats: statsFor(f) })), soldiers: g.soldiers, enemies: g.enemies.map(({ contributions, ...e }) => e), effects: g.effects, wave: g.wave, completedWave: g.completedWave, mapIndex: g.mapIndex, phase: g.phase, baseHp: g.baseHp, timer: g.timer, time: g.time, kills: g.kills, pending: g.pending, difficulty: g.difficulty, mapsCleared: g.mapsCleared, speed: g.speed, hostId: g.hostId, nukeCooldown: g.nukeCooldown, outcome: g.outcome, rewards: g.rewardEvents.map(({ profileId, ...e }) => e), pendingChildren: g.pendingChildren.length };
+  }
+
+  // server/progression.js
+  function awards(g, key, pp, clearedTier) {
+    for (const p of Object.values(g.players)) {
+      const id = `${g.runId}:${key}:${p.profileId}`;
+      if (!g.rewardEvents.some((e) => e.id === id)) g.rewardEvents.push({ id, playerId: p.id, profileId: p.profileId, pp, ...clearedTier === void 0 ? {} : { clearedTier }, status: "pending" });
+    }
+  }
+  function finishRun(g, outcome) {
+    if (g.outcome) return;
+    g.outcome = outcome;
+    g.phase = outcome === "victory" ? "victory" : "over";
+    if (outcome === "defeat") awards(g, "defeat", 5 + g.completedWave * 3);
+    for (const p of Object.values(g.players)) p.firing = false;
+    effect(g, { kind: outcome === "victory" ? "victory" : "defeat" });
+  }
+  function finishWave(g) {
+    if (g.phase !== "wave" || g.completedWave >= g.wave || g.pendingChildren.length || g.enemies.some((e) => e.hp > 0)) return;
+    g.completedWave = g.wave;
+    const income = 100 + g.wave * 15;
+    for (const p of Object.values(g.players)) {
+      p.money += income;
+      p.level = Math.min(30, g.wave + 1);
+    }
+    for (const f of g.facilities) if (CATALOG[f.type].kind === "bank" && g.players[f.owner]) g.players[f.owner].money += statsFor(f).income;
+    effect(g, { kind: "waveClear", text: `\uC2A4\uD14C\uC774\uC9C0 ${g.wave} \uC644\uB8CC \xB7 +${income}\uCC0C \xB7 \uB808\uBCA8 \uC0C1\uC2B9`, value: income });
+    g.phase = "prep";
+    g.timer = 8;
+    g.soldiers = [];
+    if (g.wave % 10 === 0) awards(g, `boss:${g.wave}`, { 10: 200, 20: 400, 30: 1600 }[g.wave], g.wave === 30 ? 3 : g.wave / 10 - 1);
+    if (g.wave >= 30) {
+      finishRun(g, "victory");
+      return;
+    }
+    const nextMap = Math.min(4, Math.floor(g.wave / 6));
+    if (nextMap !== g.mapIndex) {
+      for (const f of g.facilities) if (g.players[f.owner]) g.players[f.owner].money += f.invested;
+      g.facilities = [];
+      g.mapIndex = nextMap;
+      g.mapsCleared = nextMap;
+      g.timer = 15;
+      effect(g, { kind: "notice", text: "\uB3C4\uC2DC \uAD6C\uC5ED \uC774\uB3D9 \xB7 \uAC74\uC124\xB7\uAC15\uD654\uBE44 \uC804\uC561 \uD658\uAE09" });
+    }
+  }
+
+  // server/combat.js
+  var distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+  function shoot(g, source, s, target, multiplier = 1) {
+    const critical = (s.crit || 0) > 0 && Math.random() < s.crit, amount = s.damage * multiplier * (1 + ((g.players[source.owner]?.level || 1) - 1) * 0.04) * (critical ? 2 : 1);
+    source.angle = Math.atan2(target.y - source.y, target.x - source.x);
+    effect(g, { kind: s.burn ? "flame" : s.chain ? "chain" : s.splash ? "blast" : s.slow ? "ice" : s.pierce ? "rail" : "shot", x: source.x, y: source.y, tx: target.x, ty: target.y, color: s.color });
+    let targets = [target];
+    if (s.splash) targets = g.enemies.filter((e) => e.hp > 0 && distance(e, target) < s.splash);
+    if (s.chain) targets = [target, ...g.enemies.filter((e) => e !== target && e.hp > 0 && distance(e, target) < 150).slice(0, s.chain - 1)];
+    for (const e of targets) {
+      if (s.chain && e !== target) effect(g, { kind: "chain", x: target.x, y: target.y, tx: e.x, ty: e.y, color: s.color });
+      damageEnemy(g, e, amount, source.owner, { critical, pierce: s.pierce, element: s.burn ? "fire" : s.chain ? "electric" : void 0 });
+      if (s.slow) {
+        e.slowUntil = g.time + 1.5;
+        e.slowFactor = e.element === "ice" ? 1 - (1 - s.slow) / 2 : s.slow;
+      }
+      if (s.burn) {
+        e.burnUntil = g.time + 2;
+        e.burn = s.burn * source.level;
+        e.burnOwner = source.owner;
+      }
+    }
+  }
+  function facilities(g, dt) {
+    const supports = g.facilities.filter((f) => CATALOG[f.type].kind === "support");
+    for (const f of g.facilities) {
+      const s = statsFor(f);
+      f.cooldown = Math.max(0, f.cooldown - dt);
+      if (s.kind === "support" && s.heal) {
+        for (const soldier2 of g.soldiers) {
+          if (distance(f, soldier2) < s.range) {
+            const strongest = Math.max(...supports.filter((v) => CATALOG[v.type].heal && distance(v, soldier2) < statsFor(v).range).map((v) => statsFor(v).heal));
+            if (s.heal === strongest && supports.find((v) => CATALOG[v.type].heal && distance(v, soldier2) < statsFor(v).range && statsFor(v).heal === strongest) === f) soldier2.hp = Math.min(soldier2.maxHp, soldier2.hp + s.heal * dt);
+          }
+        }
+      }
+      if (f.cooldown > 0) continue;
+      if (s.kind === "spawn") {
+        if (g.soldiers.filter((v) => v.facility === f.id).length >= 4) continue;
+        const road = nearestRoad(g.mapIndex, f.x, f.y), base = pathPoint(g.mapIndex, 1e9, road.route), start = nearestPath(g.mapIndex, base.x, base.y, road.route);
+        g.soldiers.push({ route: road.route, onRoad: true, id: String(g.nextId++), facility: f.id, owner: f.owner, type: f.type, level: f.level, x: base.x, y: base.y, progress: start, hp: s.hp, maxHp: s.hp, damage: s.damage, range: s.range, interval: 0.85, cooldown: 0, angle: 0 });
+        f.cooldown = s.interval;
+        effect(g, { kind: "spawn", x: base.x, y: base.y, color: s.color });
+      } else if (s.kind === "attack") {
+        const target = g.enemies.filter((e) => e.hp > 0 && distance(f, e) < s.range).sort((a, b) => b.progress - a.progress)[0];
+        if (!target) continue;
+        const buff = Math.max(1, ...supports.filter((v) => CATALOG[v.type].buff && distance(v, f) < statsFor(v).range).map((v) => statsFor(v).buff));
+        shoot(g, f, s, target, buff);
+        f.cooldown = s.interval;
+      }
+    }
+  }
+  function soldiers(g, dt) {
+    for (const s of g.soldiers) {
+      if (s.hp <= 0) continue;
+      s.cooldown = Math.max(0, s.cooldown - dt);
+      s.route ??= 0;
+      s.progress ??= nearestPath(g.mapIndex, s.x, s.y, s.route);
+      const melee = CATALOG[s.type].melee, e = g.enemies.filter((e2) => e2.hp > 0 && (!melee || e2.medium === "ground") && distance(s, e2) < s.range).sort((a, b) => distance(s, a) - distance(s, b))[0];
+      if (e) {
+        if (s.cooldown <= 0) {
+          if (melee) {
+            damageEnemy(g, e, s.damage * (1 + ((g.players[s.owner]?.level || 1) - 1) * 0.04), s.owner);
+            effect(g, { kind: "claw", x: e.x, y: e.y, color: "#b6d6a0" });
+          } else shoot(g, s, { ...statsFor(s), damage: s.damage }, e);
+          s.cooldown = s.interval;
+        }
+        continue;
+      }
+      const speed = s.type === "tank" ? 32 : 62;
+      if (!s.onRoad) {
+        const target2 = pathPoint(g.mapIndex, s.progress, s.route), len = distance(s, target2), step = Math.min(len, dt * speed);
+        if (len > 0) {
+          s.angle = Math.atan2(target2.y - s.y, target2.x - s.x);
+          s.x += (target2.x - s.x) / len * step;
+          s.y += (target2.y - s.y) / len * step;
+        }
+        if (len <= step + 0.01) s.onRoad = true;
+        continue;
+      }
+      const target = g.enemies.filter((e2) => e2.hp > 0 && e2.medium === "ground" && e2.route === s.route).sort((a, b) => Math.abs(a.progress - s.progress) - Math.abs(b.progress - s.progress))[0];
+      const goal = target?.progress ?? 0, delta = goal - s.progress;
+      s.progress = Math.max(0, s.progress + Math.sign(delta) * Math.min(Math.abs(delta), dt * speed));
+      const p = pathPoint(g.mapIndex, s.progress, s.route);
+      s.angle = Math.atan2(p.y - s.y, p.x - s.x);
+      s.x = p.x;
+      s.y = p.y;
+    }
+  }
+  function enemies(g, dt) {
+    for (const e of [...g.enemies]) {
+      if (e.hp <= 0) continue;
+      if ((e.variant === "regen" || e.ability === "\uC7AC\uC0DD") && e.burnUntil <= g.time) e.hp = Math.min(e.maxHp, e.hp + e.maxHp * (e.variant === "regen" ? 0.01 : 4e-3) * dt);
+      if (e.burnUntil > g.time) damageEnemy(g, e, e.burn * dt, e.burnOwner, { element: "fire" });
+      if (e.hp <= 0) continue;
+      const blocker = e.medium === "air" ? null : g.soldiers.find((s) => s.hp > 0 && distance(s, e) < Math.max(20, 14 * (e.size || 1) + 12));
+      e.attackCooldown -= dt;
+      if (blocker) {
+        if (e.attackCooldown <= 0) {
+          blocker.hp -= e.boss ? 35 : 9 + g.wave * 0.8;
+          e.attackCooldown = 0.8;
+          effect(g, { kind: "claw", x: blocker.x, y: blocker.y, color: "#ee766c" });
+        }
+      } else {
+        e.progress += e.speed * dt * (e.slowUntil > g.time ? e.slowFactor : 1) * (e.ability === "\uB3CC\uC9C4" && Math.sin(g.time * 1.5) > 0.5 ? 2 : 1);
+        Object.assign(e, pathPoint(g.mapIndex, e.progress, e.route, e.medium));
+      }
+      if (e.ranged && e.attackCooldown <= 0) {
+        const f = g.facilities.filter((f2) => distance(f2, e) < 180).sort((a, b) => distance(a, e) - distance(b, e))[0];
+        if (f) {
+          f.hp -= 12 + g.wave * 2;
+          e.attackCooldown = 1.5;
+          effect(g, { kind: "shot", x: e.x, y: e.y, tx: f.x, ty: f.y, color: "#a04486" });
+        }
+      }
+      if (e.boss) {
+        e.skillCooldown -= dt;
+        if (e.skillCooldown <= 0) {
+          e.skillCooldown = 7;
+          if (e.ability === "\uC99D\uC6D0" && g.enemies.length < 195) {
+            for (let i = 0; i < 3; i++) {
+              const v = spawnEnemy(g);
+              if (!v) break;
+              v.progress = Math.max(0, e.progress - 30 * i);
+              Object.assign(v, pathPoint(g.mapIndex, v.progress, v.route, v.medium));
+            }
+          }
+          if (e.ability === "\uC624\uC5FC") {
+            for (const f of g.facilities) if (distance(e, f) < 220) f.hp -= 80;
+            for (const s of g.soldiers) if (distance(e, s) < 160) s.hp -= 30;
+            effect(g, { kind: "blast", x: e.x, y: e.y, tx: e.x, ty: e.y, color: "#b688ef" });
+          }
+        }
+      }
+      if (e.end) {
+        g.baseHp = Math.max(0, g.baseHp - e.damage);
+        e.hp = 0;
+        effect(g, { kind: "breach", x: e.x, y: e.y });
+      }
+    }
+    const destroyed = new Set(g.facilities.filter((f) => f.hp <= 0).map((f) => f.id));
+    g.facilities = g.facilities.filter((f) => !destroyed.has(f.id));
+    g.soldiers = g.soldiers.filter((s) => !destroyed.has(s.facility));
+    g.enemies = g.enemies.filter((e) => e.hp > 0);
+    flushChildren(g);
+    g.soldiers = g.soldiers.filter((s) => s.hp > 0);
+  }
+  function tick(g, dt) {
+    dt = Math.min(0.1, Math.max(0, dt));
+    if (!Number.isFinite(dt)) return;
+    g.time += dt;
+    g.nukeCooldown = Math.max(0, g.nukeCooldown - dt);
+    g.effects = g.effects.filter((e) => g.time - e.born < 1.3);
+    if (g.phase === "lobby" || ["over", "victory"].includes(g.phase)) return;
+    if (g.phase === "prep") {
+      g.timer = Math.max(0, g.timer - dt);
+      if (g.timer > 0) return;
+      g.wave++;
+      effect(g, { kind: "waveStart", value: g.wave });
+      g.phase = "wave";
+      g.pending = Math.min(160, Math.round((18 + g.wave * 4 + Math.max(0, Object.values(g.players).filter((p) => p.connected).length - 1) * 3) * DIFFICULTIES[g.difficulty].count));
+      g.spawnTimer = 0;
+      if (g.wave % 10 === 0) spawnEnemy(g, true);
+      return;
+    }
+    g.spawnTimer -= dt;
+    if (g.pending > 0 && g.spawnTimer <= 0 && g.enemies.length < 200) {
+      spawnEnemy(g);
+      g.pending--;
+      g.spawnTimer = Math.max(0.18, 0.9 - g.wave * 8e-3);
+    }
+    facilities(g, dt);
+    tickWeapons(g, dt);
+    soldiers(g, dt);
+    enemies(g, dt);
+    if (g.baseHp <= 0) {
+      finishRun(g, "defeat");
+      return;
+    }
+    if (g.pending === 0 && g.enemies.length === 0 && g.pendingChildren.length === 0) finishWave(g);
+  }
+  function advance(g, wallDt) {
+    if (!Number.isFinite(wallDt) || wallDt < 0) return;
+    let remaining = Math.min(0.25, wallDt) * (g.speed || 1);
+    while (remaining > 1e-9) {
+      const step = Math.min(0.05, remaining);
+      tick(g, step);
+      remaining -= step;
+    }
+  }
+
+  // shared/profiles.js
+  var MemoryProfiles = class {
+    constructor() {
+      this.records = {};
+    }
+    persist(_records) {
+    }
+    public(p) {
+      const { receipts, ...publicData } = p;
+      return structuredClone(publicData);
+    }
+    open(token) {
+      if (token) {
+        if (typeof token !== "string" || !Object.hasOwn(this.records, token)) throw Error("\uD504\uB85C\uD544\uC744 \uCC3E\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uC0C8 \uD504\uB85C\uD544\uB85C \uC2DC\uC791\uD574 \uC8FC\uC138\uC694.");
+        return { token, profile: this.public(this.records[token]) };
+      }
+      if (Object.keys(this.records).length >= 1e4) throw Error("\uD504\uB85C\uD544 \uC800\uC7A5 \uACF5\uAC04\uC774 \uAC00\uB4DD \uCC3C\uC2B5\uB2C8\uB2E4.");
+      token = randomId() + randomId();
+      const records = structuredClone(this.records), p = { id: randomId(), pp: 0, clearedTiers: [], owned: [...BASE_FACILITIES], equipped: [...BASE_FACILITIES], receipts: [] };
+      records[token] = p;
+      this.persist(records);
+      this.records = records;
+      return { token, profile: this.public(p) };
+    }
+    transact(token, operation) {
+      if (typeof token !== "string" || !Object.hasOwn(this.records, token)) return { ok: false, error: "\uD504\uB85C\uD544 \uC778\uC99D\uC774 \uD544\uC694\uD569\uB2C8\uB2E4." };
+      const records = structuredClone(this.records), p = records[token];
+      try {
+        const error = operation(p);
+        if (error) return { ok: false, error };
+        this.persist(records);
+        this.records = records;
+        return { ok: true, profile: this.public(p) };
+      } catch {
+        return { ok: false, error: "\uC800\uC7A5\uD558\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4. \uC7A0\uC2DC \uD6C4 \uB2E4\uC2DC \uC2DC\uB3C4\uD574 \uC8FC\uC138\uC694." };
+      }
+    }
+    purchase(token, id) {
+      return this.transact(token, (p) => {
+        if (!safeKey(BONUS_TOWERS, id)) return "\uAD6C\uB9E4\uD560 \uC218 \uC5C6\uB294 \uD0C0\uC6CC\uC785\uB2C8\uB2E4.";
+        if (p.owned.includes(id)) return;
+        const c = BONUS_TOWERS[id];
+        if (!p.clearedTiers.includes(c.unlockTier)) return "\uD574\uB2F9 \uBCF4\uC2A4 \uC2A4\uD14C\uC774\uC9C0\uB97C \uBA3C\uC800 \uD074\uB9AC\uC5B4\uD558\uC138\uC694.";
+        if (p.pp < c.ppCost) return "\uBFCC\uAC00 \uBD80\uC871\uD569\uB2C8\uB2E4.";
+        p.pp -= c.ppCost;
+        p.owned.push(id);
+        p.equipped.push(id);
+      });
+    }
+    equip(token, ids) {
+      return this.transact(token, (p) => {
+        if (!Array.isArray(ids) || ids.length > 22 || ids.some((id) => !safeKey(CATALOG, id) || !p.owned.includes(id))) return "\uC18C\uC720\uD55C \uD0C0\uC6CC\uB9CC \uC7A5\uCC29\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4.";
+        p.equipped = [.../* @__PURE__ */ new Set([...STARTERS, ...ids])];
+      });
+    }
+    settle(token, id, { pp, clearedTier } = {}) {
+      return this.transact(token, (p) => {
+        if (typeof id !== "string" || id.length > 200 || !Number.isSafeInteger(pp) || pp < 0 || pp > 1e5 || clearedTier !== void 0 && (!Number.isInteger(clearedTier) || clearedTier < 0 || clearedTier > 3)) return "\uC798\uBABB\uB41C \uBCF4\uC0C1\uC785\uB2C8\uB2E4.";
+        if (p.receipts.includes(id)) return;
+        if (p.receipts.length >= 1e5) throw Error("receipt limit");
+        p.pp += pp;
+        p.receipts.push(id);
+        if (clearedTier !== void 0 && !p.clearedTiers.includes(clearedTier)) p.clearedTiers.push(clearedTier);
+      });
+    }
+  };
+
+  // scripts/solo-transport.js
+  var values = /* @__PURE__ */ new Map();
+  var profiles = new MemoryProfiles();
+  var localStorage = { getItem: (key) => values.get(key) ?? null, setItem: (key, value) => values.set(key, String(value)), removeItem: (key) => values.delete(key) };
+  var sessionStorage = localStorage;
+  var WebSocket = class {
+    static OPEN = 1;
+    constructor() {
+      this.readyState = 1;
+      this.game = createGame();
+      this.frame = 0;
+      this.timer = null;
+      this.auth = null;
+      this.joined = false;
+      queueMicrotask(() => this.onopen?.());
+    }
+    emit(message) {
+      this.onmessage?.({ data: JSON.stringify(message) });
+    }
+    settle() {
+      for (const e of this.game.rewardEvents) if (e.status !== "saved") {
+        const r = profiles.settle(this.auth.token, e.id, e);
+        if (r.ok) {
+          e.status = "saved";
+          this.emit({ type: "profile", profile: r.profile });
+        }
+      }
+    }
+    send(raw2) {
+      const m = JSON.parse(raw2);
+      if (m.type === "hello") {
+        this.auth = profiles.open(this.auth?.token || m.profileToken);
+        this.emit({ type: "profile", ...this.auth });
+      } else if (m.type === "join") {
+        this.auth = profiles.open(this.auth?.token);
+        addPlayer(this.game, "solo", m.nickname, this.auth.profile);
+        this.joined = true;
+        this.emit({ type: "joined", roomId: "solo", playerId: "solo", token: "" });
+        this.emit({ type: "state", state: snapshot(this.game) });
+        this.timer = setInterval(() => {
+          advance(this.game, 0.05);
+          this.settle();
+          if (++this.frame % 2 === 0) this.emit({ type: "state", state: snapshot(this.game) });
+        }, 50);
+      } else if (m.type === "action") {
+        const result = command(this.game, "solo", m.action);
+        if (!result.ok) this.emit({ type: "error", message: result.error });
+        this.settle();
+        this.emit({ type: "state", state: snapshot(this.game) });
+      } else if (m.type === "leave") {
+        clearInterval(this.timer);
+        this.joined = false;
+        this.game = createGame();
+        this.emit({ type: "left" });
+        this.emit({ type: "profile", profile: profiles.open(this.auth.token).profile });
+      } else if (["purchase", "equip"].includes(m.type)) {
+        if (m.type === "equip" && this.joined && !this.game.outcome) {
+          this.emit({ type: "error", message: "\uC7A5\uCC29\uC740 \uC804\uD22C \uC885\uB8CC \uD6C4 \uBCC0\uACBD\uD558\uC138\uC694." });
+          return;
+        }
+        const r = m.type === "purchase" ? profiles.purchase(this.auth.token, m.tower) : profiles.equip(this.auth.token, m.ids);
+        this.emit(r.ok ? { type: "profile", profile: r.profile } : { type: "error", message: r.error });
+      }
+    }
+    close() {
+      clearInterval(this.timer);
+      this.readyState = 3;
+      this.onclose?.();
+    }
+  };
+
+  // public/renderer.js
+  var colors = ["#eaba78", "#91b9de", "#c6a5e1", "#8ad1b1"];
+  function circle(c, x, y, r, fill, stroke) {
+    c.beginPath();
+    c.arc(x, y, r, 0, Math.PI * 2);
+    if (fill) {
+      c.fillStyle = fill;
+      c.fill();
+    }
+    if (stroke) {
+      c.strokeStyle = stroke;
+      c.stroke();
+    }
+  }
+  function line(c, x, y, tx, ty, color, width = 1) {
+    c.beginPath();
+    c.moveTo(x, y);
+    c.lineTo(tx, ty);
+    c.strokeStyle = color;
+    c.lineWidth = width;
+    c.stroke();
+  }
+  function text(c, value, x, y, color, size = 11, align = "left") {
+    c.fillStyle = color;
+    c.font = `${size}px monospace`;
+    c.textAlign = align;
+    c.fillText(value, x, y);
+  }
+  function health(c, e, width, y) {
+    if (e.hp >= e.maxHp && !e.boss) return;
+    const x = e.x - width / 2;
+    c.fillStyle = "#101711";
+    c.fillRect(x, y, width, 5);
+    c.fillStyle = e.boss ? "#e99b76" : e.owner ? "#92c2dd" : "#b5c28c";
+    c.fillRect(x, y, width * Math.max(0, e.hp / e.maxHp), 5);
+  }
+  function polygon(c, points, fill, stroke) {
+    c.beginPath();
+    c.moveTo(...points[0]);
+    for (const p of points.slice(1)) c.lineTo(...p);
+    c.closePath();
+    if (fill) {
+      c.fillStyle = fill;
+      c.fill();
+    }
+    if (stroke) {
+      c.strokeStyle = stroke;
+      c.stroke();
+    }
+  }
+  var terrainCache = null;
+  var terrainMap = -1;
+  function terrain(index) {
+    if (terrainMap === index && terrainCache) return terrainCache;
+    const off = document.createElement("canvas");
+    off.width = 1200;
+    off.height = 720;
+    const c = off.getContext("2d"), m = MAPS[index];
+    c.fillStyle = m.color;
+    c.fillRect(0, 0, 1200, 720);
+    let seed = 17 + index;
+    const random = () => {
+      seed = seed * 16807 % 2147483647;
+      return seed / 2147483647;
+    };
+    for (let i = 0; i < 1e3; i++) {
+      const x = random() * 1200, y = random() * 720;
+      c.fillStyle = random() > 0.5 ? "#89937809" : "#030b0b18";
+      c.fillRect(x, y, random() * 5 + 1, random() * 3 + 1);
+    }
+    c.lineWidth = 1;
+    for (let x = 0; x < 1200; x += 40) line(c, x, 0, x, 720, "#9fb08608");
+    for (let y = 0; y < 720; y += 40) line(c, 0, y, 1200, y, "#9fb08608");
+    for (const [r, points] of m.routes.entries()) {
+      const path = () => {
+        c.beginPath();
+        points.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y));
+      };
+      c.lineJoin = "round";
+      path();
+      c.lineWidth = 76;
+      c.strokeStyle = r === 2 ? "#aacbd0" : "#afb6a6";
+      c.stroke();
+      path();
+      c.lineWidth = 62;
+      c.strokeStyle = r === 2 ? "#95c6d5" : "#c9c7b8";
+      c.stroke();
+      path();
+      c.lineWidth = 2;
+      c.strokeStyle = r === 2 ? "#e7f8ff" : "#faf5d6";
+      c.setLineDash([12, 18]);
+      c.stroke();
+      c.setLineDash([]);
+      const start2 = points[0];
+      text(c, r === 2 ? "\uD574\uC0C1 \uCE68\uC785" : "\uC9C0\uC0C1 \uACBD\uB85C " + (r + 1), start2[0] + 20, start2[1] - 44, "#385954", 13);
+    }
+    c.beginPath();
+    m.airPath.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y));
+    c.setLineDash([6, 14]);
+    c.strokeStyle = "#729cbd";
+    c.lineWidth = 2;
+    c.stroke();
+    c.setLineDash([]);
+    text(c, "\uACF5\uC911 \uCE68\uC785", 650, 100, "#3d7099", 14);
+    for (const [x, y, w, h] of m.blocked) {
+      c.fillStyle = "#070c0e70";
+      c.fillRect(x + 8, y + 10, w, h);
+      c.fillStyle = index === 3 ? "#a4bcc3" : index === 4 ? "#b7ad9f" : "#b2b4a0";
+      c.fillRect(x, y, w, h);
+      c.strokeStyle = "#65715b";
+      c.lineWidth = 2;
+      c.strokeRect(x, y, w, h);
+      c.strokeStyle = "#141d16";
+      c.strokeRect(x + 8, y + 8, w - 16, h - 16);
+      for (let xx = x + 15; xx < x + w - 12; xx += 22) {
+        c.fillStyle = "#151e19";
+        c.fillRect(xx, y + 12, 12, 5);
+        c.fillRect(xx, y + h - 19, 12, 5);
+      }
+      line(c, x + 12, y + 30, x + w - 12, y + 30, "#6f796442", 2);
+      text(c, "RUINS", x + w / 2, y + h / 2 + 5, "#465141", 9, "center");
+    }
+    for (let i = 0; i < 25; i++) {
+      const x = 35 + random() * 1130, y = 35 + random() * 650;
+      if (!canBuild(index, x, y)) continue;
+      c.save();
+      c.translate(x, y);
+      c.rotate(random() * 6);
+      c.fillStyle = "#72816a28";
+      c.fillRect(-7, -4, 14, 8);
+      line(c, -5, 0, 5, 0, "#080e0c", 1);
+      c.restore();
+    }
+    const start = m.path[0], end = m.path.at(-1);
+    text(c, "\u26A0 INFECTED ZONE", start[0] + 12, start[1] - 52, "#bd9d70", 10);
+    c.fillStyle = "#809474";
+    c.fillRect(end[0] - 24, end[1] - 45, 20, 90);
+    c.fillStyle = "#d3b16e";
+    for (let y = end[1] - 42; y < end[1] + 42; y += 15) c.fillRect(end[0] - 22, y, 16, 6);
+    text(c, "BASE", end[0] - 30, end[1] - 58, "#d4c797", 11, "right");
+    text(c, `SECTOR 0${index + 1} / ${m.subtitle}`, 35, 675, "#81917355", 13);
+    terrainCache = off;
+    terrainMap = index;
+    return off;
+  }
+  function facility(c, f, color, time) {
+    const s = statsFor(f);
+    c.save();
+    c.translate(f.x, f.y);
+    const tier = f.level - 1;
+    circle(c, 3, 7, 25, "#060c0c70");
+    polygon(c, [[-20, -16], [12, -22], [23, -7], [20, 18], [-15, 22], [-24, 8]], "#333e31", "#69785b");
+    c.lineWidth = 2;
+    circle(c, 0, 0, 20, "#263229", color + "80");
+    for (let i = 0; i < f.level; i++) {
+      c.fillStyle = color;
+      c.fillRect(-14 + i * 8, 21, 5, 3);
+    }
+    if (s.kind === "bank") {
+      c.fillStyle = "#777254";
+      c.fillRect(-15, -15, 30, 29);
+      c.fillStyle = "#b1a479";
+      c.fillRect(-18, -18, 36, 6);
+      c.fillStyle = "#29342a";
+      c.fillRect(-5, -3, 10, 17);
+      for (let i = -1; i <= 1; i += 2) {
+        c.fillStyle = s.color;
+        c.fillRect(i * 11 - 2, -8, 4, 5);
+      }
+      text(c, "\uCC0C", 0, -1, s.color, 14, "center");
+      if (tier > 1) {
+        c.fillStyle = "#c5b477";
+        c.fillRect(-19, -24, 38, 4);
+      }
+      if (tier > 2) {
+        line(c, 15, -20, 15, -34, s.color, 2);
+        circle(c, 15, -36, 3, s.color);
+      }
+    } else if (s.kind === "spawn") {
+      c.fillStyle = "#65785d";
+      c.fillRect(-18, -15, 36, 32);
+      polygon(c, [[-22, -15], [0, -28], [22, -15]], "#92a27b", "#c7c49c");
+      c.fillStyle = "#14241d";
+      c.fillRect(-9, -2, 18, 19);
+      c.fillStyle = s.color;
+      c.fillRect(-4, -17, 8, 8);
+      line(c, -7, -13, 7, -13, "#23372a", 2);
+      for (let i = 0; i < tier; i++) {
+        c.fillStyle = s.color;
+        c.fillRect(-21 + i * 14, -24, 7, 3);
+      }
+      if (f.type === "tank") {
+        c.fillStyle = "#8d9e72";
+        c.fillRect(-17, -7, 34, 13);
+        line(c, 0, -6, 21, -16, "#bccfa1", 5);
+      }
+      if (f.type === "drone") {
+        circle(c, -14, -20, 6, null, s.color);
+        circle(c, 14, -20, 6, null, s.color);
+      }
+    } else if (s.kind === "support") {
+      c.fillStyle = "#627b65";
+      c.fillRect(-15, -15, 30, 30);
+      c.fillStyle = "#c3d2af";
+      c.fillRect(-12, -12, 24, 24);
+      if (f.type === "medic") {
+        c.fillStyle = "#729f8e";
+        c.fillRect(-4, -11, 8, 22);
+        c.fillRect(-11, -4, 22, 8);
+      } else {
+        polygon(c, [[-10, -4], [0, -11], [10, -4], [10, 9], [-10, 9]], "#586b4a", s.color);
+        line(c, 0, -10, 0, 9, s.color, 2);
+      }
+      if (tier > 1) circle(c, 0, 0, 25, null, s.color + "70");
+    } else {
+      c.rotate((f.angle || 0) + Math.PI / 2);
+      if (["tesla", "frost", "plasma", "gravity"].includes(f.type)) {
+        circle(c, 0, 0, 13, "#576760", s.color);
+        line(c, 0, -3, 0, -22, s.color, 5);
+        circle(c, 0, -23, 7 + tier, s.color + "40", s.color);
+        circle(c, 0, -23, 3, s.color);
+        if (tier > 1) {
+          circle(c, -13, -10, 4, s.color);
+          circle(c, 13, -10, 4, s.color);
+        }
+      } else if (["mortar", "missile"].includes(f.type)) {
+        c.fillStyle = "#8a8b70";
+        c.fillRect(-13, -16, 26, 28);
+        for (let i = 0; i < 2 + Math.floor(tier / 2); i++) {
+          const x = -8 + i * 8;
+          c.fillStyle = "#3d4b3d";
+          c.fillRect(x - 3, -24, 6, 26);
+          c.fillStyle = s.color;
+          c.fillRect(x - 2, -27, 4, 8);
+        }
+      } else {
+        c.fillStyle = "#8c9b7b";
+        c.fillRect(-12 - tier, -11, 24 + tier * 2, 24);
+        c.fillStyle = "#4c604d";
+        c.fillRect(-9, -8, 18, 17);
+        for (let i = 0; i < (tier > 1 ? 2 : 1); i++) {
+          const x = tier > 1 ? i === 0 ? -6 : 6 : 0;
+          line(c, x, -4, x, -29 - tier * 3, "#1b2924", 7);
+          line(c, x, -7, x, -30 - tier * 3, s.color, 3);
+        }
+        if (tier === 3) {
+          c.fillStyle = s.color;
+          c.fillRect(-17, 2, 6, 12);
+          c.fillRect(11, 2, 6, 12);
+        }
+      }
+    }
+    c.restore();
+  }
+  function enemy(c, e, time) {
+    c.save();
+    c.translate(e.x, e.y);
+    const walk = Math.sin(time * (e.variant === "runner" ? 18 : 10) + Number(e.id)) * 3, size = e.size || (e.boss ? 2.2 : 1);
+    c.scale(size, size);
+    circle(c, 2, 7, 12, "#02090666");
+    c.rotate(e.angle || 0);
+    line(c, -3, -6, -9, -7 + walk, "#738468", 5);
+    line(c, -3, 6, -9, 7 - walk, "#738468", 5);
+    c.fillStyle = e.boss ? "#665944" : e.variant === "runner" ? "#7d8970" : "#535f4c";
+    c.fillRect(-7, -6, 15, 12);
+    line(c, 6, -5, 14, -8 + walk, "#a7b18b", 4);
+    line(c, 6, 5, 14, 8 - walk, "#a7b18b", 4);
+    circle(c, 8, 0, 6, e.boss ? "#b99b79" : "#a5b48a");
+    circle(c, 12, -2, 1.2, "#ed7f64");
+    circle(c, 12, 2, 1.2, "#ed7f64");
+    if (e.boss) {
+      c.strokeStyle = "#c6a068";
+      c.lineWidth = 2;
+      c.strokeRect(-7, -7, 16, 14);
+      polygon(c, [[-5, -10], [-2, -16], [2, -10]], "#ae8d65");
+    }
+    c.restore();
+    if (e.medium === "air") {
+      line(c, e.x - 22, e.y, e.x + 22, e.y, "#416a98", 4);
+      text(c, "\uACF5\uC911", e.x, e.y - 28 * size, "#285e8d", 10, "center");
+    }
+    if (e.medium === "sea") {
+      circle(c, e.x, e.y, 20 * size, null, "#2487a6");
+      text(c, "\uD574\uC0C1", e.x, e.y - 28 * size, "#246e88", 10, "center");
+    }
+    if (e.ranged) text(c, "\uC6D0\uAC70\uB9AC", e.x, e.y + 30 * size, "#853269", 10, "center");
+    if (e.element) {
+      circle(c, e.x, e.y, 15 * size, null, ELEMENTS[e.element].color);
+      text(c, ELEMENTS[e.element].icon, e.x + 15 * size, e.y - 12 * size, ELEMENTS[e.element].color, 11, "center");
+    }
+    if (["armored", "regen", "splitter"].includes(e.variant)) text(c, { armored: "\u7532", regen: "\uFF0B", splitter: "\u25C7" }[e.variant], e.x, e.y + 24 * size, "#d6dfae", 10, "center");
+    if (e.slowUntil > time) circle(c, e.x, e.y, 16 * size, null, "#91d9e3");
+    if (e.burnUntil > time) {
+      circle(c, e.x - 5, e.y - 4, 6, "#ffaf6855");
+      circle(c, e.x + 6, e.y - 8, 4, "#ff783b88");
+    }
+    health(c, e, e.boss ? 65 : 25 * size, e.y - (e.boss ? 40 : 21 * size));
+  }
+  function soldier(c, s, color, time) {
+    c.save();
+    c.translate(s.x, s.y);
+    circle(c, 2, 6, ["tank", "mech"].includes(s.type) ? 16 : 9, "#020b0d66");
+    c.rotate(s.angle || 0);
+    const d = Math.sin(time * 12 + Number(s.id)) * 2;
+    if (["tank", "mech"].includes(s.type)) {
+      c.fillStyle = "#26382a";
+      c.fillRect(-19, -14, 38, 28);
+      c.fillStyle = "#8fa476";
+      c.fillRect(-15, -10, 30, 20);
+      circle(c, 0, 0, 8, "#b1bd8a");
+      line(c, 2, 0, 29, 0, "#263e2c", 7);
+      line(c, 3, 0, 29, 0, color, 3);
+    } else if (s.type === "drone") {
+      for (const [x, y] of [[-10, -10], [10, -10], [-10, 10], [10, 10]]) {
+        line(c, 0, 0, x, y, "#98b2a2", 2);
+        circle(c, x, y, 5, null, color);
+      }
+      circle(c, 0, 0, 6, "#8ba6a2", color);
+    } else {
+      line(c, -2, -4, -8, -5 + d, "#526d57", 4);
+      line(c, -2, 4, -8, 5 - d, "#526d57", 4);
+      c.fillStyle = s.level > 2 ? "#9aab87" : "#718c6c";
+      c.fillRect(-6, -6, 13, 12);
+      circle(c, 4, 0, 6, "#c2bf96");
+      circle(c, 2, 0, 6, "#557651");
+      line(c, 5, 5, 19 + s.level * 2, 5, "#17291d", 4);
+      line(c, 8, 5, 20 + s.level * 2, 5, color, 1);
+      if (s.level > 1) {
+        c.fillStyle = color;
+        c.fillRect(-4, -5, 3, 10);
+      }
+    }
+    c.restore();
+    health(c, s, 22, s.y - 20);
+  }
+  function render(c, state2, previous2, interpolation, ui2) {
+    const t = state2.time + interpolation * 0.1 * (state2.speed || 1);
+    c.clearRect(0, 0, 1200, 720);
+    c.drawImage(terrain(state2.mapIndex), 0, 0);
+    const playerColor = (id) => colors[Math.max(0, state2.players.findIndex((p) => p.id === id)) % 4];
+    const selected = state2.facilities.find((f) => f.id === ui2.selectedId);
+    if (selected) {
+      const s = statsFor(selected);
+      circle(c, selected.x, selected.y, s.range, "#cbb17d0c", "#bfa66b50");
+      circle(c, selected.x, selected.y, 29, null, playerColor(selected.owner));
+    }
+    if (ui2.selectedType && ui2.pointer) {
+      const p = ui2.pointer, valid = canBuild(state2.mapIndex, p.x, p.y) && !state2.facilities.some((f) => Math.hypot(f.x - p.x, f.y - p.y) < 48), color = valid ? "#aace8c" : "#d88777", s = statsFor({ type: ui2.selectedType, level: 1 });
+      circle(c, p.x, p.y, s.range, color + "0d", color + "60");
+      circle(c, p.x, p.y, 25, color + "40", color);
+      c.globalAlpha = 0.6;
+      facility(c, { type: ui2.selectedType, level: 1, x: p.x, y: p.y, angle: 0 }, color, t);
+      c.globalAlpha = 1;
+    }
+    for (const f of state2.facilities) {
+      facility(c, f, playerColor(f.owner), t);
+      health(c, f, 34, f.y - 34);
+    }
+    const prev = new Map((previous2?.mapIndex === state2.mapIndex ? previous2.enemies : []).map((e) => [e.id, e]));
+    for (const e of state2.enemies) {
+      const p = prev.get(e.id), v = p ? { ...e, x: p.x + (e.x - p.x) * interpolation, y: p.y + (e.y - p.y) * interpolation } : e;
+      enemy(c, v, t);
+    }
+    for (const s of state2.soldiers) soldier(c, s, playerColor(s.owner), t);
+    if (ui2.effects > 0) {
+      for (const [i, e] of state2.effects.entries()) {
+        if (ui2.effects < 1 && i % 3 !== 0) continue;
+        const age = t - e.born;
+        if (age < 0 || age > 1.2) continue;
+        c.save();
+        c.globalAlpha = Math.max(0, 1 - age / (e.kind === "damage" ? 1.1 : 0.5));
+        if (e.kind === "damage") {
+          text(c, `${e.critical ? "! " : ""}${e.value}`, e.x, e.y - 23 - age * 25, e.critical ? "#a7440f" : "#243c24", e.critical ? 19 : 13, "center");
+        } else if (e.kind === "playerShot" || e.kind === "shot" || e.kind === "rail" || e.kind === "ice") {
+          line(c, e.x, e.y, e.tx, e.ty, e.color || "#f7d997", e.kind === "rail" ? 4 : 1.5);
+          circle(c, e.x, e.y, 6, e.color + "90");
+          circle(c, e.tx, e.ty, 4, "#f3e0ab");
+        } else if (e.kind === "chain") {
+          c.beginPath();
+          c.moveTo(e.x, e.y);
+          for (let k = 1; k <= 6; k++) {
+            const ratio = k / 6;
+            c.lineTo(e.x + (e.tx - e.x) * ratio + (k < 6 ? Math.sin(k * 17) * 10 : 0), e.y + (e.ty - e.y) * ratio + (k < 6 ? Math.cos(k * 11) * 10 : 0));
+          }
+          c.strokeStyle = e.color;
+          c.lineWidth = 3;
+          c.stroke();
+        } else if (e.kind === "blast") {
+          line(c, e.x, e.y, e.tx, e.ty, e.color, 2);
+          circle(c, e.tx, e.ty, 8 + age * 95, e.color + "60", e.color);
+          circle(c, e.tx, e.ty, 4 + age * 55, "#ffd5a080");
+        } else if (e.kind === "flame") {
+          line(c, e.x, e.y, e.tx, e.ty, "#ff8b4e70", 12);
+          circle(c, e.tx, e.ty, 10 + age * 20, "#ffb45e60");
+        } else if (e.kind === "death") {
+          for (let k = 0; k < 5; k++) {
+            const a = k * 1.25;
+            circle(c, e.x + Math.cos(a) * age * 30, e.y + Math.sin(a) * age * 30, 3, e.color);
+          }
+        } else if (e.kind === "nuke") {
+          circle(c, 600, 360, 40 + age * 1e3, null, "#f8d68a");
+          circle(c, 600, 360, 25 + age * 750, "#e4ad4b16", "#f9bb85");
+          text(c, "\uD575\uD3ED\uD0C4 \xB7 \uBCF4\uC2A4 \uC81C\uC678 \uC804\uC7A5 \uC815\uB9AC", 600, 90, "#f7dcb1", 22, "center");
+        } else if (e.kind === "spawn") circle(c, e.x, e.y, 10 + age * 40, null, e.color);
+        else if (e.kind === "claw") line(c, e.x - 7, e.y - 7, e.x + 7, e.y + 7, e.color, 3);
+        c.restore();
+      }
+    }
+    c.textAlign = "left";
+    c.globalAlpha = 1;
+  }
+
+  // public/ui.js
+  var $ = (id) => document.getElementById(id);
+  var esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  var descriptions = { attack: "\uC811\uADFC\uD558\uB294 \uAC10\uC5FC\uC790\uB97C \uC790\uB3D9\uC73C\uB85C \uACF5\uACA9\uD569\uB2C8\uB2E4.", spawn: "\uAD70\uC778\uC774 \uC790\uB3D9 \uCD9C\uACA9\uD574 \uC801\uC744 \uCD94\uACA9\uD558\uACE0 \uC804\uD22C\uD569\uB2C8\uB2E4.", bank: "\uC6E8\uC774\uBE0C \uC644\uB8CC \uC2DC \uC18C\uC720\uC790\uC5D0\uAC8C \uCC0C\uB97C \uC9C0\uAE09\uD569\uB2C8\uB2E4.", support: "\uC8FC\uBCC0 \uC544\uAD70\uC758 \uC804\uD22C\uB97C \uC9C0\uC6D0\uD569\uB2C8\uB2E4." };
+  function facilityIcon(type, level = 1) {
+    const c = CATALOG[type], barrel = level > 2 ? "M23 18V3M17 18V5M29 18V5" : "M23 18V3";
+    let shape;
+    if (c.kind === "bank") shape = '<path d="M6 17 23 5 40 17ZM9 37h28M12 19v14m11-14v14m11-14v14"/><text x="23" y="28" text-anchor="middle" font-size="12" fill="currentColor" stroke="none">\uCC0C</text>';
+    else if (c.kind === "spawn") shape = '<path d="M6 36V18L23 7l17 11v18ZM17 36V22h13v14M8 17h30"/><path d="M23 12v7M19 15h8"/>';
+    else if (type === "medic") shape = '<path d="M6 12h34v26H6zM18 18h10v5h5v9h-5v5H18v-5h-5v-9h5z"/>';
+    else if (type === "supply") shape = '<path d="M5 15 23 6l18 9v22H5ZM5 15h36M23 15v22M15 20h16"/>';
+    else if (type === "tesla" || type === "plasma" || type === "frost") shape = '<path d="M10 37h27L30 24H17ZM23 23V8"/><circle cx="23" cy="10" r="7"/><path d="m19 7 6-4-3 6 5 1-7 8 2-7-5-1"/>';
+    else if (type === "mortar" || type === "missile") shape = '<path d="M9 37h29L32 26H15ZM19 27 10 9l9-5 12 21ZM27 24 21 9l9-4 8 20Z"/>';
+    else shape = `<path d="M8 37h30l-3-10H11ZM15 27V17h16v10"/><path d="${barrel}"/>`;
+    return `<svg viewBox="0 0 46 44" aria-hidden="true" fill="none" stroke="${c.color}" stroke-width="2.4" stroke-linecap="square">${shape}</svg>`;
+  }
+  var toastTimer;
+  function toast(message) {
+    $("toast").textContent = message;
+    $("toast").hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => $("toast").hidden = true, 3500);
+  }
+  function bindUI({ send: send2, onSelection, onEffects, onFilter }) {
+    $("start-wave").onclick = () => send2({ type: "start" });
+    $("effects").onchange = (e) => onEffects(Number(e.target.value));
+    $("filters").onclick = (e) => {
+      const button = e.target.closest("[data-filter]");
+      if (!button) return;
+      for (const b of $("filters").children) b.classList.toggle("active", b === button);
+      onFilter(button.dataset.filter);
+    };
+    $("build-list").onclick = (e) => {
+      const b = e.target.closest("[data-facility]");
+      if (b && !b.disabled) onSelection({ type: b.dataset.facility });
+    };
+    $("detail").onclick = (e) => {
+      const b = e.target.closest("[data-action]");
+      if (b && !b.disabled) send2({ type: b.dataset.action, id: b.dataset.id });
+    };
+  }
+  function updateUI(state2, ui2) {
+    const me = state2.players.find((p) => p.id === ui2.playerId);
+    if (!me) return;
+    $("map-name").textContent = MAPS[state2.mapIndex].name;
+    $("sector-label").textContent = `SECTOR ${String(state2.mapIndex + 1).padStart(2, "0")} / ${MAPS[state2.mapIndex].subtitle}`;
+    $("money").textContent = `${me.money.toLocaleString("ko-KR")} \uCC0C`;
+    $("wave").textContent = String(state2.wave).padStart(2, "0");
+    $("phase").textContent = { lobby: "\uB300\uAE30", prep: "\uC900\uBE44", wave: "\uBC29\uC5B4", over: "\uC885\uB8CC", victory: "\uC2B9\uB9AC" }[state2.phase];
+    $("base-number").textContent = `${state2.baseHp}%`;
+    $("base-fill").style.width = `${state2.baseHp}%`;
+    $("members").textContent = `${state2.players.length} / 4`;
+    $("facility-count").textContent = `${state2.facilities.length} / 100 \uC2DC\uC124`;
+    const playerHTML = state2.players.map((p, i) => `<div class="player ${p.connected ? "" : "offline"}"><span class="avatar">0${i + 1}</span><span class="player-name">${esc(p.name)}<small>${p.connected ? "Lv." + (p.level || 1) + " \xB7 \uC791\uC804 \uC218\uD589 \uC911" : "\uC7AC\uC811\uC18D \uB300\uAE30"}</small></span>${p.id === ui2.playerId ? '<span class="you">YOU</span>' : ""}<span class="muted">${p.kills} K</span></div>`).join("");
+    if ($("players").innerHTML !== playerHTML) $("players").innerHTML = playerHTML;
+    const boss = state2.enemies.find((e) => e.boss);
+    $("boss-bar").hidden = !boss;
+    if (boss) {
+      $("boss-name").textContent = `Lv.${boss.level} \xB7 ${boss.ability} \uBCF4\uC2A4`;
+      $("boss-health").textContent = `${Math.ceil(boss.hp)} / ${boss.maxHp}`;
+      $("boss-fill").style.width = `${boss.hp / boss.maxHp * 100}%`;
+    }
+    $("wave-banner").hidden = !["lobby", "prep"].includes(state2.phase);
+    $("wave-banner").classList.toggle("prep", state2.phase === "prep");
+    $("banner-title").textContent = state2.phase === "prep" ? `STAGE ${state2.wave + 1} \xB7 ${Math.ceil(state2.timer)}\uCD08 \uD6C4 \uC2DC\uC791` : "\uC791\uC804 \uC900\uBE44";
+    $("start-wave").hidden = state2.phase !== "lobby";
+    $("game-over").hidden = !state2.outcome;
+    $("outcome-title").textContent = state2.outcome === "victory" ? "30\uC2A4\uD14C\uC774\uC9C0 \uB3C4\uC2DC \uD0C8\uD658" : "\uBC29\uC5B4\uC120 \uBD95\uAD34";
+    const rewards = (state2.rewards || []).filter((e) => e.playerId === ui2.playerId);
+    $("reward-result").textContent = rewards.length ? `\uC774\uBC88 \uBCF4\uC0C1 ${rewards.reduce((s2, e) => s2 + e.pp, 0)}\uBFCC \xB7 ${rewards.some((e) => e.error) ? "\uC800\uC7A5 \uC2E4\uD328 \xB7 \uC7AC\uC2DC\uB3C4 \uC911, \uC11C\uBC84\uB97C \uCF1C\uB450\uC138\uC694" : rewards.some((e) => e.status !== "saved") ? "\uC800\uC7A5 \uC911\u2026" : "\uC800\uC7A5 \uC644\uB8CC"}` : "";
+    $("final-score").textContent = `${state2.wave} \uC2A4\uD14C\uC774\uC9C0 \uB3C4\uB2EC \xB7 \uAC10\uC5FC\uC790 ${state2.kills} \uCC98\uCE58`;
+    $("placement-hint").textContent = ui2.selectedType ? `${CATALOG[ui2.selectedType].name} \xB7 \uBE48 \uACF5\uAC04\uC744 \uB20C\uB7EC \uAC74\uC124` : "\uC2DC\uC124 \uC120\uD0DD \u2192 \uBE48 \uACF5\uAC04\uC5D0 \uBC30\uCE58";
+    const cards = Object.entries(CATALOG).filter(([id]) => me.loadout.includes(id)).filter(([id, c2]) => ui2.filter === "all" || (ui2.filter === "economy" ? ["bank", "support"].includes(c2.kind) : c2.kind === ui2.filter)).map(([id, c2]) => {
+      const locked = !unlocked(state2.completedWave, id);
+      return `<button class="build-card ${ui2.selectedType === id ? "selected" : ""}" data-facility="${id}" ${locked ? "disabled" : ""} title="${esc(c2.name)} \xB7 ${c2.cost} \uCC0C${locked ? " \xB7 " + c2.unlockWave + "\uC6E8\uC774\uBE0C \uD074\uB9AC\uC5B4 \uD574\uAE08" : ""}"><span class="facility-icon">${facilityIcon(id)}</span><strong>${c2.name}</strong><span class="price">${c2.cost.toLocaleString()} \uCC0C</span>${locked ? `<span class="unlock">\u{1F512} W${c2.unlockWave}</span>` : ""}</button>`;
+    }).join("");
+    if ($("build-list").innerHTML !== cards) {
+      const x = $("build-list").scrollLeft;
+      $("build-list").innerHTML = cards;
+      $("build-list").scrollLeft = x;
+    }
+    $("intel-text").textContent = "\uC9C0\uC0C1\xB7\uD558\uB298\xB7\uBC14\uB2E4\uC5D0\uC11C \uCE68\uC785\uD569\uB2C8\uB2E4. \uC77C\uBD80 \uC880\uBE44\uB294 \uD0C0\uC6CC\uB97C \uACF5\uACA9\uD569\uB2C8\uB2E4. 10: \uB3CC\uC9C4 \xB7 20: \uC99D\uC6D0 \xB7 30: \uC624\uC5FC \uBCF4\uC2A4. " + ["\uC77C\uBC18\xB7\uC9C8\uC8FC: \uBE60\uB978 \uC801\uC740 \uC5F0\uC0AC\uB85C \uB9C9\uC73C\uC138\uC694.", "\uAC70\uB300: \uCCB4\uB825\uC774 \uB192\uC544 \uC800\uACA9\xB7\uC9D1\uC911 \uACF5\uACA9\uC774 \uC720\uB9AC\uD569\uB2C8\uB2E4.", "\uC7A5\uAC11: \uD53C\uD574\uB97C \uC904\uC5EC \uBC1B\uC2B5\uB2C8\uB2E4. \uAD00\uD1B5 \uACF5\uACA9\uC774 \uC720\uB9AC\uD569\uB2C8\uB2E4.", "\uBD84\uC5F4: \uC8FD\uC73C\uBA74 \uC791\uC740 \uC880\uBE44 3\uB9C8\uB9AC\uAC00 \uB098\uC635\uB2C8\uB2E4. \uBC94\uC704 \uACF5\uACA9\uC744 \uC900\uBE44\uD558\uC138\uC694.", "\uC7AC\uC0DD: \uCCB4\uB825\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4. \uD654\uC5FC\uC73C\uB85C \uD68C\uBCF5\uC744 \uC5B5\uC81C\uD558\uC138\uC694."][state2.mapIndex] + (state2.difficulty > 0 ? " \uD654\uC5FC\xB7\uB0C9\uAE30\xB7\uC804\uAE30 \uC544\uC774\uCF58\uC740 \uD574\uB2F9 \uC800\uD56D\uC744 \uB098\uD0C0\uB0C5\uB2C8\uB2E4." : "");
+    $("difficulty").textContent = "\uB3C4\uC2DC \uD0C8\uD658";
+    $("region-progress").textContent = `\uC2A4\uD14C\uC774\uC9C0 ${state2.wave} / 30`;
+    for (const b of document.querySelectorAll("[data-speed]")) {
+      b.setAttribute("aria-pressed", String(Number(b.dataset.speed) === state2.speed));
+      b.disabled = state2.hostId !== ui2.playerId || !!state2.outcome;
+    }
+    $("player-level").textContent = `\uC0DD\uC874\uC790 Lv.${me.level || 1} \xB7 \uC804\uCCB4 \uACF5\uACA9\uB825 +${((me.level || 1) - 1) * 4}%`;
+    const gunLevel = me.weaponLevels?.[me.weapon] || 1, gunCost = me.weapon ? Math.round(WEAPONS[me.weapon].price * 0.5 * gunLevel) : 0;
+    $("weapon-upgrade").textContent = me.weapon ? `\uBB34\uAE30 Lv.${gunLevel} \u2192 ${gunLevel + 1} \xB7 ${gunCost}\uCC0C` : "\uCD1D \uAD6C\uB9E4 \uD6C4 \uAC15\uD654";
+    $("weapon-upgrade").disabled = !me.weapon || gunLevel >= 10 || me.money < gunCost || !!state2.outcome;
+    const selectedWeapon = $("weapon-choice").value, w = WEAPONS[selectedWeapon], owned = me.weapons.includes(selectedWeapon);
+    $("weapon-buy").dataset.buyWeapon = selectedWeapon;
+    $("weapon-buy").textContent = owned ? "\uBCF4\uC720 \uBB34\uAE30 \uC7A5\uCC29" : `\uAD6C\uB9E4 \xB7 ${w.price.toLocaleString()}\uCC0C`;
+    $("weapon-buy").disabled = !!state2.outcome || !owned && me.money < w.price;
+    $("fire-toggle").textContent = me.firing ? "\uBC1C\uC0AC \uC911\uC9C0" : `\uBC1C\uC0AC \uC2DC\uC791${me.weapon ? " \xB7 " + WEAPONS[me.weapon].name : ""}`;
+    $("fire-toggle").disabled = !me.weapon || !!state2.outcome;
+    $("fire-toggle").classList.toggle("firing", me.firing);
+    $("nuke").textContent = state2.nukeCooldown > 0 ? `\uD575\uD3ED\uD0C4 \xB7 ${Math.ceil(state2.nukeCooldown)}\uCD08 \uB300\uAE30` : "\uD575\uD3ED\uD0C4 \xB7 5000\uCC0C";
+    $("nuke").disabled = me.money < 5e3 || state2.nukeCooldown > 0 || !!state2.outcome;
+    const notice = [...state2.effects || []].reverse().find((e) => ["waveClear", "tier", "notice"].includes(e.kind));
+    $("wave-notice").hidden = !notice;
+    if (notice) $("wave-notice").textContent = notice.text;
+    const f = state2.facilities.find((f2) => f2.id === ui2.selectedId), type = f?.type || ui2.selectedType;
+    if (!type) {
+      if (!$("detail").querySelector(".empty-detail")) $("detail").innerHTML = '<div class="empty-detail"><span>\u2316</span><h3>\uBC29\uC5B4\uC120\uC744 \uC124\uACC4\uD558\uC138\uC694</h3><p>\uC544\uB798\uC5D0\uC11C \uC2DC\uC124\uC744 \uC120\uD0DD\uD574 \uBC30\uCE58\uD558\uAC70\uB098<br>\uAC74\uC124\uD55C \uC2DC\uC124\uC744 \uB20C\uB7EC \uAC15\uD654\uD558\uC138\uC694.</p></div>';
+      return;
+    }
+    const c = CATALOG[type], s = f ? statsFor(f) : statsFor({ type, level: 1 }), mine = !f || f.owner === ui2.playerId, next = f && f.level < 4 ? statsFor({ ...f, level: f.level + 1 }) : null;
+    const row = (label, a, b) => `<div class="stat-row"><span>${label}</span><b>${a}${b ? ` <span>\u2192 ${b}</span>` : ""}</b></div>`;
+    let stats = c.kind === "bank" ? row("\uC6E8\uC774\uBE0C \uC218\uC775", `${s.income} \uCC0C`, next ? `${next.income} \uCC0C` : null) : c.kind === "support" ? row(c.heal ? "\uCD08\uB2F9 \uD68C\uBCF5" : "\uACF5\uACA9\uB825 \uC9C0\uC6D0", c.heal ? s.heal.toFixed(0) : `${Math.round((s.buff - 1) * 100)}%`, next ? c.heal ? next.heal.toFixed(0) : `${Math.round((next.buff - 1) * 100)}%` : null) : row("\uACF5\uACA9\uB825", s.damage, next?.damage) + row(c.kind === "spawn" ? "\uBCD1\uC0AC \uCCB4\uB825" : "\uC0AC\uAC70\uB9AC", c.kind === "spawn" ? s.hp : Math.round(s.range), next ? c.kind === "spawn" ? next.hp : Math.round(next.range) : null);
+    const html = `<div class="detail-icon">${facilityIcon(type, f?.level)}</div><span class="level">${f ? `LEVEL 0${f.level} / ${LEVELS[f.level - 1]}` : "\uC2DC\uC124 \uBC30\uCE58"}</span><h3>${c.name}</h3><p class="desc">${descriptions[c.kind]}</p>${stats}${f ? mine ? (next ? `<button class="primary" data-action="upgrade" data-id="${f.id}" ${me.money < upgradeCost(f) ? "disabled" : ""}>\uAC15\uD654 \xB7 ${upgradeCost(f).toLocaleString()} \uCC0C <span>\u2191</span></button>` : '<p class="level">\uCD5C\uC885 \uAC15\uD654 \uC644\uB8CC</p>') + `<button class="sell" data-action="sell" data-id="${f.id}">\uD310\uB9E4 \xB7 ${Math.floor(f.invested * 0.75).toLocaleString()} \uCC0C \uBC18\uD658</button>` : '<p class="level">\uCE5C\uAD6C\uC758 \uC2DC\uC124</p>' : `<p class="level">\uAC74\uC124 \uBE44\uC6A9 ${c.cost.toLocaleString()} \uCC0C</p><p class="tiny">\uC804\uC7A5\uC758 \uBE48 \uACF5\uAC04\uC744 \uB20C\uB7EC \uBC30\uCE58\uD558\uC138\uC694.<br>\uACBD\uB85C\uC640 \uAC74\uBB3C \uC704\uC5D0\uB294 \uAC74\uC124\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.</p>`}`;
+    if ($("detail").innerHTML !== html) $("detail").innerHTML = html;
+  }
+
+  // public/profile-ui.js
+  function updateProfileUI(profile2, inGame = false) {
+    if (!profile2) return;
+    for (const id of ["profile-wallet", "lobby-wallet", "pp-money"]) {
+      const e = document.getElementById(id);
+      if (e) e.textContent = `${profile2.pp.toLocaleString("ko-KR")} \uBFCC`;
+    }
+    const container = document.getElementById("inventory-list");
+    if (!container) return;
+    const html = Object.entries(CATALOG).map(([id, c]) => {
+      const b = BONUS_TOWERS[id], owned = profile2.owned.includes(id), equipped = profile2.equipped.includes(id), available = !b || profile2.clearedTiers.includes(b.unlockTier), starter = STARTERS.includes(id);
+      return `<article class="inventory-card ${owned ? "owned" : ""}"><span class="eyebrow">${b ? { 0: 10, 1: 20, 2: 30, 3: 30 }[b.unlockTier] + "\uC2A4\uD14C\uC774\uC9C0 \uD074\uB9AC\uC5B4" : "\uAE30\uBCF8 \uBCF4\uC720"}</span><h3>${c.name}</h3><p>${c.cost}\uCC0C\uC5D0 \uAC74\uC124 \xB7 \uC804\uD22C \uB0B4 4\uB2E8\uACC4 \uAC15\uD654</p>${owned ? `<button data-equip="${id}" ${starter || inGame ? "disabled" : ""}>${starter ? "\uAE30\uBCF8 \uC7A5\uCC29" : equipped ? "\uC7A5\uCC29 \uD574\uC81C" : "\uC7A5\uCC29\uD558\uAE30"}</button>` : `<button data-purchase="${id}" ${!available || profile2.pp < b.ppCost ? "disabled" : ""}>${available ? b.ppCost + "\uBFCC \xB7 \uAD6C\uB9E4" : "\uD074\uB9AC\uC5B4 \uD6C4 \uAD6C\uB9E4 \uAC00\uB2A5"}</button>`}</article>`;
+    }).join("");
+    if (container.innerHTML !== html) {
+      const y = container.scrollTop;
+      container.innerHTML = html;
+      container.scrollTop = y;
+    }
+    document.getElementById("profile-message").textContent = inGame ? "\uC7A5\uCC29 \uBCC0\uACBD\uC740 \uC804\uD22C \uC885\uB8CC \uD6C4 \uAC00\uB2A5\uD569\uB2C8\uB2E4. \uAD6C\uB9E4\uD55C \uD0C0\uC6CC\uB294 \uB2E4\uC74C \uBC29\uBD80\uD130 \uC0AC\uC6A9\uD569\uB2C8\uB2E4." : "\uC7A5\uCC29\uD55C \uD0C0\uC6CC\uAC00 \uB2E4\uC74C \uAC8C\uC784\uC758 \uAC74\uC124 \uBAA9\uB85D\uC5D0 \uD45C\uC2DC\uB429\uB2C8\uB2E4. \uBFCC\uC640 \uAD6C\uB9E4 \uAE30\uB85D\uC740 \uC11C\uBC84\uC5D0 \uC800\uC7A5\uB429\uB2C8\uB2E4.";
+  }
+
+  // public/audio.js
+  function createAudio({ contextFactory = () => new (globalThis.AudioContext || globalThis.webkitAudioContext)(), storage: storage2 = globalThis.localStorage } = {}) {
+    let saved2 = {};
+    try {
+      saved2 = JSON.parse(storage2?.getItem("outpost-audio") || "{}");
+    } catch {
+    }
+    const clamp = (n, f) => typeof n === "number" && Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : f;
+    const settings = { music: clamp(saved2.music, 0.25), effects: clamp(saved2.effects, 0.5), muted: !!saved2.muted };
+    let ctx2, music, sfx, master, timer = null, boss = false, phase = "lobby", beat = 0, voices = /* @__PURE__ */ new Set(), seen = /* @__PURE__ */ new Set(), disposed = false;
+    function apply() {
+      if (!ctx2) return;
+      master.gain.value = settings.muted ? 0 : 1;
+      music.gain.value = settings.music;
+      sfx.gain.value = settings.effects;
+    }
+    function save() {
+      try {
+        storage2?.setItem("outpost-audio", JSON.stringify(settings));
+      } catch {
+      }
+      apply();
+    }
+    function voice(freq, duration, type = "sine", gain = 0.12, bus = sfx) {
+      if (!ctx2 || ctx2.state !== "running" || disposed || settings.muted) return false;
+      for (const v of voices) if (v.ends <= ctx2.currentTime) voices.delete(v);
+      const effect2 = bus === sfx;
+      if (effect2 && voices.size >= 12) return false;
+      const osc = ctx2.createOscillator(), env = ctx2.createGain(), now = ctx2.currentTime;
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, now);
+      env.gain.setValueAtTime(Math.max(1e-4, gain), now);
+      env.gain.exponentialRampToValueAtTime(1e-4, now + duration);
+      osc.connect(env);
+      env.connect(bus);
+      const item = { osc, ends: now + duration };
+      if (effect2) voices.add(item);
+      osc.onended = () => {
+        voices.delete(item);
+        osc.disconnect();
+        env.disconnect();
+      };
+      osc.start(now);
+      osc.stop(now + duration);
+      return true;
+    }
+    function play(kind) {
+      const table = { shot: [110, 0.07, "square"], playerShot: [150, 0.08, "sawtooth"], rail: [800, 0.15, "sawtooth"], blast: [55, 0.35, "sawtooth"], nuke: [30, 1.2, "sawtooth"], flame: [95, 0.12, "sawtooth"], chain: [930, 0.1, "square"], ice: [1200, 0.12, "sine"], claw: [180, 0.08, "triangle"], build: [440, 0.12, "sine"], upgrade: [660, 0.2, "sine"], purchase: [880, 0.2, "sine"], gather: [330, 0.025, "sine"], waveStart: [220, 0.35, "triangle"], waveClear: [660, 0.35, "sine"], tier: [880, 0.5, "triangle"], victory: [1046, 0.7, "sine"], defeat: [65, 0.8, "triangle"], boss: [82, 0.7, "sawtooth"] };
+      const s = table[kind];
+      if (s) return voice(...s, 0.12);
+      return false;
+    }
+    function startLoop() {
+      if (timer) return;
+      timer = setInterval(() => {
+        if (ctx2?.state !== "running" || !["wave", "prep"].includes(phase)) return;
+        const notes = boss ? [55, 58.27, 65.4, 73.4] : [41.2, 41.2, 49, 36.7];
+        voice(notes[beat % 4], 0.5, "triangle", 0.25, music);
+        if (beat % 4 === 0) voice(notes[beat % 4] * 4, 1.5, "sine", 0.08, music);
+        beat++;
+      }, 400);
+      timer.unref?.();
+    }
+    return { settings, get activeVoices() {
+      return voices.size;
+    }, get state() {
+      return ctx2?.state || "inactive";
+    }, async unlock() {
+      if (disposed) return false;
+      try {
+        if (!ctx2) {
+          ctx2 = contextFactory();
+          master = ctx2.createGain();
+          music = ctx2.createGain();
+          sfx = ctx2.createGain();
+          music.connect(master);
+          sfx.connect(master);
+          master.connect(ctx2.destination);
+          apply();
+        }
+        await ctx2.resume();
+        startLoop();
+        return ctx2.state === "running";
+      } catch {
+        return false;
+      }
+    }, play, setVolumes(m, e) {
+      settings.music = clamp(m, settings.music);
+      settings.effects = clamp(e, settings.effects);
+      save();
+    }, setMuted(m) {
+      settings.muted = !!m;
+      save();
+    }, update(s, first = false) {
+      const nextBoss = s.enemies?.some((e) => e.boss) || false;
+      if (first) {
+        seen = new Set((s.effects || []).map((e) => e.id));
+      } else {
+        let played = 0;
+        for (const e of s.effects || []) {
+          if (!seen.has(e.id)) {
+            seen.add(e.id);
+            if (played < 8 && play(e.kind)) played++;
+          }
+        }
+        if (nextBoss && !boss) play("boss");
+      }
+      if (seen.size > 3e3) seen = new Set((s.effects || []).map((e) => e.id));
+      boss = nextBoss;
+      phase = s.phase;
+    }, async suspend() {
+      try {
+        await ctx2?.suspend();
+      } catch {
+      }
+    }, async dispose() {
+      disposed = true;
+      clearInterval(timer);
+      for (const v of voices) try {
+        v.osc.stop();
+      } catch {
+      }
+      voices.clear();
+      try {
+        await ctx2?.close();
+      } catch {
+      }
+    } };
+  }
+
+  // public/app.js
+  var $2 = (id) => document.getElementById(id);
+  var canvas = $2("battle");
+  var ctx = canvas.getContext("2d");
+  var storage = { getItem(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }, setItem(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+    }
+  }, removeItem(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch {
+    }
+  } };
+  var audio = createAudio({ storage });
+  var socket;
+  var state = null;
+  var previous = null;
+  var received = 0;
+  var retryTimer = null;
+  var retries = 0;
+  var session = null;
+  var pendingBuild = null;
+  var profile = null;
+  var ui = { playerId: null, selectedType: null, selectedId: null, selectionVersion: 0, pointer: null, effects: Number(storage.getItem("outpost-effects") ?? 1), filter: "all" };
+  var zoom = 1;
+  var pan = { x: 0, y: 0 };
+  var gesture = null;
+  var roomId = new URL(location.href).searchParams.get("room");
+  function readSession(id) {
+    try {
+      return JSON.parse(storage.getItem(`outpost:${id}`) || sessionStorage.getItem(`outpost:${id}`));
+    } catch {
+      return null;
+    }
+  }
+  function setConnection(connected) {
+    $2("connection").replaceChildren();
+    const dot = document.createElement("i");
+    $2("connection").append(dot, connected ? " \uC5F0\uACB0\uB428" : " \uC7AC\uC5F0\uACB0 \uC911\u2026");
+  }
+  function raw(message) {
+    if (socket?.readyState !== WebSocket.OPEN) {
+      toast("\uC11C\uBC84 \uC5F0\uACB0\uC744 \uD655\uC778\uD574 \uC8FC\uC138\uC694. npm start \uCC3D\uC744 \uCF1C\uB450\uC138\uC694.");
+      return false;
+    }
+    socket.send(JSON.stringify(message));
+    return true;
+  }
+  function send(action) {
+    if (!ui.playerId) {
+      toast("\uBA3C\uC800 \uBC29\uC5D0 \uC785\uC7A5\uD574 \uC8FC\uC138\uC694.");
+      return;
+    }
+    raw({ type: "action", action });
+  }
+  function applyProfile(p) {
+    if (profile && p.owned.length > profile.owned.length) audio.play("purchase");
+    profile = p;
+    updateProfileUI(p, !!state && !state.outcome);
+  }
+  function refresh() {
+    if (state) {
+      updateUI(state, ui);
+      updateProfileUI(profile, !state.outcome);
+    }
+  }
+  function showLobby() {
+    if (session?.roomId) storage.removeItem(`outpost:${session.roomId}`);
+    session = null;
+    state = null;
+    previous = null;
+    pendingBuild = null;
+    ui.playerId = null;
+    ui.selectedType = null;
+    ui.selectedId = null;
+    $2("lobby").hidden = false;
+    $2("game").hidden = true;
+    document.body.classList.remove("in-game");
+    const url = new URL(location.href);
+    url.searchParams.delete("room");
+    history.replaceState(null, "", url);
+    $2("room-code").value = "";
+    $2("join-error").textContent = "";
+    $2("join-button").disabled = false;
+    updateProfileUI(profile, false);
+    void audio.suspend();
+  }
+  async function enableAudio() {
+    const enabled = await audio.unlock();
+    $2("sound-enable").textContent = enabled ? "\uC18C\uB9AC \uD65C\uC131" : "\uC18C\uB9AC \uB2E4\uC2DC \uCF1C\uAE30";
+    return enabled;
+  }
+  function connect(info = null) {
+    clearTimeout(retryTimer);
+    if (socket) {
+      socket.onclose = null;
+      socket.onmessage = null;
+      socket.close();
+    }
+    session = info;
+    if (info) {
+      $2("join-button").disabled = true;
+      $2("join-error").textContent = "";
+    }
+    const ws = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${location.host}`);
+    socket = ws;
+    let joinSent = false;
+    ws.onopen = () => raw({ type: "hello", profileToken: storage.getItem("outpost-profile-token") || void 0 });
+    ws.onmessage = (event) => {
+      if (socket !== ws) return;
+      let m;
+      try {
+        m = JSON.parse(event.data);
+      } catch {
+        return;
+      }
+      if (m.type === "profile") {
+        if (m.token) storage.setItem("outpost-profile-token", m.token);
+        applyProfile(m.profile);
+        $2("reset-profile").hidden = true;
+        if (info && !joinSent) {
+          joinSent = true;
+          raw({ type: "join", nickname: info.nickname, roomId: info.roomId || void 0, token: info.token || void 0 });
+        }
+      } else if (m.type === "joined") {
+        ui.playerId = m.playerId;
+        session = { ...info, autoStart: false, roomId: m.roomId, token: m.token, roomCode: m.roomCode };
+        if (m.roomCode) storage.setItem(`outpost-code:${m.roomCode}`, m.roomId);
+        $2("room-code-display").textContent = m.roomCode || "1\uC778";
+        storage.setItem(`outpost:${m.roomId}`, JSON.stringify(session));
+        storage.setItem("outpost-name", info.nickname);
+        const url = new URL(location.href);
+        url.searchParams.set("room", m.roomId);
+        history.replaceState(null, "", url);
+        $2("lobby").hidden = true;
+        $2("game").hidden = false;
+        document.body.classList.add("in-game");
+        retries = 0;
+        setConnection(true);
+        resize();
+        if (info.autoStart) send({ type: "start" });
+      } else if (m.type === "state") {
+        if (!ui.playerId) return;
+        const first = !state;
+        previous = state;
+        state = m.state;
+        received = performance.now();
+        audio.update(state, first);
+        if (pendingBuild) {
+          const f = state.facilities.find((f2) => f2.owner === ui.playerId && Math.hypot(f2.x - pendingBuild.x, f2.y - pendingBuild.y) < 2);
+          if (f) {
+            if (ui.selectionVersion === pendingBuild.version) {
+              ui.selectedId = f.id;
+              ui.selectedType = null;
+            }
+            pendingBuild = null;
+          }
+        }
+        if (ui.selectedId && !state.facilities.some((f) => f.id === ui.selectedId)) ui.selectedId = null;
+        refresh();
+      } else if (m.type === "error") {
+        pendingBuild = null;
+        $2("join-button").disabled = false;
+        if (m.scope === "profile") {
+          $2("join-error").textContent = m.message;
+          $2("reset-profile").hidden = false;
+          return;
+        }
+        if (!ui.playerId) {
+          $2("join-error").textContent = m.message;
+          if (info?.token && m.message.includes("\uC774\uBBF8 \uC811\uC18D") && retries++ < 5) {
+            ws.onclose = null;
+            ws.close();
+            retryTimer = setTimeout(() => connect(info), 700);
+            return;
+          }
+          if (info?.token && !m.message.includes("\uC774\uBBF8 \uC811\uC18D")) {
+            storage.removeItem(`outpost:${info.roomId}`);
+            sessionStorage.removeItem(`outpost:${info.roomId}`);
+            ws.onclose = null;
+            ws.close();
+            showLobby();
+            $2("join-error").textContent = m.message;
+            return;
+          }
+        }
+        toast(m.message);
+      }
+    };
+    ws.onclose = () => {
+      if (socket !== ws) return;
+      setConnection(false);
+      $2("join-button").disabled = false;
+      if (session?.token && !$2("game").hidden) {
+        ui.playerId = null;
+        retryTimer = setTimeout(() => connect(session), Math.min(5e3, 500 + retries++ * 500));
+      }
+    };
+    ws.onerror = () => {
+      $2("join-error").textContent = "\uC11C\uBC84\uC5D0 \uC5F0\uACB0\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. npm start \uCC3D\uC744 \uCF1C\uB454 \uB4A4 \uB2E4\uC2DC \uC2DC\uC791\uD574 \uC8FC\uC138\uC694.";
+      $2("join-button").disabled = false;
+    };
+  }
+  $2("nickname").value = storage.getItem("outpost-name") || "";
+  if (roomId) $2("join-note").textContent = "\uCD08\uB300\uBC1B\uC740 \uBC29\uC785\uB2C8\uB2E4. \uCC38\uAC00\uD558\uB824\uBA74 \uC791\uC804 \uC2DC\uC791, \uC0C8 \uAC8C\uC784\uC740 \uD63C\uC790 \uC0C8 \uBC29 \uC2DC\uC791\uC744 \uB204\uB974\uC138\uC694.";
+  $2("join-form").onsubmit = (e) => {
+    e.preventDefault();
+    const nickname = $2("nickname").value.trim();
+    if (!nickname) return;
+    void enableAudio();
+    const target = $2("room-code").value.trim() || new URL(location.href).searchParams.get("room") || void 0, canonical = target ? storage.getItem(`outpost-code:${target}`) || target : null, saved2 = canonical ? readSession(canonical) : null;
+    connect({ nickname, roomId: saved2?.roomId || target, token: saved2?.token || void 0 });
+  };
+  $2("weapon-upgrade").onclick = () => send({ type: "upgradeWeapon" });
+  $2("new-solo").onclick = () => {
+    const nickname = $2("nickname").value.trim();
+    if (!nickname) {
+      $2("join-error").textContent = "\uB2C9\uB124\uC784\uC744 \uBA3C\uC800 \uC785\uB825\uD574 \uC8FC\uC138\uC694.";
+      $2("nickname").focus();
+      return;
+    }
+    void enableAudio();
+    const url = new URL(location.href);
+    url.searchParams.delete("room");
+    history.replaceState(null, "", url);
+    $2("room-code").value = "";
+    connect({ nickname, autoStart: true });
+  };
+  $2("reset-profile").onclick = () => {
+    storage.removeItem("outpost-profile-token");
+    connect();
+  };
+  $2("return-lobby").onclick = () => {
+    raw({ type: "leave" });
+    showLobby();
+  };
+  for (const id of ["open-shop", "open-shop-game"]) $2(id).onclick = () => {
+    updateProfileUI(profile, !!state && !state.outcome);
+    $2("profile-dialog").showModal();
+  };
+  $2("close-shop").onclick = () => $2("profile-dialog").close();
+  $2("inventory-list").onclick = (e) => {
+    void enableAudio();
+    const purchase = e.target.closest("[data-purchase]"), equip = e.target.closest("[data-equip]");
+    if (purchase && !purchase.disabled) raw({ type: "purchase", tower: purchase.dataset.purchase });
+    if (equip && !equip.disabled && profile) {
+      const id = equip.dataset.equip, ids = profile.equipped.includes(id) ? profile.equipped.filter((v) => v !== id) : [...profile.equipped, id];
+      raw({ type: "equip", ids });
+    }
+  };
+  bindUI({ send, onSelection: (selection) => {
+    ui.selectionVersion++;
+    ui.selectedType = selection.type;
+    ui.selectedId = null;
+    refresh();
+  }, onEffects: (value) => {
+    ui.effects = value;
+    storage.setItem("outpost-effects", value);
+  }, onFilter: (value) => {
+    ui.filter = value;
+    refresh();
+  } });
+  $2("effects").value = String(ui.effects);
+  for (const b of document.querySelectorAll("[data-speed]")) b.onclick = () => send({ type: "speed", value: Number(b.dataset.speed) });
+  $2("weapon-choice").onchange = () => refresh();
+  $2("weapon-buy").onclick = () => {
+    const weapon = $2("weapon-choice").value, me = state?.players.find((p) => p.id === ui.playerId);
+    send({ type: me?.weapons.includes(weapon) ? "selectWeapon" : "buyWeapon", weapon });
+  };
+  $2("fire-toggle").onclick = () => send({ type: "toggleFire" });
+  $2("nuke").onclick = () => $2("nuke-confirm").hidden = !$2("nuke-confirm").hidden;
+  $2("nuke-confirm").onclick = () => {
+    send({ type: "nuke" });
+    $2("nuke-confirm").hidden = true;
+  };
+  function audioControls() {
+    $2("music-volume").value = Math.round(audio.settings.music * 100);
+    $2("sfx-volume").value = Math.round(audio.settings.effects * 100);
+    $2("mute-sound").textContent = audio.settings.muted ? "\uC18C\uB9AC \uBCF5\uC6D0" : "\uC74C\uC18C\uAC70";
+    $2("mute-sound").setAttribute("aria-pressed", String(audio.settings.muted));
+  }
+  $2("music-volume").oninput = $2("sfx-volume").oninput = () => {
+    audio.setVolumes(Number($2("music-volume").value) / 100, Number($2("sfx-volume").value) / 100);
+  };
+  $2("mute-sound").onclick = () => {
+    audio.setMuted(!audio.settings.muted);
+    audioControls();
+  };
+  $2("sound-enable").onclick = () => void enableAudio();
+  audioControls();
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) void audio.suspend();
+    else if (audio.state === "suspended" && !audio.settings.muted) void enableAudio();
+  });
+  addEventListener("pagehide", () => void audio.dispose());
+  function resize() {
+    const box = $2("battlefield").getBoundingClientRect(), scale = Math.min(box.width / 1200, box.height / 720), w = 1200 * scale * zoom, h = 720 * scale * zoom;
+    pan.x = Math.max(-Math.max(0, (w - box.width) / 2), Math.min(Math.max(0, (w - box.width) / 2), pan.x));
+    pan.y = Math.max(-Math.max(0, (h - box.height) / 2), Math.min(Math.max(0, (h - box.height) / 2), pan.y));
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+    canvas.style.flexShrink = "0";
+    canvas.style.transform = `translate(${pan.x}px,${pan.y}px)`;
+  }
+  new ResizeObserver(resize).observe($2("battlefield"));
+  function point(event) {
+    const b = canvas.getBoundingClientRect();
+    return { x: (event.clientX - b.left) * 1200 / b.width, y: (event.clientY - b.top) * 720 / b.height };
+  }
+  canvas.addEventListener("pointermove", (e) => {
+    ui.pointer = point(e);
+    if (gesture && e.pointerId === gesture.id) {
+      const dx = e.clientX - gesture.x, dy = e.clientY - gesture.y;
+      if (Math.hypot(dx, dy) > 6) gesture.moved = true;
+      if (gesture.moved) {
+        pan.x = gesture.panX + dx;
+        pan.y = gesture.panY + dy;
+        resize();
+      }
+    }
+  });
+  canvas.addEventListener("pointerleave", () => {
+    ui.pointer = null;
+  });
+  canvas.addEventListener("pointerdown", (e) => {
+    if (!state || state.outcome) return;
+    e.preventDefault();
+    canvas.setPointerCapture(e.pointerId);
+    gesture = { id: e.pointerId, x: e.clientX, y: e.clientY, panX: pan.x, panY: pan.y, moved: false };
+  });
+  canvas.addEventListener("pointercancel", () => {
+    gesture = null;
+  });
+  canvas.addEventListener("pointerup", (e) => {
+    if (!gesture || gesture.id !== e.pointerId) return;
+    const moved = gesture.moved;
+    gesture = null;
+    if (moved || !state || state.outcome) return;
+    send({ type: "gather" });
+    const p = point(e), f = state.facilities.find((f2) => Math.hypot(p.x - f2.x, p.y - f2.y) < 25);
+    if (f) {
+      ui.selectionVersion++;
+      ui.selectedId = f.id;
+      ui.selectedType = null;
+      refresh();
+    } else if (ui.selectedType) {
+      pendingBuild = { ...p, version: ui.selectionVersion };
+      send({ type: "build", facility: ui.selectedType, ...p });
+    } else {
+      ui.selectionVersion++;
+      ui.selectedId = null;
+      refresh();
+    }
+  });
+  $2("zoom-in").onclick = () => {
+    zoom = Math.min(3, zoom + 0.5);
+    resize();
+  };
+  $2("zoom-out").onclick = () => {
+    zoom = Math.max(1, zoom - 0.5);
+    resize();
+  };
+  $2("zoom-reset").onclick = () => {
+    zoom = 1;
+    pan = { x: 0, y: 0 };
+    resize();
+  };
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      ui.selectionVersion++;
+      ui.selectedType = null;
+      ui.selectedId = null;
+      refresh();
+    }
+  });
+  $2("room-copy").onclick = async () => {
+    const code = $2("room-code-display").textContent;
+    try {
+      await navigator.clipboard.writeText(code);
+      toast(`\uBC29 \uCF54\uB4DC ${code}\uB97C \uBCF5\uC0AC\uD588\uC2B5\uB2C8\uB2E4.`);
+    } catch {
+      toast(`\uCE5C\uAD6C\uC5D0\uAC8C \uBC29 \uCF54\uB4DC ${code}\uB97C \uC54C\uB824\uC8FC\uC138\uC694.`);
+    }
+  };
+  $2("share").onclick = async () => {
+    const url = location.href;
+    try {
+      if (navigator.share && !navigator.webdriver) {
+        await navigator.share({ title: "LAST OUTPOST \xB7 \uC880\uBE44 \uD611\uB3D9 \uB514\uD39C\uC2A4", text: `\uAC19\uC774 \uBC29\uC5B4\uC120\uC744 \uC9C0\uCF1C\uC918! \uCD5C\uB300 4\uC778 \uD611\uB3D9 \xB7 \uBC29 \uCF54\uB4DC ${session?.roomCode || ""}`, url });
+        toast("\uBC29 \uB9C1\uD06C\uB97C \uACF5\uC720\uD588\uC2B5\uB2C8\uB2E4.");
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(`LAST OUTPOST \xB7 \uBC29 \uCF54\uB4DC ${session?.roomCode || ""}
+${url}`);
+        toast("\uBC29 \uB9C1\uD06C\uB97C \uBCF5\uC0AC\uD588\uC2B5\uB2C8\uB2E4. \uCE74\uD1A1\uC5D0 \uBD99\uC5EC\uB123\uC73C\uC138\uC694.");
+      } else toast(`\uBC29 \uB9C1\uD06C: ${url}`);
+    } catch (e) {
+      if (e.name !== "AbortError") toast(`\uC8FC\uC18C\uCC3D\uC758 \uBC29 \uB9C1\uD06C\uB97C \uBCF5\uC0AC\uD574 \uC8FC\uC138\uC694: ${url}`);
+    }
+  };
+  function frame(now) {
+    if (state) render(ctx, state, previous, Math.min(1, (now - received) / 100), ui);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  var saved = roomId ? readSession(roomId) : null;
+  connect(saved?.token ? saved : null);
+})();
+</script>
+</body></html>
