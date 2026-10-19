@@ -20,6 +20,11 @@ html=html.replace('<link rel="stylesheet" href="/styles.css">',`<style>${css}</s
  .replace('기지를 세우고 동료를 모아 몰려오는 감염자를 막아라.','기지를 세우고 몰려오는 감염자를 막아라.')
  .replace('방 코드를 비우면 새 방 생성 · 친구 코드를 입력하면 같은 방 입장','서버·설치 없이 실행됩니다. 창을 닫으면 진행은 초기화됩니다.')
  .replace('방어 시스템 온라인','1인 오프라인 체험판');
+html=html.replace('<title>LAST OUTPOST · 최후의 방어선</title>','<title>색상 수정판 V2 · LAST OUTPOST</title>')
+ .replaceAll('<small>최후의 방어선</small>','<small>최후의 방어선 <b class="color-version">색상 수정판 V2</b></small>')
+ .replace('30스테이지 성장','30스테이지 성장 · 색상 수정판 V2');
+html=html.replace('</style>','\n.color-version{display:inline-block;background:#526c43;color:#fff4d4;padding:3px 6px;border-radius:3px;font:bold 11px Arial;letter-spacing:0;margin-left:5px}@media(max-width:900px){.brand .color-version{font-size:9px;padding:2px 4px}}\n</style>');
+await writeFile(resolve(root,'play-solo-color-v2.html'),html);
 await mkdir(resolve(root,'dist'),{recursive:true});
 await writeFile(resolve(root,'dist/last-outpost-solo.html'),html);
 await writeFile(resolve(root,'play-solo.html'),html);

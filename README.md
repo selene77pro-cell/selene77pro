@@ -1,3 +1,5 @@
+**색상 수정판은 `play-solo-color-v2.html`을 여세요.** 전투 상단에 ‘색상 수정판 V2’ 표시가 나옵니다. 기존 이름인 play-solo.html도 동일한 새 색상으로 생성됩니다.
+
 [**휴대폰·카톡 친구 초대용 게임 서버 만들기**](docs/phone-and-friends.md) · [Render 배포 버튼](https://render.com/deploy?repo=https://github.com/selene77pro-cell/selene77pro)
 
 # LAST OUTPOST — 밝은 폐허 도시
