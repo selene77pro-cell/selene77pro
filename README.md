@@ -1,3 +1,7 @@
+**간단 다운로드:** `뀨겜1.zip`에는 `뀨겜1.html` 한 개만 들어 있습니다. 압축을 풀어 이 파일을 카톡으로 보내면 됩니다. 마크도 파일 안에 포함됩니다.
+
+**휴대폰 수정판: `뀨겜1.html`**을 여세요. 게임 안과 브라우저 탭에는 전용 Q 방패 마크가 보입니다. 파일 관리자의 HTML 아이콘은 연결된 앱이 정하므로 별도입니다. 시작 화면의 실행 준비/오류 안내로 상태를 확인할 수 있습니다.
+
 **색상 수정판은 `play-solo-color-v2.html`을 여세요.** 전투 상단에 ‘색상 수정판 V2’ 표시가 나옵니다. 기존 이름인 play-solo.html도 동일한 새 색상으로 생성됩니다.
 
 [**휴대폰·카톡 친구 초대용 게임 서버 만들기**](docs/phone-and-friends.md) · [Render 배포 버튼](https://render.com/deploy?repo=https://github.com/selene77pro-cell/selene77pro)

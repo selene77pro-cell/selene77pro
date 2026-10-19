@@ -17,7 +17,8 @@ function raw(message){if(socket?.readyState!==WebSocket.OPEN){toast('서버 연�
 function send(action){if(!ui.playerId){toast('먼저 방에 입장해 주세요.');return;}raw({type:'action',action});}
 function applyProfile(p){if(profile&&p.owned.length>profile.owned.length)audio.play('purchase');profile=p;updateProfileUI(p,!!state&&!state.outcome);}
 function refresh(){if(state){updateUI(state,ui);updateProfileUI(profile,!state.outcome);}}
-function showLobby(){if(session?.roomId)storage.removeItem(`outpost:${session.roomId}`);session=null;state=null;previous=null;pendingBuild=null;ui.playerId=null;ui.selectedType=null;ui.selectedId=null;$('lobby').hidden=false;$('game').hidden=true;document.body.classList.remove('in-game');const url=new URL(location.href);url.searchParams.delete('room');history.replaceState(null,'',url);$('room-code').value='';$('join-error').textContent='';$('join-button').disabled=false;updateProfileUI(profile,false);void audio.suspend();}
+function replaceAddress(url){try{history.replaceState(null,'',url);}catch{ /* File/content viewers may prohibit address rewriting. */ }}
+function showLobby(){if(session?.roomId)storage.removeItem(`outpost:${session.roomId}`);session=null;state=null;previous=null;pendingBuild=null;ui.playerId=null;ui.selectedType=null;ui.selectedId=null;$('lobby').hidden=false;$('game').hidden=true;document.body.classList.remove('in-game');const url=new URL(location.href);url.searchParams.delete('room');replaceAddress(url);$('room-code').value='';$('join-error').textContent='';$('join-button').disabled=false;updateProfileUI(profile,false);void audio.suspend();}
 async function enableAudio(){const enabled=await audio.unlock();$('sound-enable').textContent=enabled?'소리 활성':'소리 다시 켜기';return enabled;}
 function connect(info=null){
  clearTimeout(retryTimer);if(socket){socket.onclose=null;socket.onmessage=null;socket.close();}session=info;if(info){$('join-button').disabled=true;$('join-error').textContent='';}
@@ -25,11 +26,11 @@ function connect(info=null){
  ws.onopen=()=>raw({type:'hello',profileToken:storage.getItem('outpost-profile-token')||undefined});
  ws.onmessage=event=>{if(socket!==ws)return;let m;try{m=JSON.parse(event.data);}catch{return;}
   if(m.type==='profile'){
-   if(m.token)storage.setItem('outpost-profile-token',m.token);applyProfile(m.profile);$('reset-profile').hidden=true;
+   if(m.token)storage.setItem('outpost-profile-token',m.token);applyProfile(m.profile);globalThis.__outpostOfflineReady?.();$('reset-profile').hidden=true;
    if(info&&!joinSent){joinSent=true;raw({type:'join',nickname:info.nickname,roomId:info.roomId||undefined,token:info.token||undefined});}
   }else if(m.type==='joined'){
    ui.playerId=m.playerId;session={...info,autoStart:false,roomId:m.roomId,token:m.token,roomCode:m.roomCode};if(m.roomCode)storage.setItem(`outpost-code:${m.roomCode}`,m.roomId);$('room-code-display').textContent=m.roomCode||'1인';storage.setItem(`outpost:${m.roomId}`,JSON.stringify(session));storage.setItem('outpost-name',info.nickname);
-   const url=new URL(location.href);url.searchParams.set('room',m.roomId);history.replaceState(null,'',url);$('lobby').hidden=true;$('game').hidden=false;document.body.classList.add('in-game');retries=0;setConnection(true);resize();if(info.autoStart)send({type:'start'});
+   const url=new URL(location.href);url.searchParams.set('room',m.roomId);replaceAddress(url);$('lobby').hidden=true;$('game').hidden=false;document.body.classList.add('in-game');retries=0;setConnection(true);resize();if(info.autoStart)send({type:'start'});
   }else if(m.type==='state'){
    if(!ui.playerId)return;const first=!state;previous=state;state=m.state;received=performance.now();audio.update(state,first);
    if(pendingBuild){const f=state.facilities.find(f=>f.owner===ui.playerId&&Math.hypot(f.x-pendingBuild.x,f.y-pendingBuild.y)<2);if(f){if(ui.selectionVersion===pendingBuild.version){ui.selectedId=f.id;ui.selectedType=null;}pendingBuild=null;}}
@@ -51,7 +52,7 @@ if(roomId)$('join-note').textContent='초대받은 방입니다. 참가하려면
 $('join-form').onsubmit=e=>{e.preventDefault();const nickname=$('nickname').value.trim();if(!nickname)return;void enableAudio();const target=$('room-code').value.trim()||new URL(location.href).searchParams.get('room')||undefined,canonical=target?(storage.getItem(`outpost-code:${target}`)||target):null,saved=canonical?readSession(canonical):null;connect({nickname,roomId:saved?.roomId||target,token:saved?.token||undefined});};
 $('open-guide-lobby').onclick=()=>$('guide-dialog').showModal();$('open-guide').onclick=()=>$('guide-dialog').showModal();$('close-guide').onclick=()=>$('guide-dialog').close();
 $('weapon-upgrade').onclick=()=>send({type:'upgradeWeapon'});
-$('new-solo').onclick=()=>{const nickname=$('nickname').value.trim();if(!nickname){$('join-error').textContent='닉네임을 먼저 입력해 주세요.';$('nickname').focus();return;}void enableAudio();const url=new URL(location.href);url.searchParams.delete('room');history.replaceState(null,'',url);$('room-code').value='';connect({nickname,autoStart:true});};
+$('new-solo').onclick=()=>{const nickname=$('nickname').value.trim();if(!nickname){$('join-error').textContent='닉네임을 먼저 입력해 주세요.';$('nickname').focus();return;}void enableAudio();const url=new URL(location.href);url.searchParams.delete('room');replaceAddress(url);$('room-code').value='';connect({nickname,autoStart:true});};
 $('reset-profile').onclick=()=>{storage.removeItem('outpost-profile-token');connect();};
 $('return-lobby').onclick=()=>{raw({type:'leave'});showLobby();};
 for(const id of ['open-shop','open-shop-game'])$(id).onclick=()=>{updateProfileUI(profile,!!state&&!state.outcome);$('profile-dialog').showModal();};
@@ -84,6 +85,6 @@ $('build-prev').onclick=()=>$('build-list').scrollBy({left:-300,behavior:'smooth
 $('zoom-in').onclick=()=>{zoom=Math.min(3,zoom+.5);resize();};$('zoom-out').onclick=()=>{zoom=Math.max(1,zoom-.5);resize();};$('zoom-reset').onclick=()=>{zoom=1;pan={x:0,y:0};resize();};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){ui.selectionVersion++;ui.selectedType=null;ui.selectedId=null;refresh();}});
 $('room-copy').onclick=async()=>{const code=$('room-code-display').textContent;try{await navigator.clipboard.writeText(code);toast(`방 코드 ${code}를 복사했습니다.`);}catch{toast(`친구에게 방 코드 ${code}를 알려주세요.`);}};
-$('share').onclick=async()=>{const url=location.href;try{if(navigator.share&&!navigator.webdriver){await navigator.share({title:'LAST OUTPOST · 좀비 협동 디펜스',text:`같이 방어선을 지켜줘! 최대 4인 협동 · 방 코드 ${session?.roomCode||''}`,url});toast('방 링크를 공유했습니다.');}else if(navigator.clipboard){await navigator.clipboard.writeText(`LAST OUTPOST · 방 코드 ${session?.roomCode||''}\n${url}`);toast('방 링크를 복사했습니다. 카톡에 붙여넣으세요.');}else toast(`방 링크: ${url}`);}catch(e){if(e.name!=='AbortError')toast(`주소창의 방 링크를 복사해 주세요: ${url}`);}};
+$('share').onclick=async()=>{const url=location.href;try{if(navigator.share&&!navigator.webdriver){await navigator.share({title:'뀨겜1 · 좀비 협동 디펜스',text:`같이 방어선을 지켜줘! 최대 4인 협동 · 방 코드 ${session?.roomCode||''}`,url});toast('방 링크를 공유했습니다.');}else if(navigator.clipboard){await navigator.clipboard.writeText(`뀨겜1 · 방 코드 ${session?.roomCode||''}\n${url}`);toast('방 링크를 복사했습니다. 카톡에 붙여넣으세요.');}else toast(`방 링크: ${url}`);}catch(e){if(e.name!=='AbortError')toast(`주소창의 방 링크를 복사해 주세요: ${url}`);}};
 function frame(now){if(state)render(ctx,state,previous,Math.min(1,(now-received)/100),ui);requestAnimationFrame(frame);}requestAnimationFrame(frame);
 const saved=roomId?readSession(roomId):null;connect(saved?.token?saved:null);

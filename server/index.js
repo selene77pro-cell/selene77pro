@@ -8,7 +8,7 @@ import {command,snapshot} from './game.js';
 import {advance} from './combat.js';
 import {ProfileStore} from './profiles.js';
 const root=fileURLToPath(new URL('../',import.meta.url));
-const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml'};
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png'};
 export function settlePending(room,store){for(const e of room.game.rewardEvents){if(e.status==='saved')continue;const token=Object.keys(store.records).find(key=>store.records[key].id===e.profileId);if(!token){e.error='프로필을 찾을 수 없습니다.';continue;}const result=store.settle(token,e.id,{pp:e.pp,clearedTier:e.clearedTier});if(result.ok){e.status='saved';delete e.error;}else e.error=result.error;}}
 export function createServer({dataDirectory=null,profileStore,roomManager,port=Number(process.env.PORT)||3000,host=process.env.HOST||'0.0.0.0'}={}){
  const rooms=roomManager||new RoomManager(),profiles=profileStore||new ProfileStore({directory:dataDirectory});

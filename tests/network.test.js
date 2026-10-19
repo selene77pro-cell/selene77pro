@@ -30,7 +30,7 @@ test('room capacity, expiring reconnect, invalid token and snapshot privacy',()=
 });
 test('HTTP static boundaries and malformed / oversized socket messages',async t=>{
  const s=createServer({port:0,host:'127.0.0.1'});await s.listen();t.after(()=>s.close());const port=s.address().port;
- assert.equal((await fetch(`http://127.0.0.1:${port}/health`)).status,200);
+ assert.equal((await fetch(`http://127.0.0.1:${port}/health`)).status,200);const icon=await fetch(`http://127.0.0.1:${port}/qqu-icon.png`);assert.equal(icon.status,200);assert.equal(icon.headers.get('content-type'),'image/png');
  assert.equal((await fetch(`http://127.0.0.1:${port}/server/game.js`)).status,404);
  const a=await client(`ws://127.0.0.1:${port}`);a.ws.send('{');await a.wait(m=>m.type==='error');a.send({type:'join',nickname:'정상'});await a.wait(m=>m.type==='joined');
  const closed=new Promise(r=>a.ws.once('close',r));a.ws.send('x'.repeat(5000));await closed;
