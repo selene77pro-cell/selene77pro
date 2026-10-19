@@ -1,0 +1,15 @@
+# Free trial hosting: no paid disk or paid resources are provisioned.
+services:
+  - type: web
+    name: last-outpost
+    runtime: docker
+    plan: free
+    branch: main
+    healthCheckPath: /health
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: NODE_ENV
+        value: production
+      - key: OUTPOST_DATA_DIR
+        value: /app/data

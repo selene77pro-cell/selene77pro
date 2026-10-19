@@ -13,7 +13,7 @@ html=html.replace('<link rel="stylesheet" href="/styles.css">',`<style>${css}</s
  .replace('id="room-copy"','id="room-copy" disabled')
  .replace('id="room-code"','id="room-code" disabled')
  .replace('id="share" class="outline"','id="share" class="outline" disabled')
- .replace('↗ 친구 초대','1인 체험판')
+ .replace('카톡으로 초대','1인 체험판')
  .replace('01—04 생존자','1인 플레이')
  .replace('실시간 협동','오프라인 체험')
  .replace('도시는 무너졌다. 아직, 우리는 남아 있다.','다운로드해서 바로 플레이하는 1인 체험판.')

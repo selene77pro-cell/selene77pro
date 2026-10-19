@@ -17,7 +17,7 @@ function terrain(index){
  c.lineWidth=1;for(let x=0;x<1200;x+=40)line(c,x,0,x,720,'#9fb08608');for(let y=0;y<720;y+=40)line(c,0,y,1200,y,'#9fb08608');
  for(const [r,points]of m.routes.entries()){
  const path=()=>{c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));};
- c.lineJoin='round';path();c.lineWidth=76;c.strokeStyle=r===2?'#aacbd0':'#afb6a6';c.stroke();path();c.lineWidth=62;c.strokeStyle=r===2?'#95c6d5':'#c9c7b8';c.stroke();path();c.lineWidth=2;c.strokeStyle=r===2?'#e7f8ff':'#faf5d6';c.setLineDash([12,18]);c.stroke();c.setLineDash([]);
+ c.lineJoin='round';path();c.lineWidth=76;c.strokeStyle=r===2?'#aacbd0':'#7d8977';c.stroke();path();c.lineWidth=62;c.strokeStyle=r===2?'#6598a8':'#a4a695';c.stroke();path();c.lineWidth=2;c.strokeStyle=r===2?'#e7f8ff':'#faf5d6';c.setLineDash([12,18]);c.stroke();c.setLineDash([]);
  const start=points[0];text(c,r===2?'해상 침입':'지상 경로 '+(r+1),start[0]+20,start[1]-44,'#385954',13);
  }
  c.beginPath();m.airPath.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.setLineDash([6,14]);c.strokeStyle='#729cbd';c.lineWidth=2;c.stroke();c.setLineDash([]);text(c,'공중 침입',650,100,'#3d7099',14);

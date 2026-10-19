@@ -8,7 +8,7 @@ export const MAPS=[
 ];
 // All districts belong to one daylight ruined city. Routes share the same base.
 const districtNames=['폐허 도심','무너진 상가','붕괴된 주거지','폐허 항구','도시 최후 방어선'];
-MAPS.forEach((m,i)=>{m.name=districtNames[i];m.color=['#e4e5da','#e9dfcc','#dce5da','#d9e8e8','#e7e0d7'][i];m.accent='#536f61';const end=m.path.at(-1);m.routes=[m.path,[[0,20],[1080,20],[1080,end[1]],end],[[0,650],[1040,650],[1040,end[1]],end]];m.airPath=[[0,40],[600,120],end];});
+MAPS.forEach((m,i)=>{m.name=districtNames[i];m.color=['#b4bdad','#c2b9a5','#b0bdad','#a9bdc1','#bfb4a7'][i];m.accent='#536f61';const end=m.path.at(-1);m.routes=[m.path,[[0,20],[1080,20],[1080,end[1]],end],[[0,650],[1040,650],[1040,end[1]],end]];m.airPath=[[0,40],[600,120],end];});
 export function routePath(mapIndex,route=0,medium='ground'){const m=MAPS[mapIndex%MAPS.length];return medium==='air'?m.airPath:m.routes[route%m.routes.length];}
 export function segmentDistance(x,y,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(x-a[0]-t*dx,y-a[1]-t*dy);}
 export function canBuild(mapIndex,x,y){if(!Number.isFinite(x)||!Number.isFinite(y)||x<35||y<35||x>WIDTH-35||y>HEIGHT-35)return false;const m=MAPS[mapIndex%MAPS.length];if(m.routes.some(path=>path.slice(1).some((b,i)=>segmentDistance(x,y,path[i],b)<48)))return false;return !m.blocked.some(([bx,by,w,h])=>x>bx-24&&x<bx+w+24&&y>by-24&&y<by+h+24);}

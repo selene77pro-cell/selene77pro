@@ -80,6 +80,7 @@ canvas.addEventListener('pointercancel',()=>{gesture=null;});
 canvas.addEventListener('pointerup',e=>{if(!gesture||gesture.id!==e.pointerId)return;const moved=gesture.moved;gesture=null;if(moved||!state||state.outcome)return;send({type:'gather'});const p=point(e),f=state.facilities.find(f=>Math.hypot(p.x-f.x,p.y-f.y)<25);
  if(f){ui.selectionVersion++;ui.selectedId=f.id;ui.selectedType=null;refresh();}else if(ui.selectedType){pendingBuild={...p,version:ui.selectionVersion};send({type:'build',facility:ui.selectedType,...p});}else{ui.selectionVersion++;ui.selectedId=null;refresh();}
 });
+$('build-prev').onclick=()=>$('build-list').scrollBy({left:-300,behavior:'smooth'});$('build-next').onclick=()=>$('build-list').scrollBy({left:300,behavior:'smooth'});
 $('zoom-in').onclick=()=>{zoom=Math.min(3,zoom+.5);resize();};$('zoom-out').onclick=()=>{zoom=Math.max(1,zoom-.5);resize();};$('zoom-reset').onclick=()=>{zoom=1;pan={x:0,y:0};resize();};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){ui.selectionVersion++;ui.selectedType=null;ui.selectedId=null;refresh();}});
 $('room-copy').onclick=async()=>{const code=$('room-code-display').textContent;try{await navigator.clipboard.writeText(code);toast(`방 코드 ${code}를 복사했습니다.`);}catch{toast(`친구에게 방 코드 ${code}를 알려주세요.`);}};

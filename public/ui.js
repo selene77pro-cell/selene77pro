@@ -39,7 +39,7 @@ export function updateUI(state,ui){
  const cards=Object.entries(CATALOG).filter(([id])=>me.loadout.includes(id)).filter(([id,c])=>ui.filter==='all'||(ui.filter==='economy'?['bank','support'].includes(c.kind):c.kind===ui.filter)).map(([id,c])=>{
   const locked=!unlocked(state.completedWave,id);return `<button class="build-card ${ui.selectedType===id?'selected':''}" data-facility="${id}" ${locked?'disabled':''} title="${esc(c.name)} · ${c.cost} 찌${locked?' · '+c.unlockWave+'웨이브 클리어 해금':''}"><span class="facility-icon">${facilityIcon(id)}</span><strong>${c.name}</strong><span class="price">${c.cost.toLocaleString()} 찌</span>${locked?`<span class="unlock">🔒 W${c.unlockWave}</span>`:''}</button>`;
  }).join('');
- if($('build-list').innerHTML!==cards){const x=$('build-list').scrollLeft;$('build-list').innerHTML=cards;$('build-list').scrollLeft=x;}
+ if(ui.cardsHTML!==cards){const x=$('build-list').scrollLeft;$('build-list').innerHTML=cards;$('build-list').scrollLeft=x;ui.cardsHTML=cards;}
  $('intel-text').textContent=(state.wave>0&&state.wave%10===0?'보스전: 모든 좀비가 육상 두 갈래로 집결합니다. ':'지상·하늘·바다에서 침입합니다. ')+ '군인은 기지에서 두 육상 경로로 번갈아 출격합니다. 스테이지 완료 시 살아 있는 타워가 전부 회복됩니다. 일부 좀비는 타워를 공격합니다. 10: 돌진 · 20: 증원 · 30: 오염 보스. '+['일반·질주: 빠른 적은 연사로 막으세요.','거대: 체력이 높아 저격·집중 공격이 유리합니다.','장갑: 피해를 줄여 받습니다. 관통 공격이 유리합니다.','분열: 죽으면 작은 좀비 3마리가 나옵니다. 범위 공격을 준비하세요.','재생: 체력을 회복합니다. 화염으로 회복을 억제하세요.'][state.mapIndex]+(state.difficulty>0?' 화염·냉기·전기 아이콘은 해당 저항을 나타냅니다.':'');
  $('difficulty').textContent='도시 탈환';$('region-progress').textContent=`스테이지 ${state.wave} / 30`;
  for(const b of document.querySelectorAll('[data-speed]')){b.setAttribute('aria-pressed',String(Number(b.dataset.speed)===state.speed));b.disabled=state.hostId!==ui.playerId||!!state.outcome;}
